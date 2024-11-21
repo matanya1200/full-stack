@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="hb" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <h1>FSWD</h1>
+            <h2>מכון לב</h2>
+
+            <img class="logo" src="images/logo.jpg" width="100" height="100" alt="logo" title="fullstack">
+        </div>
+    </header>
+
+    <nav class="sidebar">
+        <ul>
+            <li><a href="#description">תיאור</a></li>
+            <li><a href="#users">משתתפים</a></li>
+            <li><a href="#impressions">רשמים</a></li>
+            <li><a href="#links">קישורים</a></li>
+            <li><a href="#sub-form">מידע נוסף </a></li>
+            <li><a href="#info">פרטי קשר</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+
+        <section id="description">
+            <h3>תיאור הקורס</h3>
+            <p>קורס זה עוסק בפיתוח אתרים בטכנולוגיות מתקדמות, וכולל עבודה מעשית בבניית ממשקים ועיצוב חווית משתמש.</p>
+        </section>
+    
+        <section id="users">
+            <h3>משתתפחם</h3>
+    
+            <table>
+                <tr>
+                    <th>שם</th>
+                    <th>מספר טלפון</th>
+                    <th>מייל</th>
+                    <th>ברכה</th>
+                </tr>
+    
+                <tr>
+                    <td>שם 1</td>
+                    <td>מספר טלפון 1</td>
+                    <td>אמייל 1</td>
+                    <td><audio controls src=".mp3"></audio></td>
+                </tr>
+                <tr>
+                    <td>שם 2</td>
+                    <td>מספר טלפון 2</td>
+                    <td>אמייל 2</td>
+                    <td><audio controls src=".mp3"></audio></td>
+                </tr>
+                <tr>
+                    <td>שם 3</td>
+                    <td>מספר טלפון 3</td>
+                    <td>אמייל 3</td>
+                    <td><audio controls src=".mp3"></audio></td>
+                </tr>
+                <tr>
+                    <td>שם 4</td>
+                    <td>מספר טלפון 4</td>
+                    <td>אמייל 4</td>
+                    <td><audio controls src=".mp3"></audio></td>
+                </tr>
+                <tr>
+                    <td>שם 5</td>
+                    <td>מספר טלפון 5</td>
+                    <td>אמייל 5</td>
+                    <td><audio controls src=".mp3"></audio></td>
+                </tr>
+                <tr>
+                    <td>שם 6</td>
+                    <td>מספר טלפון 6</td>
+                    <td>אמייל 6</td>
+                    <td><audio controls src=".mp3"></audio></td>
+                </tr>
+            </table>
+        </section>
+    
+        <section id="impressions">
+            <h3>רשמים</h3>
+            <div class="gallery">
+                <div class="images">
+                    <img src="images/image1.jpg" alt="imprassion1">
+                    <img src="images/image2.jpg" alt="imprassion2">
+                    <img src="images/image3.jpg" alt="imprassion3">
+                </div>
+
+                <div class="media">
+                    <video src=".mp4" controls></video>
+                    <iframe width="250" height="180" src="https://www.youtube.com/embed/קישור של סרטון ביוטיוב " 
+                        title="YouTube video player" frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    
+    <aside class="links" id="links">
+        <p>
+            <a href="https://www.w3schools.com" target="_blank"> W3Schools </a> 
+            אתר ללימוד HTML
+        </p>
+        <p>
+            <a href="https://www.codecademy.com/catalog/language/html-css" target="_blank">CA</a>
+            אתר ללימוד HTML
+        </p>
+    </aside>
+
+    <form id="sub-form" action="#" method="post">
+
+        <h2>מידע נוסף</h2>
+
+        <div class="user-info">
+            <h3>פרטי משתמש</h3>
+            <label for="name">שם:</label>
+            <input type="text" id="name" name="name" required><br>
+
+            <label for="phone">טלפון:</label>
+            <input type="tel" id="phone" name="phone" required><br>
+
+            <label for="mail">מייל:</label>
+            <input type="email" id="mail" name="mail" required>
+        </div>
+        
+        <div class="survey">
+            <h3>סקר</h3>
+            <div>
+                <label for="course-type">סוג קורס:</label>
+                <select id="course-type" name="course-type">
+                    <option value="web">פיתוח אתרים</option>
+                    <option value="data">מדעי הנתונים</option>
+                    <option value="cyber">סייבר</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="courseTopic">בחר נושא קורס או הקלד:</label>
+                <input list="topics" id="courseTopic" name="courseTopic" placeholder="בחר נושא או הקלד...">
+                <datalist id="topics">
+                    <option value="תכנות">
+                    <option value="מדעי המחשב">
+                    <option value="רשתות">
+                    <option value="אבטחת מידע">
+                    <option value="בינה מלאכותית">
+                </datalist>
+            </div>
+        
+            <div>
+                <label>דרגת קושי:</label>
+                <input type="radio" name="difficulty" value="easy"> קל
+                <input type="radio" name="difficulty" value="medium"> בינוני
+                <input type="radio" name="difficulty" value="hard"> קשה
+            </div>
+            
+            <div>
+                <label>נושאים מעניינים:</label>
+                <input type="checkbox" name="topic1" value="HTML"> HTML
+                <input type="checkbox" name="topic2" value="CSS"> CSS
+                <input type="checkbox" name="topic3" value="JavaScript"> JavaScript
+            </div>
+
+            <div>
+                <p>
+                    <label for="comments">הערות או שאלות:</label>
+                </p>
+                <textarea id="comments" name="comments" rows="4" cols="50" placeholder="הכנס/י כאן את הערותיך..."></textarea>
+            </div>
+        </div>
+        
+        <div>
+            <button type="reset" class="button">איפוס</button>
+            <button type="submit" class="button">שליחה</button>
+        </div>
+        
+    </form>
+
+    <footer >
+        <h3>ליצירת קשר</h3>
+        <div class="info" id="info">
+            <div class="manager1">שם: מתניה נבט<br> ת.ז: 318379401 <br>טלפון: 0528735335
+                <br>email: matanya.nabet@gamil.cpm</div>
+
+            <div class="manager2">שם: זיו פרג'ון  <br>ת.ז: 000000000 <br>טלפון: 0000000000
+                <br>email:aaaaaaaaaaaaaaaaaaaaaaaaa</div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>חנות ספרים</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <h1>חנות ספרים</h1>
+            <img class="logo" src="images/logo.jpg" width="100" height="100" alt="logo" title="logo">
+        </div>
+    </header>
+
+    <nav class="sidebar">
+        <ul>
+            <li><a href="#about">על העמוד</a></li>
+            <li><a href="#inventory">מלאי</a></li>
+            <li><a href="#gallery">גלריה</a></li>
+            <li><a href="#links">קישורים</a></li>
+            <li><a href="#purchase">רכישה</a></li>
+            <li><a href="#admin-form">למורשים</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <section id="about">
+            <h2>על העמוד</h2>
+            <p>אתר לרכישת ספרי קריאה</p>
+        </section>
+
+        <section id="inventory">
+            <h2>מלאי</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>מס' סידורי</th>
+                            <th>שם הספר</th>
+                            <th>סדרת ספרים</th>
+                            <th>שם המחבר</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>הארי פוטר ואבן החכמים</td>
+                            <td>הארי פוטר</td>
+                            <td>ג'יי קיי רולינג</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>פרסי ג'קסון וים המפלצות</td>
+                            <td>פרסי ג'קסון</td>
+                            <td>ריק ריירדן</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>נקמתה של מספר 7</td>
+                            <td>בני לוריאן</td>
+                            <td>ג'יימס פריי</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>צל אפל</td>
+                            <td>קלע הכשף</td>
+                            <td>סבסטיאן דה קסטל</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>האיש משומקום</td>
+                            <td>פרויקט x</td>
+                            <td>גרג הורביץ</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>המדריך למתנקש המתחיל</td>
+                            <td>המדריך למתנקש המתחיל</td>
+                            <td>שיין קון</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="gallery" class="gallery">
+            <h2>גלריית ספרים</h2>
+            <div class="gallery-container">
+                <div class="image-container">
+                    <img src="images/harry potter.jpg" alt="harry potter">
+                    <span>הארי פוטר ואבן החכמים</span>
+                </div>
+                <div class="image-container">
+                    <img src="images/Percy Jackson.jpg" alt="Percy Jackson">
+                    <span>פרסי ג'קסון וים המפלצות</span>
+                </div>
+                <div class="image-container">
+                    <img src="images/Lorien Legacies.jpg" alt="Lorien Legacies">
+                    <span>נקמתה של מספר 7</span>
+                </div>
+                <div class="image-container">
+                    <img src="images/Shadowblack.jpg" alt="Shadowblack">
+                    <span>צל אפל</span>
+                </div>
+                <div class="image-container">
+                    <img src="images/Project x 2.jpg" alt="Project x 2">
+                    <span>האיש משומקום</span>
+                </div>
+                <div class="image-container">
+                    <img src="images/The Intern's Handbook A Thriller.png" alt="The Intern's Handbook A Thriller">
+                    <span>המדריך למתנקש המתחיל</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <aside id="links">
+        <h2>קישורים לאתרים נוספים</h2>
+        <ul>
+            <li><a href="https://www.e-vrit.co.il/" target="_blank">עברית</a></li>
+            <li><a href="https://www.steimatzky.co.il/" target="_blank">סטימנסקי</a></li>
+            <li><a href="https://www.booknet.co.il/" target="_blank">צומת ספרים</a></li>
+        </ul>
+    </aside>
+
+    <form id="purchase" class="purchase">
+        <h2>רכישה</h2>
+        <div>
+            <label for="name">שם מלא:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div>
+            <label for="email">אימייל:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div>
+            <label for="item">מס' סידורי של ספר:</label>
+            <input type="number" id="item" name="item" required>
+        </div>
+        <div>
+            <button type="submit">רכוש</button>
+        </div>
+    </form>
+    
+    <!--
+    <section id="admin-access" class="admin-access">
+        <h2>מורשים</h2>
+        <form id="admin-form">
+            <div>
+                <label for="user_name">שם משתמש:</label>
+                <input type="text" id="user_name" name="user_name" required>
+            </div>
+            <div>
+                <label for="password">סיסמא:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div>
+                <button type="button" id="login-btn">כניסה</button>
+            </div>
+        </form>
+    </section>
+
+    <section id="admin-panel" style="display: none;">
+        <h2>הוספת ספר</h2>
+        <form id="add-book-form">
+            <label for="serial">מספר סידורי:</label>
+            <input type="number" id="serial" name="serial" required>
+    
+            <label for="book-name">שם הספר:</label>
+            <input type="text" id="book-name" name="book-name" required>
+    
+            <label for="series-name">שם הסדרה:</label>
+            <input type="text" id="series-name" name="series-name" required>
+    
+            <label for="author-name">שם הסופר:</label>
+            <input type="text" id="author-name" name="author-name" required>
+    
+            <label for="image-url">קישור לתמונה:</label>
+            <input type="url" id="image-url" name="image-url" required>
+    
+            <button type="button" id="submit-book-btn">הוספה למלאי</button>
+        </form>
+    </section>
+    -->
+
+    <footer>
+        <p>ליצירת קשר: 052-1234567 | info@artgallery.com</p>
+        <p>&copy; 2024 אתר חנות ספרים</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

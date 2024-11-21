@@ -1,0 +1,317 @@
+bady{
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    direction: rtl;
+    background-color: #f9f9f9;
+}
+
+h1, h2, h3, nav{
+    font-family: fantasy;
+    margin: 0;
+}
+
+header{
+    margin-right: 140px;
+    text-align: right;
+    padding: 20px;
+    background-color: #333;
+    color: white;
+    margin-bottom: 15px;
+}
+
+.header-container{
+    display: flex;
+    align-items: center; /* ממקם את הלוגו והכותרת במרכז לגובה */
+    justify-content: space-between;
+}
+
+.logo{
+    text-align: left;
+    padding: 20px;
+    margin: right 20px;
+}
+
+.sidebar{
+    position: fixed; /* שומרת את התפריט במקומו בזמן גלילה */
+    right: 0;
+    top: 100px;
+    width: 120px;
+    background-color: #a1b4a2;
+    padding: 10px;
+}
+
+nav ul li{
+    display: inline;
+    margin: 0 10px;
+}
+
+.main-content{
+    margin-right: 140px;
+    background-color: #646161;
+    margin-bottom: 15px;
+}
+
+section{
+    padding: 20px;
+}
+
+table{
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    border: 1px solid #ddd;
+}
+
+th{
+    border: 1px solid #ddd;
+    background-color: #f2f2f2;
+    padding: 10px;
+    text-align: center;
+    width: 15%;
+    background-color: #402a47;
+}
+
+td{
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+th, td {
+    display: flexbox;
+    padding: 10px;
+    text-align: center;
+    font-size: 1em;
+}
+
+table tr {
+    background-color: #9b31bb;
+}
+
+table tr:nth-child(even) {
+    background-color: #c25ecf;
+}
+
+.gallery{
+    justify-content: space-around;
+}
+
+.images img{
+    display: inline;
+    width: 30%;
+    height: 180px;
+    border: 1px solid #ddd;
+    padding: 2px;
+    margin-left: 2px;
+}
+
+.media{
+    display: flex;
+}
+
+.media iframe, .media video {
+    width: 35%;
+    height: 220px;
+    border-radius: 4px;
+    border: 1px dashed #333;
+    padding: 2px;
+    margin-left: 10px;
+}
+
+aside{
+    margin-right: 140px;
+    text-align: center;
+    padding: 10px;
+    background-color: #615b74;
+    color: white;
+    margin-bottom: 15px;
+}
+
+nav ul li a, aside a{
+    color: #333;
+    font-weight: bold;
+}
+
+nav ul li a:visited, aside a:visited {
+    color: #861818; 
+}
+
+form {
+    margin-right: 140px;
+    text-align: center;
+    margin-top: 20px;
+    background-color: #292626;
+    padding: 10px;
+    line-height: 25px;
+    border: 1px solid #ddd;
+    color: white;
+}
+
+.user-info{
+    display: block;
+    font-weight: bold;
+    margin-top: 15px;
+    border: 1px solid #646161;
+}
+
+.user-info input[type="text"],
+.user-info input[type="tel"],
+.user-info input[type="email"] {
+    width: 55%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    margin-left: 25px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.survey{
+    font-family: 'Lucida Sans', sans-serif;
+    border: 1px solid #646161;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.button{
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+footer{
+    margin-top: 20px;
+    color: white;
+    background-color: #292626;
+    padding: 10px;
+    line-height: 25px;
+    border: 1px solid #ddd;
+    margin-right: 140px;
+    text-align: center;
+}
+
+.info{
+    display: inline-flex;
+}
+
+.manager1, .manager2 {
+    border: 1px solid #ddd;
+    margin-left: 15px;
+}
+
+
+
+
+/* התאמות לטאבלטים */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: row;
+        align-items: center;
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+
+    .sidebar {
+        position: static;
+        text-align: center;
+        margin-bottom:10px ;
+        margin-top: 10px;
+        width: 93%;
+        padding: 20px;
+    }  
+
+    .sidebar ul li{
+        display: inline-block;
+        width: 20%;
+        padding: 10px;
+        border: 1px solid #333; /* הוספת גבול */
+        border-radius: 4px; /* עיגול פינות הגבול */
+        background-color: #f9f9f9; /* צבע רקע לקישור */
+    }
+
+    header,
+    .main-content,
+    form,
+    aside,
+    footer {
+        margin-right: 0;
+        padding: 15px;
+    }
+
+    .info {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .manager1, .manager2 {
+        margin-top: 15px;
+    }
+
+    .user-info input[type="text"],
+    .user-info input[type="tel"],
+    .user-info input[type="email"] {
+        margin-left: 0;
+    }
+
+    .images img{
+        width: 31%;
+        margin: 0%;
+    }
+
+    .media{
+        display: inline;
+    }
+
+    .media iframe, .media video {
+        width: 100%;
+        height: auto;
+    }
+}
+
+
+
+
+/* התאמות לטלפונים ניידים */
+@media (max-width: 540px) {
+    table{
+        margin: 20px 0;
+        border: 1px solid #ddd;
+    }
+
+    th, td {
+        display: flexbox;
+        font-size: 0.72em; /* מקטין את הטקסט בטבלה במסכים קטנים */
+        padding: 8px; /* מקטין את הריווח הפנימי */
+    }
+
+    .sidebar{
+        display: none;
+    }
+
+    .images img {
+        width: 70%;
+        margin-bottom: 10px;
+    }
+
+    .media{
+        width: 70%;
+    }
+
+    .media iframe, .media video {
+        width: 70%;
+        height: auto;
+    }
+
+    .gallery {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .manager1, .manager2 {
+        width: 100%;
+        margin: 10px 0;
+    }
+}

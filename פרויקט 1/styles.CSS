@@ -1,0 +1,318 @@
+bady{
+    display: flex;
+    flex-direction: row; /* אלמנטים מוצגים בשורה */
+    gap: 20px;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    direction: rtl;
+    background-color: #f9f9f9;
+}
+
+h1, h2, h3, nav{
+    font-family: fantasy;
+    margin: 0;
+}
+
+header{
+    margin-right: 140px;
+    text-align: right;
+    padding: 20px;
+    background-color: #333;
+    color: white;
+    margin-bottom: 15px;
+}
+
+.header-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo{
+    text-align: left;
+    padding: 20px;
+    margin: right 20px;
+}
+
+.sidebar{
+    position: fixed;
+    right: 0;
+    top: 100px;
+    width: 120px;
+    background-color: #e2ebe3;
+    padding: 10px;
+}
+
+.sidebar li a {
+    display: block;
+}
+
+nav ul li{
+    display: inline;
+    margin: 0 10px;
+}
+
+.main-content{
+    margin-right: 140px;
+    background-color: #646161;
+    margin-bottom: 15px;
+    flex: 1; /* תופס את כל הרוחב הזמין */
+    padding: 20px;
+}
+
+section{
+    padding: 20px;
+}
+
+.table-container {
+    max-height: 200px; /* הגובה המרבי של הטבלה */
+    overflow-y: auto; /* מאפשר גלילה אנכית */
+    border: 1px solid #ddd;
+}
+
+table thead th {
+    position: sticky;
+    top: 0;
+    background-color: #f9f9f9;
+    z-index: 1;
+}
+
+table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th{
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    background-color: #402a47;
+}
+
+td{
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+th, td {
+    display: flexbox;
+    padding: 10px;
+    text-align: center;
+    font-size: 1em;
+}
+
+table tr {
+    background-color: #c9b4cf;
+}
+
+table tr:nth-child(even) {
+    background-color: #8c838d;
+}
+
+.gallery .gallery-container{
+    max-height: 430px;
+    overflow-y: auto;
+}
+
+.gallery div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.image-container {
+    position: relative;
+    width: calc(25% - 5px);
+    margin: 5px;
+    overflow: hidden;
+}
+
+.image-container img {
+    width: 100%;
+    transition: transform 0.5s ease;
+}
+
+.image-container:hover img {
+    transform: scale(1.1);
+}
+
+.image-container span {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    text-align: center;
+    padding: 5px;
+    font-size: 0.9em;
+    opacity: 0;
+    transition: opacity 2s ease;
+}
+
+.image-container:hover span {
+    opacity: 1;
+}
+
+aside{
+    margin-right: 140px;
+    text-align: center;
+    padding: 10px;
+    background-color: #aea5cc;
+    color: white;
+    margin-bottom: 15px;
+}
+
+nav ul li a, aside a{
+    color: #333;
+    font-weight: bold;
+}
+
+nav ul li a:visited, aside a:visited {
+    color: #861818; 
+}
+
+.purchase ,.admin-access {
+    margin-right: 140px;
+    text-align: center;
+    margin-top: 20px;
+    background-color: #292626;
+    padding: 10px;
+    line-height: 25px;
+    border: 1px solid #ddd;
+    color: white;
+}
+
+.purchase input[type="text"],
+.purchase input[type="email"],
+.purchase input[type="number"] {
+    width: 55%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    margin-left: 25px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+#admin-panel{
+    margin: 20px auto;
+    padding: 10px;
+    width: 80%;
+    max-width: 400px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    display: none;
+}
+
+form label {
+    display: block;
+    margin-top: 10px;
+}
+
+form input {
+    width: 30%;
+    padding: 5px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+footer{
+    margin-top: 20px;
+    color: white;
+    background-color: #292626;
+    padding: 10px;
+    line-height: 25px;
+    border: 1px solid #ddd;
+    margin-right: 140px;
+    text-align: center;
+}
+
+
+
+
+@media (max-width: 768px) {
+    
+    header,.main-content,aside,.purchase ,.admin-access,footer{
+        margin-right: 0;
+    }
+    
+    .sidebar {
+        position: static; /* לא קבוע בצד ימין */
+        width: 97%; /* מתאים לרוחב המסך */
+        height: auto; /* גובה משתנה לפי התוכן */
+        padding: 20px;
+        border: none;
+        display: grid; /* תצוגת Grid */
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* עד 4 קישורים בשורה */
+        gap: 10px;
+        background-color: #ffffff; /* רקע אחיד */
+    }
+
+    .sidebar ul{
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: contents; /* הקישורים יסתדרו ישירות */
+    }
+
+    .sidebar ul li{
+        text-align: center;
+    }
+
+    .sidebar li a {
+        display: block;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f1f1f1;
+        text-decoration: none;
+        color: #333;
+    }
+
+    .sidebar li a:hover {
+        background-color: #e0e0e0;
+    }
+
+    table th, table td {
+        font-size: 0.8em; /* מקטין את גודל הכתב */
+    }
+
+    .image-container {
+        width: calc(40% - 5px); /* שתי תמונות בשורה */
+    }
+}
+
+
+
+
+
+
+@media (max-width: 550px) {
+    .image-container {
+        width: calc(70% - 5px);
+    }
+
+    .sidebar{
+        display: none;
+    }
+}
