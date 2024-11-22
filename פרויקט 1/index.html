@@ -115,6 +115,40 @@
                 </div>
             </div>
         </section>
+
+        <!--לא בטוח שנצרך-->
+        <section id="videos" class="section">
+            <h2>סרטוני המלצות</h2>
+            <div class="video-container">
+                <!-- הארי פוטר -->
+                <div class="video-item">
+                    <h3>הארי פוטר - טריילר</h3>
+                    <iframe 
+                        width="560" 
+                        height="315" 
+                        src="https://www.youtube.com/embed/VyHV0BRtdxo"
+                        title="הארי פוטר ואבן החכמים - טריילר" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+        
+                <!-- פרסי ג'קסון -->
+                <div class="video-item">
+                    <h3>פרסי ג'קסון - טריילר</h3>
+                    <iframe 
+                        width="560" 
+                        height="315" 
+                        src="https://www.youtube.com/watch?v=Zbb1L_aJ_k4"
+                        title="פרסי ג'קסון וים המפלצות - טריילר" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </section>
     </main>
 
     <aside id="links">
@@ -137,8 +171,27 @@
             <input type="email" id="email" name="email" required>
         </div>
         <div>
-            <label for="item">מס' סידורי של ספר:</label>
-            <input type="number" id="item" name="item" required>
+            <label for="phone">טלפון</label>
+            <input type="tel" id="phone" name="phone" pattern="[0-9]{9,10}"
+                title="נא להזין מספר טלפון תקין"
+            >
+        </div>
+        <div>
+            <label for="bookSelect">בחר ספר *</label>
+            <select id="bookSelect" name="bookSelect" required>
+                <option value="">-- בחר ספר --</option>
+                <option value="1">הארי פוטר ואבן החכמים</option>
+                <option value="2">פרסי ג'קסון וים המפלצות</option>
+                <option value="3">נקמתה של מספר 7</option>
+                <option value="4">צל אפל</option>
+                <option value="5">האיש משומקום</option>
+                <option value="6">המדריך למתנקש המתחיל</option>
+            </select>
+            <span class="error-message"></span>
+        </div>
+        <div>
+            <label>הערות נוספות</label>
+            <textarea rows="5" cols="70">הוסף כאן הערות</textarea>
         </div>
         <div>
             <button type="submit">רכוש</button>

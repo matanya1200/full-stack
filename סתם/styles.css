@@ -1,0 +1,298 @@
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateX(50px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+bady{
+    display: flex;
+    flex-direction: row; /* אלמנטים מוצגים בשורה */
+    gap: 20px;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    direction: rtl;
+    background-color: #f9f9f9;
+    animation: fadeIn 1s ease-out;
+}
+
+h1, h2, h3, nav{
+    font-family: fantasy;
+    margin: 0;
+    animation: slideIn 1s ease-out;
+}
+
+header{
+    margin-right: 140px;
+    text-align: right;
+    padding: 20px;
+    background-color: #333;
+    color: white;
+    margin-bottom: 15px;
+}
+
+.header-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    text-align: left;
+    padding: 20px;
+    margin-right: 20px;
+    animation: float 3s ease-in-out infinite;
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: rotate(5deg);
+}
+
+.sidebar{
+    position: fixed;
+    right: 0;
+    top: 100px;
+    width: 120px;
+    background-color: #e2ebe3;
+    padding: 10px;
+}
+
+.sidebar li a {
+    display: block;
+}
+
+nav ul li{
+    display: inline;
+    margin: 0 10px;
+}
+
+nav ul li a{
+    color: #333;
+    font-weight: bold;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+nav ul li a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: #4CAF50;
+    transition: width 0.3s ease;
+}
+
+nav ul li a:hover::after {
+    width: 100%;
+}
+
+nav ul li a:visited{
+    color: #861818; 
+}
+
+.main-content{
+    margin-right: 140px;
+    background-color: #646161;
+    margin-bottom: 15px;
+    flex: 1; /* תופס את כל הרוחב הזמין */
+    padding: 20px;
+}
+
+section{
+    padding: 20px;
+}
+
+.animals h2{
+    padding: 20px;
+    text-align: center;
+}
+
+.animals ul {
+    border: none;
+    display: grid; /* תצוגת Grid */
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* עד 4 קישורים בשורה */
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.animals ul li{
+    text-align: center;
+}
+
+.animals li a {
+    display: block;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+    text-decoration: none;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.animals li a:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    background-color: #4CAF50;
+    color: white;
+}
+
+.activites h2{
+    padding: 20px;
+    text-align: center;
+}
+
+form{
+    text-align: center;
+}
+
+form legend{
+    text-align:right
+}
+
+form label {
+    display: block;
+    margin-top: 10px;
+}
+
+form input {
+    width: 30%;
+    padding: 5px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+footer{
+    margin-top: 20px;
+    color: white;
+    background-color: #292626;
+    padding: 10px;
+    line-height: 25px;
+    border: 1px solid #ddd;
+    margin-right: 140px;
+    text-align: center;
+}
+
+section h2{
+    font-size: 30px;
+    text-align: center;
+}
+
+section{
+    font-size: 20px;
+}
+
+.gallery{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 10px;
+}
+
+@media (max-width: 768px) {
+    header,.main-content,aside,.purchase ,.admin-access,footer{
+        margin-right: 0;
+    }
+    
+    .sidebar {
+        position: static; /* לא קבוע בצד ימין */
+        width: 97%; /* מתאים לרוחב המסך */
+        height: auto; /* גובה משתנה לפי התוכן */
+        padding: 20px;
+        border: none;
+        display: grid; /* תצוגת Grid */
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* עד 4 קישורים בשורה */
+        gap: 10px;
+        background-color: #ffffff; /* רקע אחיד */
+    }
+
+    .sidebar ul{
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: contents; /* הקישורים יסתדרו ישירות */
+    }
+
+    .sidebar ul li{
+        text-align: center;
+    }
+
+    .sidebar li a {
+        display: block;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f1f1f1;
+        text-decoration: none;
+        color: #333;
+        transition: all 0.3s ease;
+    }
+
+    .sidebar li a:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    }
+
+    .gallery img {
+        width: 45%;
+        transition: transform 0.5s ease;
+    }
+
+    .gallery img:hover {
+        transform: scale(1.1);
+    }
+
+    iframe {
+        width: 45%;
+    }
+}
+
+@media (max-width: 550px) {
+    .gallery img {
+        width: 95%;
+    }
+
+    iframe {
+        width: 95%;
+    }
+
+    .sidebar{
+        display: none;
+    }
+}

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>גן חיות</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <h1>גן חיות</h1>
+            <img class="logo" src="images/zoo.jpg" width="100" height="100" alt="logo" title="logo">
+        </div>
+    </header>
+
+    <nav class="sidebar">
+        <ul>
+            <li><a href="#about">על העמוד</a></li>
+            <li><a href="#animals">סוגי חיות</a></li>
+            <li><a href="#activites">פעילוית</a></li>
+            <li><a href="#contact_info">צור קשר</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <section id="about">
+            <h2>על העמוד</h2>
+            <p>אתר ללימוד על בעלי חיים בעיקר יונקים ועופות</p>
+        </section>
+
+        <section id="animals" class="animals">
+            <h2>סוגי החיות</h2>
+            <ul>
+                <li><a href="mammals.html">יונקים</a></li>
+                <li><a href="reptiles.html">זוחלים</a></li>
+                <li><a href="birds.html">עופות</a></li>
+            </ul>
+        </section>
+
+        <section id="activites" class="activites">
+            <h2>פעיליות</h2>
+            <form action="submit_activity_form.php" method="post">
+                <fieldset>
+                    <legend>הרשמה לפעילויות</legend>
+                    
+                    <!-- פרטים אישיים -->
+                    <label for="fullName">שם מלא:</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="הכנס/י את שמך המלא" required>
+            
+                    <label for="email">דוא"ל:</label>
+                    <input type="email" id="email" name="email" placeholder="הכנס/י כתובת מייל" required>
+            
+                    <label for="phone">טלפון:</label>
+                    <input type="tel" id="phone" name="phone" placeholder="הכנס/י מספר טלפון" required>
+            
+                    <!-- בחירת פעילות -->
+                    <label for="activity">בחר/י פעילות:</label>
+                    <select id="activity" name="activity" required>
+                        <option value="tour">סיור מודרך</option>
+                        <option value="feeding">האכלת בעלי חיים</option>
+                        <option value="night">סיור לילה</option>
+                        <option value="workshop">סדנת יצירה לילדים</option>
+                    </select>
+            
+                    <!-- תאריך ושעה -->
+                    <label for="date">תאריך פעילות:</label>
+                    <input type="date" id="date" name="date" required>
+            
+                    <label for="time">שעת פעילות:</label>
+                    <input type="time" id="time" name="time">
+            
+                    <!-- הערות נוספות -->
+                    <label for="notes">הערות נוספות:</label>
+                    <textarea id="notes" name="notes" placeholder="כתבו כאן כל מידע נוסף..." rows="4"></textarea>
+            
+                    <!-- כפתור שליחה -->
+                     <div>
+                        <button type="submit">שלח/י הרשמה</button>
+                     </div>
+                </fieldset>
+            </form>
+        </section>
+    </main>
+
+    <footer id="content_info">
+        <p>ליצירת קשר: 052-1234567 | info@artgallery.com</p>
+        <p>&copy; גן החיות</p>
+    </footer>
+</body>
+</html>
