@@ -20,9 +20,9 @@
     100% { transform: scale(1); }
 }
 
-bady{
+body{
     display: flex;
-    flex-direction: row; /* אלמנטים מוצגים בשורה */
+    flex-direction: column; /* אלמנטים מוצגים בשורה */
     gap: 20px;
     font-family: Arial, sans-serif;
     margin: 0;
@@ -163,6 +163,51 @@ section{
     text-align: center;
 }
 
+table {
+    margin: 2rem 0;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+}
+
+table th,
+table td {
+    display: flexbox;
+    padding: 10px;
+    text-align: center;
+    font-size: 1em;
+}
+
+table th {
+    background-color: #4CAF50;
+    color: rgb(183, 238, 195);
+    font-weight: bold;
+}
+
+table tr{
+    background-color: #d7ecdc;
+    transition: all 0.3s ease;
+}
+
+table tr:nth-child(even) {
+    background-color: #90ca9c;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+    transform: scale(1.01);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.comparison-table tr:hover{
+    transform: scale(1);
+}
+
 form{
     text-align: center;
 }
@@ -267,6 +312,16 @@ section{
     .sidebar li a:hover {
         transform: translateY(-3px);
         box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    }
+
+    table{
+        margin: 1rem 0;
+    }
+
+    table th,
+    table td {
+        padding: 8px 10px;
+        font-size: 14px;
     }
 
     .gallery img {
