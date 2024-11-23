@@ -47,6 +47,12 @@ header{
     margin-bottom: 15px;
 }
 
+.response-page header {
+    margin-right: 0; /* ביטול ההזחה */
+    padding: 20px; /* שמירה על ריווח פנימי */
+}
+
+
 .header-container{
     display: flex;
     align-items: center;
@@ -115,6 +121,11 @@ nav ul li a:visited{
     margin-bottom: 15px;
     flex: 1; /* תופס את כל הרוחב הזמין */
     padding: 20px;
+}
+
+.response-page .main-content {
+    margin-right: 0; /* ביטול ההזחה */
+    padding: 20px; /* שמירה על ריווח פנימי */
 }
 
 section{
@@ -252,6 +263,11 @@ footer{
     border: 1px solid #ddd;
     margin-right: 140px;
     text-align: center;
+}
+
+.response-page footer {
+    margin-right: 0; /* ביטול ההזחה */
+    padding: 20px; /* שמירה על ריווח פנימי */
 }
 
 section h2{

@@ -244,17 +244,21 @@
             </div>
         </section>
 
-        <form action="submit_birds_form.php" method="post">
+        <form action="response.html" method="get">
+            <input type="hidden" name="type" value="animal">
             <fieldset>
                 <legend>מעוניינים במידע נוסף?</legend>
-                <label for="name">שם מלא:</label>
-                <input type="text" id="name" name="name" placeholder="הכנס/י שם מלא" required>
-        
+                <label for="fullName">שם מלא:</label>
+                <input type="text" id="fullName" name="fullName" placeholder="הכנס/י את שמך המלא" required>
+            
                 <label for="email">דוא"ל:</label>
-                <input type="email" id="email" name="email" placeholder="הכנס/י מייל" required>
+                <input type="email" id="email" name="email" placeholder="הכנס/י כתובת מייל" required>
+
+                <label for="phone">טלפון:</label>
+                <input type="tel" id="phone" name="phone" placeholder="הכנס/י מספר טלפון" required>
         
-                <label for="bird">בחר/י עוף:</label>
-                <select id="bird" name="bird" required>
+                <label for="animal">בחר/י עוף:</label>
+                <select id="animal" name="animal" required>
                     <option value="flamingo">פלמינגו</option>
                     <option value="parrot">תוכי</option>
                     <option value="owl">ינשוף</option>

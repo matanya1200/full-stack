@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>תודה</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="response-page">
+    <header>
+        <h1>תודה שפניתם אלינו!</h1>
+    </header>
+    <main class="main-content">
+        <section>
+            <h2 id="message"></h2>
+            <p id="details"></p>
+            <p>ניצור עמכם קשר בהקדם.</p>
+        </section>
+    </main>
+    <footer>
+        <button onclick="window.location.href='index.html';">חזרה לדף הבית</button>
+    </footer>
+
+    <script>
+        // קבלת הנתונים מה-URL
+        const params = new URLSearchParams(window.location.search);
+
+        // סוג הבקשה
+        const requestType = params.get("type");
+        const fullName = params.get("fullName");
+        const email = params.get("email");
+        const phone = params.get("phone")
+        const activity = params.get("activity") || params.get("animal");
+        const date = params.get("date");
+        const time = params.get("time");
+        const notes = params.get("notes");
+
+        // קביעת הודעה בהתאם לסוג הבקשה
+        let message = "";
+        if (requestType === "activity") {
+            message = "קיבלנו את הבקשה לקביעת פעילות!";
+        } else if (requestType === "animal") {
+            message = "קיבלנו את הבקשה ללימוד על החיות שלנו!";
+        }
+
+        // הצגת ההודעה
+        document.getElementById("message").innerText = message;
+        if(requestType === "activity"){
+            document.getElementById("details").innerText = `שם מלא: ${fullName}\nאימייל: ${email}\nטלפון: ${phone}\nפרטים נוספים: ${activity}
+            תאריך: ${date}\n שעה: ${time} הערות: ${notes}`;
+        }
+        else if(requestType === "animal"){
+            document.getElementById("details").innerText = `שם מלא: ${fullName}\nאימייל: ${email}\nטלפון: ${phone}\nפרטים נוספים: ${activity}
+            הערות: ${notes}`;
+        }
+    </script>
+</body>
+</html>
