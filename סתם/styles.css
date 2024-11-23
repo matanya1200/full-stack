@@ -14,12 +14,6 @@
     100% { transform: translateY(0px); }
 }
 
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
 body{
     display: flex;
     flex-direction: column; /* אלמנטים מוצגים בשורה */
@@ -64,11 +58,6 @@ header{
     padding: 20px;
     margin-right: 20px;
     animation: float 3s ease-in-out infinite;
-    transition: transform 0.3s ease;
-}
-
-.logo:hover {
-    transform: rotate(5deg);
 }
 
 .sidebar{
@@ -164,7 +153,6 @@ section{
 
 .animals li a:hover {
     transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     background-color: #4CAF50;
     color: white;
 }
@@ -212,7 +200,6 @@ table tr:nth-child(even) {
 table tr:hover {
     background-color: #f1f1f1;
     transform: scale(1.01);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .comparison-table tr:hover{
@@ -282,8 +269,11 @@ section{
 .gallery{
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
-    padding: 10px;
+    gap: 15px;
+}
+
+.gallery img:hover {
+    transform: scale(1.1);
 }
 
 @media (max-width: 768px) {
