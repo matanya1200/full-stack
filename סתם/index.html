@@ -114,7 +114,7 @@
                     <input type="date" id="date" name="date" required>
             
                     <label for="time">שעת פעילות:</label>
-                    <input type="time" id="time" name="time">
+                    <input type="time" id="time" name="time" step="1800" min="10:00" max="18:00" required>
             
                     <!-- הערות נוספות -->
                     <label for="notes">הערות נוספות:</label>
@@ -134,4 +134,22 @@
         <p>&copy; גן החיות</p>
     </footer>
 </body>
+
+<!--java scrupt-->
+<!--
+<script>
+  const dateInput = document.getElementById("date");
+
+  // מניעת בחירת שבת
+  dateInput.addEventListener("input", function() {
+      const selectedDate = new Date(this.value); // קבלת התאריך שנבחר
+      const dayOfWeek = selectedDate.getDay(); // 0=ראשון, 6=שבת
+
+      if (dayOfWeek === 6) { // אם זה שבת
+          alert("לא ניתן לקבוע פעילות ביום שבת. אנא בחר/י תאריך אחר.");
+          this.value = ""; // איפוס השדה
+      }
+  });
+</script>
+-->
 </html>
