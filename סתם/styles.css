@@ -219,7 +219,7 @@ form label {
     margin-top: 10px;
 }
 
-form input {
+form input,form select {
     width: 30%;
     padding: 5px;
     margin-top: 5px;
