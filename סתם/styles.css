@@ -107,8 +107,6 @@ nav ul li a:visited{
 .main-content{
     margin-right: 140px;
     background-color: #646161;
-    margin-bottom: 15px;
-    flex: 1; /* תופס את כל הרוחב הזמין */
     padding: 20px;
 }
 
@@ -170,8 +168,6 @@ table {
 table {
     width: 100%;
     border-collapse: collapse;
-    background-color: white;
-    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
 }
 
 table th,
