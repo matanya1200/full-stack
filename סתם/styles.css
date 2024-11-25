@@ -176,7 +176,6 @@ table {
 
 table th,
 table td {
-    display: flexbox;
     padding: 10px;
     text-align: center;
     font-size: 1em;
@@ -269,12 +268,16 @@ section{
 .gallery{
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; 
 }
 
 .gallery img:hover {
     transform: scale(1.1);
 }
+
+
 
 @media (max-width: 768px) {
     header,.main-content,aside,.purchase ,.admin-access,footer{
@@ -282,15 +285,15 @@ section{
     }
     
     .sidebar {
-        position: static; /* לא קבוע בצד ימין */
-        width: 97%; /* מתאים לרוחב המסך */
-        height: auto; /* גובה משתנה לפי התוכן */
+        position: static; 
+        width: 97%; 
+        height: auto; 
         padding: 20px;
         border: none;
-        display: grid; /* תצוגת Grid */
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* עד 4 קישורים בשורה */
+        display: grid; 
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
         gap: 10px;
-        background-color: #ffffff; /* רקע אחיד */
+        background-color: #ffffff; 
     }
 
     .sidebar ul{
