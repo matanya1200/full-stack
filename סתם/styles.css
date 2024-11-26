@@ -1,13 +1,16 @@
+/*מתחיל בכלום על המסך ואחרי כמה שניות רואים את התוכן*/
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
 }
 
+/*מתחיל ימין יחסית למיקום שולו ואחרי כמה שניות מגיע למיקום*/
 @keyframes slideIn {
     from { transform: translateX(50px); opacity: 0; }
     to { transform: translateX(0); opacity: 1; }
 }
 
+/*מתחיל במיקום שלום ואז עלוה 10 פיקסלים ויורד אותם כל כמב שניות*/
 @keyframes float {
     0% { transform: translateY(0px); }
     50% { transform: translateY(-10px); }
@@ -16,26 +19,25 @@
 
 body{
     display: flex;
-    flex-direction: column; /* אלמנטים מוצגים בשורה */
-    gap: 20px;
+    flex-direction: column; /* אלמנטים מוצגים בטור */
+    gap: 20px; /*מרווח בין האלמנטים*/
     font-family: Arial, sans-serif;
-    margin: 0;
+    margin: 0;/*מאפס את הרווחים ברירת מחדל*/
     padding: 0;
     direction: rtl;
     background-color: #f9f9f9;
-    animation: fadeIn 1s ease-out;
+    animation: fadeIn 1s ease-out;/*מפעיל את האנימציה*/
 }
 
 h1, h2, h3, nav{
-    font-family: fantasy;
-    margin: 0;
-    animation: slideIn 1s ease-out;
+    font-family: fantasy;/*סוג כתב אחר*/
+    margin: 0;/*מאפס את הרווחים ברירת מחדל*/
+    animation: slideIn 1s ease-out;/*מפעיל את האנימציה*/
 }
 
 header{
-    margin-right: 140px;
-    text-align: right;
-    padding: 20px;
+    margin-right: 140px;/*הצד הימני של האלמנט זז */
+    padding: 20px;/*מרפד את האלמט ב20 פיקסלים*/
     background-color: #333;
     color: white;
     margin-bottom: 15px;
@@ -48,29 +50,27 @@ header{
 
 
 .header-container{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: flex;/*מצוגה מסוג flex*/
+    align-items: center;/*האלמנטים מיושרים למרכז הקונטינר*/
+    justify-content: space-between;/*האלמנטים נמצאים בקצוות*/
 }
 
 .logo {
-    text-align: left;
-    padding: 20px;
-    margin-right: 20px;
-    animation: float 3s ease-in-out infinite;
+    padding: 20px;/*מרפד את האלמט ב20 פיקסלים*/
+    animation: float 3s ease-in-out infinite;/*מפעיל את האנימציה*/
 }
 
 .sidebar{
-    position: fixed;
-    right: 0;
-    top: 100px;
-    width: 120px;
+    position: fixed;/*מיקום קבוע*/
+    right: 0;/*הכי ימינה*/
+    top: 100px;/*100 פיקסלים מראוש העמוד*/
+    width: 120px;/*רוחב 120 פיקסלים*/
     background-color: #e2ebe3;
     padding: 10px;
 }
 
 .sidebar li a {
-    display: block;
+    display: block;/*כל אלמנט יורד שורה*/
 }
 
 nav ul li{
@@ -82,32 +82,32 @@ nav ul li a{
     color: #333;
     font-weight: bold;
     position: relative;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease;/*מחליף את הצבע משחור לאדום ב0.3 שניות*/
 }
 
 nav ul li a::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: -5px;
-    left: 0;
-    background-color: #4CAF50;
-    transition: width 0.3s ease;
+    content: ''; /* יוצר אלמנט ריק וירטואלי */
+    position: absolute; /* מיקומו מוחלט ביחס לקישור */
+    width: 0; /* הרוחב ההתחלתי של הפס */
+    height: 2px; /* גובה הפס */
+    bottom: -5px; /* ממוקם 5 פיקסלים מתחת לטקסט */
+    left: 0; /* מתחיל מהקצה השמאלי */
+    background-color: #4CAF50; /* צבע הפס */
+    transition: width 0.3s ease; /* אנימציה חלקה להתרחבות הפס */
 }
 
 nav ul li a:hover::after {
-    width: 100%;
+    width: 100%;/*מסיים את ההתרחבות בגודל 100%*/
 }
 
 nav ul li a:visited{
-    color: #861818; 
+    color: #861818; /*אחרי שלחצי כל הקישור הצבע משתנה*/
 }
 
 .main-content{
-    margin-right: 140px;
+    margin-right: 140px;/*הצד הימני של האלמנט זז */
     background-color: #646161;
-    padding: 20px;
+    padding: 20px;/*מרפד את האלמט ב20 פיקסלים*/
 }
 
 .response-page .main-content {
@@ -116,48 +116,44 @@ nav ul li a:visited{
 }
 
 section{
-    padding: 20px;
+    padding: 20px;/*מרפד את האלמט ב20 פיקסלים*/
+    font-size: 20px;/*גודל של הכתב*/
 }
 
-.animals h2{
-    padding: 20px;
-    text-align: center;
+section h2{
+    padding: 20px;/*מרפד את האלמט ב20 פיקסלים*/
+    text-align: center;/*ממקם את האלמנט במרכז*/
 }
 
 .animals ul {
     border: none;
     display: grid; /* תצוגת Grid */
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* עד 4 קישורים בשורה */
-    gap: 10px;
-    margin: 0;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /*מינימום 150 פיקסלים לאלמנט מקסימום אלמט אחד בשורה אם יש רק 1*/
+    gap: 10px;/*מרווח של 10 פיקסלים בין האלמנטים*/
+    margin: 0;/*מאפס את הרווחים ברירת מחדל*/
     padding: 0;
-    list-style: none;
+    list-style: none;/*אין נקודות כמו ברשימה לא מסודרת*/
 }
 
 .animals ul li{
-    text-align: center;
+    text-align: center;/*הכיתוב מופיע במרכז האלמנט*/
 }
 
 .animals li a {
-    display: block;
-    padding: 10px;
+    display: block;/*כל אלמנט מקבל את כל הבלוק שלו*/
+    padding: 10px;/*ריפוד של 10 פיקסלים*/
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 5px;/*מעגל קצוות*/
     background-color: #f1f1f1;
     text-decoration: none;
     color: #333;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease;/*כל הטרספורמציה של האלמנט לוקחת 0.3 שניות*/
 }
 
-.animals li a:hover {
-    transform: translateY(-5px);
+.animals li a:hover {/*ריחוף על האלמנט*/
+    transform: translateY(-5px);/*עולה ב5 פיקסלים*/
     background-color: #4CAF50;
     color: white;
-}
-
-.activites h2{
-    padding: 20px;
-    text-align: center;
 }
 
 table {
@@ -166,60 +162,60 @@ table {
 }
 
 table {
-    width: 100%;
-    border-collapse: collapse;
+    width: 100%;/*רוחב של 100 אחוז*/
+    border-collapse: collapse;/*אין רוורים בין הקוביות בטבלה*/
 }
 
 table th,
 table td {
-    padding: 10px;
-    text-align: center;
+    padding: 10px;/*ריפוד של כל קוביה ב10 פיקסלים*/
+    text-align: center;/*הטקסט במרכז האלמנט*/
     font-size: 1em;
 }
 
-table th {
+table th {/*כותרת*/
     background-color: #4CAF50;
     color: rgb(183, 238, 195);
     font-weight: bold;
 }
 
-table tr{
+table tr{/*שורות*/
     background-color: #d7ecdc;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease;/*כל הטרספורמציה של השורה לוקחת 0.3 שניות*/
 }
 
-table tr:nth-child(even) {
+table tr:nth-child(even) {/*שורות זוגיות*/
     background-color: #90ca9c;
 }
 
-table tr:hover {
-    background-color: #f1f1f1;
-    transform: scale(1.01);
+table tr:hover {/*ריחוף מעל שורה*/
+    background-color: #f1f1f1;/*משנה את הצבע*/
+    transform: scale(1.01);/*מגיל קצת את השוררה*/
 }
 
-.comparison-table tr:hover{
-    transform: scale(1);
+.comparison-table tr:hover{/*בדף היונקים*/
+    transform: none;/*לא מגדיל את השורה*/
 }
 
 form{
-    text-align: center;
+    text-align: center;/*ממרכז את האלמנטים שבטופס*/
 }
 
 form legend{
-    text-align:right
+    text-align:right/*כותרת בצד ימין*/
 }
 
 form label {
-    display: block;
-    margin-top: 10px;
+    display: block;/*כל אלמנט בשורה אחרת*/
+    margin-top: 10px;/*מרווח מהאלמנט שמעליו*/
 }
 
 form input,form select {
-    width: 30%;
+    width: 30%;/*גודל 30 אחוד מהקונטינר*/
     padding: 5px;
     margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: none;
+    border-radius: 4px;/*מעגל פינות*/
 }
 
 button {
@@ -229,11 +225,11 @@ button {
     color: white;
     border: none;
     border-radius: 4px;
-    cursor: pointer;
+    cursor: pointer;/*משנה את האייקון של העכבר*/
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #45a049;/*בעת ריחוף משנה צבע*/
 }
 
 footer{
@@ -242,7 +238,6 @@ footer{
     background-color: #292626;
     padding: 10px;
     line-height: 25px;
-    border: 1px solid #ddd;
     margin-right: 140px;
     text-align: center;
 }
@@ -252,48 +247,40 @@ footer{
     padding: 20px; /* שמירה על ריווח פנימי */
 }
 
-section h2{
-    font-size: 30px;
-    text-align: center;
-}
-
-section{
-    font-size: 20px;
-}
-
 .gallery{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
+    display: flex;/*תצוגת flex*/
+    justify-content: center;/*מרכוז מגבחינת רוחב*/
+    align-items: center;/*מרכוז מגבחינת גובה*/
     gap: 10px; 
 }
 
 .gallery img:hover {
-    transform: scale(1.1);
+    transform: scale(1.1);/*מגדיל את התמונה בעת ריחף*/
 }
 
 
 
+
+/*מסך בגודל 768 פיקסלים(טאבלט)*/
 @media (max-width: 768px) {
     header,.main-content,aside,.purchase ,.admin-access,footer{
-        margin-right: 0;
+        margin-right: 0;/*אין הזחה ימינה*/
     }
     
     .sidebar {
-        position: static; 
-        width: 97%; 
+        position: static; /*מירום סטטי במקום קבוע*/
+        width: 97%; /*90 אחוז מהמסך*/
         height: auto; 
         padding: 20px;
         border: none;
-        display: grid; 
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
+        display: grid; /*תצוגת גריד*/
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /*מינימום 150 פיקסלים לאלמנט מקסימום אלמט אחד בשורה אם יש רק 1*/
         gap: 10px;
         background-color: #ffffff; 
     }
 
     .sidebar ul{
-        margin: 0;
+        margin: 0;/*איפוס רווחים ל0*/
         padding: 0;
         list-style: none;
         display: contents; /* הקישורים יסתדרו ישירות */
@@ -314,9 +301,9 @@ section{
         transition: all 0.3s ease;
     }
 
-    .sidebar li a:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    .sidebar li a:hover {/*בעת ריחוף*/
+        transform: translateY(-3px);/*עולה 3 פיקסלים*/
+        box-shadow: 0 3px 10px rgba(0,0,0,0.2);/*יש הצללה על האלמנט*/
     }
 
     table{
@@ -325,34 +312,49 @@ section{
 
     table th,
     table td {
-        padding: 8px 10px;
-        font-size: 14px;
+        padding: 8px 10px;/*מקטין את המרווחים*/
+        font-size: 14px;/*מקטין את הכתב*/
     }
 
     .gallery img {
-        width: 45%;
+        width: 45%;/*התמונה תופסת 45 אחזו מהמקום*/
         transition: transform 0.5s ease;
     }
 
-    .gallery img:hover {
-        transform: scale(1.1);
-    }
-
     iframe {
-        width: 45%;
+        width: 45%;/*הסרטון תופסת 45 אחזו מהמקום*/
     }
 }
 
-@media (max-width: 550px) {
-    .gallery img {
-        width: 95%;
-    }
 
-    iframe {
-        width: 95%;
-    }
+
+/*מסך בגול 550 פיקסלים*/
+@media (max-width: 550px) {
 
     .sidebar{
-        display: none;
+        width: 85%;
+    }
+
+    .gallery {
+        display: flex;
+        flex-direction: column; /* מסדר את התמונה והסרטון cבטור */
+        gap: 25px; /* רווח בין התמונה לסרטון */
+    }
+
+    .gallery img, 
+    .gallery iframe {
+        width: 65%; /*גורם לתמונה ולסרטון להתפרס על 65 אחוז מהמקום */
+        height: auto;
+    }
+
+    table{
+        display: block; /* הופך את הטבלה לאלמנט בלוק */
+        overflow-x: auto; /* מאפשר גלילה אופקית */
+        width: 100%; /* מבטיח שהטבלה לא תחרוג מהמסך */
+        border-collapse: collapse; /* שומר על עיצוב טבלאות */
+    }
+
+    table th, table td {
+        white-space: nowrap; /* מונע שבירת טקסט בשורות */
     }
 }
