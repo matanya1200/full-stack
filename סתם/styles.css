@@ -1,3 +1,4 @@
+/*אנימוציות*/
 /*מתחיל בכלום על המסך ואחרי כמה שניות רואים את התוכן*/
 @keyframes fadeIn {
     from { opacity: 0; }
@@ -17,6 +18,7 @@
     100% { transform: translateY(0px); }
 }
 
+/*סיגנון העמוד*/
 body{
     display: flex;
     flex-direction: column; /* אלמנטים מוצגים בטור */
