@@ -31,7 +31,7 @@ body{
     animation: fadeIn 1s ease-out;/*מפעיל את האנימציה*/
 }
 
-h1, h2, h3, nav{
+h1, h2, h3, aside{
     font-family: fantasy;/*סוג כתב אחר*/
     margin: 0;/*מאפס את הרווחים ברירת מחדל*/
     animation: slideIn 1s ease-out;/*מפעיל את האנימציה*/
@@ -75,19 +75,19 @@ header{
     display: block;/*כל אלמנט יורד שורה*/
 }
 
-nav ul li{
+aside ul li{
     display: inline;
     margin: 0 10px;
 }
 
-nav ul li a{
+aside ul li a{
     color: #333;
     font-weight: bold;
     position: relative;
     transition: color 0.3s ease;/*מחליף את הצבע משחור לאדום ב0.3 שניות*/
 }
 
-nav ul li a::after {
+aside ul li a::after {
     content: ''; /* יוצר אלמנט ריק וירטואלי */
     position: absolute; /* מיקומו מוחלט ביחס לקישור */
     width: 0; /* הרוחב ההתחלתי של הפס */
@@ -98,11 +98,11 @@ nav ul li a::after {
     transition: width 0.3s ease; /* אנימציה חלקה להתרחבות הפס */
 }
 
-nav ul li a:hover::after {
+aside ul li a:hover::after {
     width: 100%;/*מסיים את ההתרחבות בגודל 100%*/
 }
 
-nav ul li a:visited{
+aside ul li a:visited{
     color: #861818; /*אחרי שלחצי כל הקישור הצבע משתנה*/
 }
 
@@ -265,7 +265,7 @@ footer{
 
 /*מסך בגודל 768 פיקסלים(טאבלט)*/
 @media (max-width: 768px) {
-    header,.main-content,aside,.purchase ,.admin-access,footer{
+    header,.main-content,nav,.purchase ,.admin-access,footer{
         margin-right: 0;/*אין הזחה ימינה*/
     }
     
