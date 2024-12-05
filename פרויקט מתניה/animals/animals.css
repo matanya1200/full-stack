@@ -1,0 +1,42 @@
+
+.gallery{
+    display: flex;/*תצוגת flex*/
+    justify-content: center;/*מרכוז מגבחינת רוחב*/
+    align-items: center;/*מרכוז מגבחינת גובה*/
+    gap: 10px; 
+}
+
+.gallery img:hover {
+    transform: scale(1.1);/*מגדיל את התמונה בעת ריחף*/
+}
+
+.comparison-table tr:hover{/*בדף היונקים*/
+    transform: none;/*לא מגדיל את השורה*/
+}
+
+@media (max-width: 768px) {
+    
+    .gallery img {
+        width: 45%;/*התמונה תופסת 45 אחזו מהמקום*/
+        transition: transform 0.5s ease;
+    }
+
+    iframe {
+        width: 45%;/*הסרטון תופסת 45 אחזו מהמקום*/
+    }
+}
+
+@media (max-width: 550px) {
+    
+    .gallery {
+        display: flex;
+        flex-direction: column; /* מסדר את התמונה והסרטון cבטור */
+        gap: 25px; /* רווח בין התמונה לסרטון */
+    }
+
+    .gallery img, 
+    .gallery iframe {
+        width: 65%; /*גורם לתמונה ולסרטון להתפרס על 65 אחוז מהמקום */
+        height: auto;
+    }
+}

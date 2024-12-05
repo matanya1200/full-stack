@@ -195,10 +195,6 @@ table tr:hover {/*ריחוף מעל שורה*/
     transform: scale(1.01);/*מגיל קצת את השוררה*/
 }
 
-.comparison-table tr:hover{/*בדף היונקים*/
-    transform: none;/*לא מגדיל את השורה*/
-}
-
 form{
     text-align: center;/*ממרכז את האלמנטים שבטופס*/
 }
@@ -248,18 +244,6 @@ footer{
     margin-right: 0; /* ביטול ההזחה */
     padding: 20px; /* שמירה על ריווח פנימי */
 }
-
-.gallery{
-    display: flex;/*תצוגת flex*/
-    justify-content: center;/*מרכוז מגבחינת רוחב*/
-    align-items: center;/*מרכוז מגבחינת גובה*/
-    gap: 10px; 
-}
-
-.gallery img:hover {
-    transform: scale(1.1);/*מגדיל את התמונה בעת ריחף*/
-}
-
 
 
 
@@ -317,15 +301,6 @@ footer{
         padding: 8px 10px;/*מקטין את המרווחים*/
         font-size: 14px;/*מקטין את הכתב*/
     }
-
-    .gallery img {
-        width: 45%;/*התמונה תופסת 45 אחזו מהמקום*/
-        transition: transform 0.5s ease;
-    }
-
-    iframe {
-        width: 45%;/*הסרטון תופסת 45 אחזו מהמקום*/
-    }
 }
 
 
@@ -335,18 +310,6 @@ footer{
 
     .sidebar{
         width: 85%;
-    }
-
-    .gallery {
-        display: flex;
-        flex-direction: column; /* מסדר את התמונה והסרטון cבטור */
-        gap: 25px; /* רווח בין התמונה לסרטון */
-    }
-
-    .gallery img, 
-    .gallery iframe {
-        width: 65%; /*גורם לתמונה ולסרטון להתפרס על 65 אחוז מהמקום */
-        height: auto;
     }
 
     table{
