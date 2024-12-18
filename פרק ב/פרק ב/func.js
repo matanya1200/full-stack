@@ -193,7 +193,7 @@ for (let i = 0; i < 5; i++) {
 function maybeInvoke(p, x, f) {
     // בדיקה שההסתברות p היא ערך חוקי (בין 0 ל-1)
     if (p < 0 || p > 1) {
-        alert("Error: Probability p must be between 0 and 1.");
+        console.log("Error: Probability p must be between 0 and 1.");
         return;
     }
 
@@ -203,7 +203,7 @@ function maybeInvoke(p, x, f) {
         return f(x);
     } else {
         // בהסתברות 1-p: הודעת כישלון
-        alert("Failure: The function was not invoked.");
+        console.log("Failure: The function was not invoked.");
         return undefined;
     }
 }
@@ -317,7 +317,7 @@ function square(x) {
 }
 
 // דוגמאות שימוש
-const numbers = [1, 2, 3, 4];
+var numbers = [1, 2, 3, 4];
 console.log(arrayMap(square, numbers)); // פלט: [1, 4, 9, 16]
 
 const strings = ["a", "b", "c"];
