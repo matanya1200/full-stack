@@ -34,7 +34,7 @@ registerForm.addEventListener('submit', (e) => {
         return;
     }
 
-    users[username] = { password, attempts: 0 };
+    users[username] = { password, attempts: 0 , wins: 0};
     localStorage.setItem('users', JSON.stringify(users));
     alert('נרשמת בהצלחה!');
     registerForm.reset();
