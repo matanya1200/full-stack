@@ -1,0 +1,115 @@
+/* אנימציית puls */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        background-color: gold;
+    }
+    50% {
+        transform: scale(1.1);
+        background-color: orange;
+    }
+    100% {
+        transform: scale(1);
+        background-color: gold;
+    }
+}
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+}
+
+header {
+    margin: 20px 0;
+}
+
+h1 {
+    margin: 20px 0;
+}
+
+#gameBoard {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 5px;
+    justify-content: center;
+    margin: 20px auto;
+}
+
+.cell {
+    background-color: #ffffff;
+    border: 1px solid #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+    cursor: pointer;
+}
+
+.cell.taken {
+    cursor: not-allowed;
+    background-color: #ddd;
+}
+
+.pulse {
+    animation: pulse 1s infinite;
+}
+
+footer {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #333;
+    color: white;
+    text-align: center;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+    #gameBoard {
+        grid-template-columns: repeat(3, 70px);
+        grid-template-rows: repeat(3, 70px);
+        gap: 4px;
+    }
+
+    .cell {
+        font-size: 1.5em;
+    }
+
+    button {
+        padding: 8px;
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 480px) {
+    #gameBoard {
+        grid-template-columns: repeat(3, 50px);
+        grid-template-rows: repeat(3, 50px);
+        gap: 3px;
+    }
+
+    .cell {
+        font-size: 1.2em;
+    }
+
+    header h1 {
+        font-size: 1.2em;
+    }
+}

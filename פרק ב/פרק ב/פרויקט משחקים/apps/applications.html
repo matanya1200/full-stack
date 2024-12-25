@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>עמוד יישומים</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>ברוך הבא, <span id="usernameDisplay"></span>!</h1>
+        <p>כאן תוכל לראות מידע על ניקוד ופעילויות קודמות שלך ושל אחרים.</p>
+        <button id="logoutButton">התנתקות</button>
+    </header>
+    
+    <main id="gamesContainer">
+        <!-- משחק ראשון -->
+        <div class="game-card">
+            <div class="game-image">
+                <img src="images/toctactou.png" alt="משחק 1">
+                <div class="game-overlay">משחק 1</div>
+            </div>
+            <button class="play-game" data-game="../game/tictactoe.html">שחק עכשיו</button>
+        </div>
+
+        <!-- משחק שני -->
+        <div class="game-card">
+            <div class="game-image">
+                <img src="images/moving boll.png" alt="משחק 2">
+                <div class="game-overlay">משחק 2</div>
+            </div>
+            <button class="play-game" data-game="../game/game1.html">שחק עכשיו</button>
+        </div>
+
+        <!-- משחקים בפיתוח -->
+        <div class="game-card">
+            <div class="game-image">
+                <img src="placeholder.jpg" alt="בפיתוח">
+                <div class="game-overlay">בפיתוח</div>
+            </div>
+            <button disabled>בקרוב</button>
+        </div>
+
+        <div class="game-card">
+            <div class="game-image">
+                <img src="placeholder.jpg" alt="בפיתוח">
+                <div class="game-overlay">בפיתוח</div>
+            </div>
+            <button disabled>בקרוב</button>
+        </div>
+    </main>
+    
+    <footer>
+        <p>© 2024 - עמוד יישומים</p>
+    </footer>
+
+    <script src="applications.js"></script>
+</body>
+</html>

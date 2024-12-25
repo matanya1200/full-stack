@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>איקס עיגול</title>
+    <link rel="stylesheet" href="tictactoe.css">
+</head>
+<body>
+    <header>
+        <h1>משחק איקס עיגול</h1>
+        <p id="playerInfo">ברוך הבא, <span id="usernameDisplay"></span>!</p>
+        <p id="scoreDisplay">ניקוד נוכחי: 0</p>
+        <label for="gameMode">בחר מצב משחק:</label>
+        <select id="gameMode">
+            <option value="twoPlayers">שני שחקנים</option>
+            <option value="computer">מול המחשב</option>
+        </select>
+        <div id="difficultyContainer" style="display: none;">
+            <label for="difficulty">בחר רמת קושי:</label>
+            <select id="difficulty">
+                <option value="easy">קל</option>
+                <option value="medium">בינוני</option>
+                <option value="hard">קשה</option>
+            </select>
+        </div>
+    </header>
+    <main>
+        <div id="gameBoard">
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
+        </div>
+    </main>
+    <footer>
+        <button id="backButton">חזרה לעמוד היישומים</button>
+    </footer>
+    <script src="tictactoe.js"></script>
+</body>
+</html>

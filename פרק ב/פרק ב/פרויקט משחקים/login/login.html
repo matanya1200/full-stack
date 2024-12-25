@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>עמוד כניסה</title>
+    <link rel="stylesheet" href="login.CSS">
+</head>
+<body>
+    <h1>עמוד כניסה לאתר</h1>
+    
+    <!-- כפתורי בחירה -->
+    <div id="buttons">
+        <button id="showLogin">כניסה</button>
+        <button id="showRegister">רישום</button>
+    </div>
+    
+    <!-- טופס כניסה -->
+    <form id="loginForm" class="hidden">
+        <div class="form-row">
+            <label for="loginUsername">שם משתמש:</label>
+            <input type="text" id="loginUsername" name="loginUsername" required>
+        </div>
+        <div class="form-row">
+            <label for="loginPassword">סיסמה:</label>
+            <input type="password" id="loginPassword" name="loginPassword" required>
+        </div>
+        <button type="submit">רישום</button>
+    </form>
+
+    <!-- טופס רישום -->
+    <form id="registerForm" class="hidden">
+        <div class="form-row">
+            <label for="username">שם משתמש:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div class="form-row">
+            <label for="password">סיסמה:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div class="form-row">
+            <label for="confirm-password">אימות סיסמה:</label>
+            <input type="password" id="confirm-password" name="confirm-password" required>
+        </div>
+        <button type="submit">רישום</button>
+    </form>
+    
+
+    <!-- קטע אודות -->
+    <footer>
+        <h2>אודות</h2>
+        <p>זהו עמוד כניסה לדוגמה עם פונקציונליות JavaScript מתקדמת.</p>
+    </footer>
+
+    <script src="login.js"></script>
+</body>
+</html>
