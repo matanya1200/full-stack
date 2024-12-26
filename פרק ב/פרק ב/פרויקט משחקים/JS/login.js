@@ -90,3 +90,67 @@ loginForm.addEventListener('submit', (e) => {
     // הפניה לעמוד היישומים עם שם המשתמש ב-URL
     window.location.href = `../HTML/applications.html?username=${username}`;
 });
+
+
+// ========= ניהול כפתור שינוי סיסמה ========= //
+
+// טיפול בשינוי סיסמה
+document.getElementById('changePasswordButton').addEventListener('click', () => {//ההזנה ללחיצה על כפתור שינוי סיסמה
+    const username = document.getElementById('loginUsername').value;//קבלת שם המשתמש
+    const users = JSON.parse(localStorage.getItem('users')) || {};//שליפת הנותונים מהlocalStorage
+    const user = users[username];//קבלת נתוני המשתמש הספיציפי
+
+    if (!user) {//אם לא קיים משתמש כזה
+        alert('שם משתמש לא קיים!');
+        return;
+    }
+
+    const oldPassword = prompt('הזן את הסיסמה הנוכחית:');//
+    if (user.password !== oldPassword) {//אם הסיסמה שהוזנה היא לא הסיסמה הנכונה
+        alert('סיסמה נוכחית שגויה!');
+        return;
+    }
+
+    //הזנת סיסמה חדשה ואימות
+    const newPassword = prompt('הזן סיסמה חדשה:');
+    const confirmNewPassword = prompt('אמת את הסיסמה החדשה:');
+    if (newPassword !== confirmNewPassword) {
+        alert('הסיסמאות החדשות אינן תואמות!');
+        return;
+    }
+
+    //עדכון הסיסמה החדשה בlocalStorage
+    user.password = newPassword;
+    localStorage.setItem('users', JSON.stringify(users));
+    alert('הסיסמה שונתה בהצלחה!');
+});
+
+
+// ========= ניהול מחיקת משתמש ========= //
+
+// טיפול במחיקת משתמש
+document.getElementById('deleteUserButton').addEventListener('click', () => {//ההזנה ללחיצה על כפתור מחיקת משתמש
+    const username = document.getElementById('loginUsername').value;//קבלת שם המשתמש
+    const users = JSON.parse(localStorage.getItem('users')) || {};//שליפת הנותונים מהlocalStorage
+    const user = users[username];//קבלת נתוני המשתמש הספיציפי
+
+    if (!user) {//אם לא קיים משתמש כזה
+        alert('שם משתמש לא קיים!');
+        return;
+    }
+
+    const oldPassword = prompt('הזן את הסיסמה הנוכחית:');
+    if (user.password !== oldPassword) {//אם הסיסמה שהוזנה היא לא הסיסמה הנכונה
+        alert('סיסמה נוכחית שגויה!');
+        return;
+    }
+
+    //אימות הרצון במחיקת המשתמש
+    const confirmDelete = confirm('האם אתה בטוח שברצונך למחוק את המשתמש? פעולה זו אינה הפיכה.');
+    if (confirmDelete) {
+        delete users[username];//מחיקת המשתמש מקובץ הjson
+        localStorage.setItem('users', JSON.stringify(users));//הזנת הנתונים מקובץ הjson במקום הנתונים השמורים בlocalStorage
+        alert('המשתמש נמחק בהצלחה!');
+        location.reload(); // רענון העמוד
+    }
+});
