@@ -1,102 +1,104 @@
-// אלמנטים חשובים
-const gameBoard = document.getElementById('gameBoard');
-const cells = document.querySelectorAll('.cell');
-const usernameDisplay = document.getElementById('usernameDisplay');
-const scoreDisplay = document.getElementById('scoreDisplay');
-const backButton = document.getElementById('backButton');
-const gameModeSelect = document.getElementById('gameMode');
-const difficultySelect = document.getElementById('difficulty');
-const difficultyContainer = document.getElementById('difficultyContainer');
+// ========= משתנים ראשיים ========= //
+
+// אלמנטים חשובים בדף
+const gameBoard = document.getElementById('gameBoard'); // אלמנט הלוח שבו מתקיים המשחק
+const cells = document.querySelectorAll('.cell'); // כל התאים בלוח המשחק
+const usernameDisplay = document.getElementById('usernameDisplay'); // אלמנט להצגת שם המשתמש
+const scoreDisplay = document.getElementById('scoreDisplay'); // אלמנט להצגת הניקוד הנוכחי
+const backButton = document.getElementById('backButton'); // כפתור לחזרה לעמוד היישומים
+const gameModeSelect = document.getElementById('gameMode'); // תפריט לבחירת מצב המשחק (שני שחקנים/מול מחשב)
+const difficultySelect = document.getElementById('difficulty'); // תפריט לבחירת רמת הקושי
+const difficultyContainer = document.getElementById('difficultyContainer'); // קונטיינר שמכיל את אפשרויות רמות הקושי
 
 // קריאת שם המשתמש מה-URL
-const urlParams = new URLSearchParams(window.location.search);
-const username = urlParams.get('username');
+const urlParams = new URLSearchParams(window.location.search); // קריאת הפרמטרים מה-URL
+const username = urlParams.get('username'); // שליפת שם המשתמש מתוך הפרמטרים
 
 // הצגת שם המשתמש
 usernameDisplay.textContent = username;
 
 // משתנים לניהול המשחק
-let currentPlayer = 'X';
-let board = ['', '', '', '', '', '', '', '', ''];
-let score = 0;
-let gameMode = 'twoPlayers'; // ברירת מחדל
-let difficulty = 'easy';
-let isComputerTurn = false;
-let isGameActive = true;
+let currentPlayer = 'X'; // שחקן התור הנוכחי
+let board = ['', '', '', '', '', '', '', '', '']; // מצב הלוח (ריק בהתחלה)
+let score = 0; // משתנה לניקוד הנוכחי
+let gameMode = 'twoPlayers'; // ברירת מחדל: מצב שני שחקנים
+let difficulty = 'easy'; // ברירת מחדל: רמת קושי קלה
+let isComputerTurn = false; // דגל לציון אם זה תור המחשב
+let isGameActive = true; // דגל לציון אם המשחק פעיל
+
+
+// ========= ניהול תצוגת העמוד ========= //
 
 // הצגת התוצאה
 scoreDisplay.textContent = `Score: ${score}`;
 
 // שינוי מצב המשחק
 gameModeSelect.addEventListener('change', (e) => {
-    gameMode = e.target.value;
-    resetBoard();
-    difficultyContainer.style.display = gameMode === 'computer' ? 'block' : 'none';
+    gameMode = e.target.value; // עדכון מצב המשחק לפי הבחירה
+    resetBoard(); // איפוס הלוח
+    difficultyContainer.style.display = gameMode === 'computer' ? 'block' : 'none'; // הצגת אפשרויות רמות קושי אם המצב הוא נגד מחשב
     if (gameMode === 'computer' && difficulty === 'hard') {
-        isComputerTurn = true;
-        computerMove(); // המחשב מתחיל ברמת "קשה"
+        isComputerTurn = true; // המחשב מתחיל במצב קשה
+        computerMove();
     }
 });
 
 // שינוי רמת הקושי
 difficultySelect.addEventListener('change', (e) => {
-    difficulty = e.target.value;
-    resetBoard();
+    difficulty = e.target.value; // עדכון רמת הקושי לפי הבחירה
+    resetBoard(); // איפוס הלוח
     if (difficulty === 'hard') {
-        isComputerTurn = true;
-        computerMove(); // המחשב מתחיל ברמת "קשה"
+        isComputerTurn = true; // המחשב מתחיל במצב קשה
+        computerMove();
     }
 });
 
 // מאזין לאירוע לחיצה על כפתור "חזרה"
 backButton.addEventListener('click', () => {
-    window.location.href = `../apps/applications.html?username=${username}`;
+    window.location.href = `../HTML/applications.html?username=${username}`;
 });
 
 // מאזין לאירוע לחיצה על תאים
 cells.forEach(cell => {
-    cell.addEventListener('click', () => handleCellClick(cell));
+    cell.addEventListener('click', () => handleCellClick(cell)); // חיבור כל תא ללחיצה
 });
+
+
+// ========= פונקציות עיקריות ========= //
 
 // טיפול בלחיצה על תא
 function handleCellClick(cell) {
-    const index = cell.getAttribute('data-index');
-    if (board[index] !== '' || isComputerTurn || !isGameActive) return;
+    const index = cell.getAttribute('data-index'); // קבלת האינדקס של התא
+    if (board[index] !== '' || isComputerTurn || !isGameActive) return; // בדיקה אם התא תפוס, תור מחשב או משחק לא פעיל
 
-    makeMove(index, currentPlayer);
+    makeMove(index, currentPlayer); // ביצוע מהלך של השחקן הנוכחי
 
-    const winningCombination = checkWin();
-    if (winningCombination) return endGame(true, winningCombination);
-    if (board.every(cell => cell !== '')) return endGame(false);
+    const winningCombination = checkWin(); // בדיקת ניצחון
+    if (winningCombination) return endGame(true, winningCombination); // סיום משחק אם יש ניצחון
+    if (board.every(cell => cell !== '')) return endGame(false); // סיום משחק אם יש תיקו
 
     if (gameMode === 'computer') {
-        currentPlayer = 'O';
+        currentPlayer = 'O'; // מעבר לתור המחשב
         isComputerTurn = true;
         computerMove();
     } else {
-        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        currentPlayer = currentPlayer === 'X' ? 'O' : 'X'; // מעבר לשחקן הבא
     }
 }
 
 // תנועת המחשב לפי רמת הקושי
 function computerMove() {
     setTimeout(() => {
-        let move;
-        if (difficulty === 'easy') {
-            move = getRandomMove();
-        } else {
-            move = getBestMove();
-        }
+        let move = (difficulty === 'easy') ? getRandomMove() : getBestMove(); // בחירת מהלך לפי רמת קושי
+        makeMove(move, 'O'); // ביצוע המהלך
 
-        makeMove(move, 'O');
+        const winningCombination = checkWin(); // בדיקת ניצחון
+        if (winningCombination) return endGame(true, winningCombination); // סיום משחק אם יש ניצחון
+        if (board.every(cell => cell !== '')) return endGame(false); // סיום משחק אם יש תיקו
 
-        const winningCombination = checkWin();
-        if (winningCombination) return endGame(true, winningCombination);
-        if (board.every(cell => cell !== '')) return endGame(false);
-
-        currentPlayer = 'X';
+        currentPlayer = 'X'; // חזרה לתור השחקן
         isComputerTurn = false;
-    }, 500); // עיכוב קל ליצירת תחושת "מחשב חושב"
+    }, 500); // עיכוב ליצירת תחושת "מחשב חושב"
 }
 
 // בחירת תא רנדומלית
@@ -197,12 +199,13 @@ function resetBoard() {
     isComputerTurn = false;
 }
 
-
+//עדכון נצחונות
 function updateWins() {
     const users = JSON.parse(localStorage.getItem('users')) || {};
     if (!users[username]) {
-        users[username] = { wins: 0 }; // אם אין נתונים, צור משתמש חדש
+        users[username] = { wins: 0 , tictactoePlayed: 0  }; // אם אין נתונים, צור משתמש חדש
     }
     users[username].wins += 1; // הוסף ניצחון
+    users[username].tictactoePlayed = (users[username].tictactoePlayed || 0) + 1;// ספירת משחקים
     localStorage.setItem('users', JSON.stringify(users)); // שמור את הנתונים
 }
