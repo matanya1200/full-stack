@@ -41,6 +41,14 @@ form {
     background-color: #fff;
 }
 
+.loginButtons{
+    display: flex;
+    flex-direction: column; /* כיוון אנכי */
+    align-items: center; /* מרכז את הכפתורים אופקית */
+    gap: 10px; /* רווח בין הכפתורים */
+    margin: 20px 0; /* רווח עליון ותחתון */
+}
+
 .hidden {
     display: none;
 }
@@ -64,7 +72,8 @@ input {
 
 button {
     padding: 10px;
-    background-color: #28a745;
+    width: 200px;
+    background-color: #4caf50;
     color: white;
     border: none;
     border-radius: 5px;
