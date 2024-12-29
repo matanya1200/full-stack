@@ -37,7 +37,7 @@ if (user) {
         const gamesPlayed = user[`${game.id}Played`] || 0; // קריאת מספר הפעמים ששוחק המשחק, או אתחול ל-0 אם אין ערך
         const gameCard = document.querySelector(`[data-game="${game.id}"]`); // איתור כרטיס המשחק לפי המזהה
         const statsParagraph = document.createElement('p'); // יצירת פסקה חדשה להצגת סטטיסטיקות המשחק
-        statsParagraph.textContent = `שם המשחק: ${game.name}, משחקים ששוחקו: ${gamesPlayed}`; // הגדרת הטקסט עם הנתונים
+        statsParagraph.textContent = `שם המשחק: ${game.name}, ניקוד כולל: ${gamesPlayed}`; // הגדרת הטקסט עם הנתונים
         gameCard.appendChild(statsParagraph); // הוספת הפסקה לכרטיס המשחק
     });
 }
