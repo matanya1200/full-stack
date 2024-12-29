@@ -60,3 +60,29 @@ gameButtons.forEach(button => {
         window.location.href = `${gameUrl}?username=${encodeURIComponent(username)}`; // מעבר לכתובת החדשה עם שם המשתמש
     });
 });
+
+// יצירת טבלה של משתמשים רשומים
+const usersTable = document.getElementById('usersTable').querySelector('tbody');
+
+// שליפת כל המשתמשים מ-localStorage
+Object.entries(users).forEach(([key, userData]) => {
+    const row = document.createElement('tr');
+
+    // עמודת שם המשתמש
+    const usernameCell = document.createElement('td');
+    usernameCell.textContent = key; // שם המשתמש
+    row.appendChild(usernameCell);
+
+    // עמודת מספר ניצחונות
+    const winsCell = document.createElement('td');
+    winsCell.textContent = userData.wins || 0; // מספר הניצחונות או 0 אם לא קיים
+    row.appendChild(winsCell);
+
+    // עמודת תאריך כניסה אחרון
+    const lastLoginCell = document.createElement('td');
+    lastLoginCell.textContent = userData.lastLogin || 'לא ידוע'; // תאריך כניסה אחרון או ברירת מחדל
+    row.appendChild(lastLoginCell);
+
+    // הוספת השורה לטבלה
+    usersTable.appendChild(row);
+});

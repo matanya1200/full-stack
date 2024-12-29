@@ -85,7 +85,14 @@ loginForm.addEventListener('submit', (e) => {
     // כניסה מוצלחת
     alert('ברוך הבא, ' + username + '!'); // הודעת הצלחה
     document.cookie = `loggedInUser=${username}; max-age=3600`; // יצירת עוגיה עם שם המשתמש ותוקף לשעה
+
     loginForm.reset(); // איפוס טופס הכניסה
+
+    // עדכון זמן הכניסה האחרון
+    const currentTime = new Date().toLocaleString(); // זמן הכניסה הנוכחי בפורמט קריא
+    user.lastLogin = currentTime; // עדכון מועד הכניסה האחרון למשתמש
+    user.attempts = 0; // איפוס מונה ניסיונות שגויים
+    localStorage.setItem('users', JSON.stringify(users)); // שמירת הנתונים המעודכנים ב-localStorage
 
     // הפניה לעמוד היישומים עם שם המשתמש ב-URL
     window.location.href = `../HTML/applications.html?username=${username}`;

@@ -12,40 +12,58 @@
         <p>כאן תוכל לראות מידע על ניקוד ופעילויות קודמות שלך ושל אחרים.</p>
     </header>
     
-    <main id="gamesContainer">
-        <!-- משחק ראשון -->
-        <div class="game-card" data-game="tictactoe">
-            <div class="game-image">
-                <img src="../images/toctactou.png" alt="משחק 1">
-                <div class="game-overlay">איקס עיגול</div>
+    <main>
+        <div  id="gamesContainer">
+            <!-- משחק ראשון -->
+            <div class="game-card" data-game="tictactoe">
+                <div class="game-image">
+                    <img src="../images/toctactou.png" alt="משחק 1">
+                    <div class="game-overlay">איקס עיגול</div>
+                </div>
+                <button class="play-game" data-game="../HTML/tictactoe.html">שחק עכשיו</button>
             </div>
-            <button class="play-game" data-game="../HTML/tictactoe.html">שחק עכשיו</button>
-        </div>
 
-        <!-- משחק שני -->
-        <div class="game-card" data-game="movingBall">
-            <div class="game-image">
-                <img src="../images/moving boll.png" alt="משחק 2">
-                <div class="game-overlay">משחק 1</div>
+            <!-- משחק שני -->
+            <div class="game-card" data-game="movingBall">
+                <div class="game-image">
+                    <img src="../images/moving boll.png" alt="משחק 2">
+                    <div class="game-overlay">משחק 1</div>
+                </div>
+                <button class="play-game" data-game="../HTML/game1.html">שחק עכשיו</button>
             </div>
-            <button class="play-game" data-game="../HTML/game1.html">שחק עכשיו</button>
-        </div>
 
-        <!-- משחקים בפיתוח -->
-        <div class="game-card">
-            <div class="game-image">
-                <img src="placeholder.jpg" alt="בפיתוח">
-                <div class="game-overlay">בפיתוח</div>
+            <!-- משחקים בפיתוח -->
+            <div class="game-card">
+                <div class="game-image">
+                    <img src="placeholder.jpg" alt="בפיתוח">
+                    <div class="game-overlay">בפיתוח</div>
+                </div>
+                <button disabled>בקרוב</button>
             </div>
-            <button disabled>בקרוב</button>
-        </div>
 
-        <div class="game-card">
-            <div class="game-image">
-                <img src="placeholder.jpg" alt="בפיתוח">
-                <div class="game-overlay">בפיתוח</div>
+            <div class="game-card">
+                <div class="game-image">
+                    <img src="placeholder.jpg" alt="בפיתוח">
+                    <div class="game-overlay">בפיתוח</div>
+                </div>
+                <button disabled>בקרוב</button>
             </div>
-            <button disabled>בקרוב</button>
+
+        </div>
+        
+        <div>
+            <table id="usersTable">
+                <thead>
+                    <tr>
+                        <th>שם משתמש</th>
+                        <th>מספר ניצחונות</th>
+                        <th>תאריך כניסה אחרון</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- שורות הטבלה יתווספו כאן על ידי JavaScript -->
+                </tbody>
+            </table>
         </div>
     </main>
     
