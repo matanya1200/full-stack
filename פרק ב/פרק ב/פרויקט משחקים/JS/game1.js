@@ -6,11 +6,29 @@ const username = urlParams.get('username'); // קריאת הערך של הפרמ
 
 // הגדרות בסיסיות
 let score = 0; // משתנה שמחזיק את הניקוד הנוכחי
+let difficulty = 'easy'; // ברירת מחדל: קל
+let ballInterval = null; // מזהה ה-Interval של תנועת הכדור
 
 // מציאת האלמנטים בדף
 const ball = document.getElementById('ball'); // איתור האלמנט שמייצג את הכדור
 const scoreDisplay = document.getElementById('scoreDisplay'); // איתור אלמנט להצגת הניקוד
+const difficultySelect = document.getElementById('difficultySelect');// איתור אלמנט רמת קושי
 
+// עדכון רמת הקושי
+difficultySelect.addEventListener('change', (e) => {
+    difficulty = e.target.value;
+
+    // עצירת תנועת הכדור אם ישנה
+    if (ballInterval) {
+        clearInterval(ballInterval);
+        ballInterval = null;
+    }
+
+    // אם רמת הקושי קשה, התחל תנועה רנדומלית
+    if (difficulty === 'hard') {
+        ballInterval = setInterval(() => moveBallRandomly(), 1000); // עדכון מיקום כל שנייה
+    }
+});
 
 // הוספת מאזין אירועים לכדור
 ball.addEventListener('click', updateScore);
@@ -59,3 +77,6 @@ function updateWins() {
     users[username].movingBallPlayed = (users[username].movingBallPlayed || 0) + 1; // הגדלת מונה המשחקים
     localStorage.setItem('users', JSON.stringify(users)); // שמירת הנתונים המעודכנים ב-localStorage
 }
+
+// התחלה ראשונית
+moveBallRandomly();
