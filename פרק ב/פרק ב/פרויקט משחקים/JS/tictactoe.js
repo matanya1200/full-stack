@@ -10,9 +10,23 @@ const gameModeSelect = document.getElementById('gameMode'); // תפריט לבח
 const difficultySelect = document.getElementById('difficulty'); // תפריט לבחירת רמת הקושי
 const difficultyContainer = document.getElementById('difficultyContainer'); // קונטיינר שמכיל את אפשרויות רמות הקושי
 
-// קריאת שם המשתמש מה-URL
-const urlParams = new URLSearchParams(window.location.search); // קריאת הפרמטרים מה-URL
-const username = urlParams.get('username'); // שליפת שם המשתמש מתוך הפרמטרים
+// ========= פונקציה לקריאת Cookies ========= //
+function getCookie(name) {
+    const cookies = document.cookie.split('; ');
+    for (let cookie of cookies) {
+        const [key, value] = cookie.split('=');
+        if (key === name) return decodeURIComponent(value);
+    }
+    return null;
+}
+
+// קריאת שם המשתמש מתוך ה-Cookie
+const username = getCookie('loggedInUser');
+
+if (!username) {
+    alert('לא זוהית כמשתמש מחובר. יש לבצע כניסה.');
+    window.location.href = 'login.html'; // הפניה לעמוד הכניסה אם אין שם משתמש
+}
 
 // הצגת שם המשתמש
 usernameDisplay.textContent = username;
@@ -55,7 +69,7 @@ difficultySelect.addEventListener('change', (e) => {
 
 // מאזין לאירוע לחיצה על כפתור "חזרה"
 backButton.addEventListener('click', () => {
-    window.location.href = `../HTML/applications.html?username=${username}`;
+    window.location.href = `applications.html`;
 });
 
 // מאזין לאירוע לחיצה על תאים

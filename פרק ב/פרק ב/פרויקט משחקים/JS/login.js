@@ -95,7 +95,7 @@ loginForm.addEventListener('submit', (e) => {
     localStorage.setItem('users', JSON.stringify(users)); // שמירת הנתונים המעודכנים ב-localStorage
 
     // הפניה לעמוד היישומים עם שם המשתמש ב-URL
-    window.location.href = `../HTML/applications.html?username=${username}`;
+    window.location.href = `applications.html`;
 });
 
 

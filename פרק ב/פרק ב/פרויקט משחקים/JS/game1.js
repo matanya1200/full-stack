@@ -1,8 +1,26 @@
 // ========= משתנים ראשיים ========= //
 
 // קריאת שם המשתמש מה-URL
-const urlParams = new URLSearchParams(window.location.search); // שליפת הפרמטרים מה-URL
-const username = urlParams.get('username'); // קריאת הערך של הפרמטר "username"
+// ========= פונקציה לקריאת Cookies ========= //
+function getCookie(name) {
+    const cookies = document.cookie.split('; ');
+    for (let cookie of cookies) {
+        const [key, value] = cookie.split('=');
+        if (key === name) return decodeURIComponent(value);
+    }
+    return null;
+}
+
+// קריאת שם המשתמש מתוך ה-Cookie
+const username = getCookie('loggedInUser');
+
+if (!username) {
+    alert('לא זוהית כמשתמש מחובר. יש לבצע כניסה.');
+    window.location.href = 'login.html'; // הפניה לעמוד הכניסה אם אין שם משתמש
+}
+
+const usernameDisplay = document.getElementById('usernameDisplay'); // אלמנט להצגת שם המשתמש
+usernameDisplay.textContent = username;
 
 // הגדרות בסיסיות
 let score = 0; // משתנה שמחזיק את הניקוד הנוכחי
@@ -36,7 +54,7 @@ ball.addEventListener('click', updateScore);
 // מאזין לאירוע לחיצה על כפתור "חזרה"
 backButton.addEventListener('click', () => {
     // חזרה לעמוד היישומים עם שם המשתמש ב-URL
-    window.location.href = `../HTML/applications.html?username=${username}`;
+    window.location.href = `applications.html`;
 });
 
 // ========= פונקציות עיקריות ========= //

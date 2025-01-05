@@ -1,6 +1,22 @@
-// קריאת שם המשתמש מה-URL
-const urlParams = new URLSearchParams(window.location.search); // שליפת הפרמטרים מה-URL
-const username = urlParams.get('username'); // קריאת הערך של הפרמטר "username"
+// ========= פונקציה לקריאת Cookies ========= //
+function getCookie(name) {
+    const cookies = document.cookie.split('; ');
+    for (let cookie of cookies) {
+        const [key, value] = cookie.split('=');
+        if (key === name) return decodeURIComponent(value);
+    }
+    return null;
+}
+
+// ========= משתנים ראשיים ========= //
+
+// קריאת שם המשתמש מתוך ה-Cookie
+const username = getCookie('loggedInUser');
+
+if (!username) {
+    alert('לא זוהית כמשתמש מחובר. יש לבצע כניסה.');
+    window.location.href = 'login.html'; // הפניה לעמוד הכניסה אם אין שם משתמש
+}
 
 // הצגת שם המשתמש
 const usernameDisplay = document.getElementById('usernameDisplay'); // איתור האלמנט להצגת שם המשתמש
@@ -48,7 +64,7 @@ document.getElementById('logoutButton').addEventListener('click', () => {
     document.cookie = "loggedInUser=; max-age=0"; // איפוס העוגיה שמכילה את המידע על המשתמש המחובר
     
     // חזרה לעמוד הכניסה
-    window.location.href = "../HTML/login.html"; // מעבר לעמוד הכניסה
+    window.location.href = "login.html"; // מעבר לעמוד הכניסה
 });
 
 // הוספת אירועים לכפתורי המשחקים
@@ -57,7 +73,7 @@ gameButtons.forEach(button => {
     button.addEventListener('click', () => {
         const gameUrl = button.getAttribute('data-game'); // קריאת הקישור של המשחק מהמאפיין "data-game"
         // הוספת שם המשתמש ל-URL
-        window.location.href = `${gameUrl}?username=${encodeURIComponent(username)}`; // מעבר לכתובת החדשה עם שם המשתמש
+        window.location.href = `${gameUrl}`; // מעבר לכתובת החדשה עם שם המשתמש
     });
 });
 
