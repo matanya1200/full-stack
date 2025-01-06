@@ -189,6 +189,7 @@ function resetBoardOnce() {
 
 // פונקציה לבדוק אם יש מנצח
 function checkWin() {
+    const opponent = currentPlayer === 'X' ? 'O' : 'X'; // היריב
     const winningCombinations = [
         [0, 1, 2], [3, 4, 5], [6, 7, 8],
         [0, 3, 6], [1, 4, 7], [2, 5, 8],
@@ -196,6 +197,11 @@ function checkWin() {
     ];
     for (const combination of winningCombinations) {
         if (combination.every(index => board[index] === currentPlayer)) {
+            return combination;
+        }
+    }
+    for (const combination of winningCombinations) {
+        if (combination.every(index => board[index] === opponent)) {
             return combination;
         }
     }

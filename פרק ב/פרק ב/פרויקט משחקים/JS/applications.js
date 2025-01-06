@@ -30,6 +30,7 @@ const user = users[username]; // שליפת המידע של המשתמש לפי 
 const gameStats = [
     { id: "tictactoe", name: "איקס עיגול" }, // מידע על המשחק הראשון
     { id: "movingBall", name: "כדור זז" },   // מידע על המשחק השני
+    { id: "snake", name: "snake" },
 ];
 
 // הצגת ניקוד וניצחונות
@@ -53,7 +54,7 @@ if (user) {
         const gamesPlayed = user[`${game.id}Played`] || 0; // קריאת מספר הפעמים ששוחק המשחק, או אתחול ל-0 אם אין ערך
         const gameCard = document.querySelector(`[data-game="${game.id}"]`); // איתור כרטיס המשחק לפי המזהה
         const statsParagraph = document.createElement('p'); // יצירת פסקה חדשה להצגת סטטיסטיקות המשחק
-        statsParagraph.textContent = `שם המשחק: ${game.name}, ניקוד כולל: ${gamesPlayed}`; // הגדרת הטקסט עם הנתונים
+        statsParagraph.textContent = `שם המשחק: ${game.name}, השיא שלך: ${gamesPlayed}`; // הגדרת הטקסט עם הנתונים
         gameCard.appendChild(statsParagraph); // הוספת הפסקה לכרטיס המשחק
     });
 }
@@ -101,4 +102,68 @@ Object.entries(users).forEach(([key, userData]) => {
 
     // הוספת השורה לטבלה
     usersTable.appendChild(row);
+});
+
+const changePasswordButton = document.getElementById('changePasswordButton');
+const deleteUserButton = document.getElementById('deleteUserButton');
+
+// ========= ניהול כפתור שינוי סיסמה ========= //
+
+// טיפול בשינוי סיסמה
+document.getElementById('changePasswordButton').addEventListener('click', () => {//ההזנה ללחיצה על כפתור שינוי סיסמה
+    const users = JSON.parse(localStorage.getItem('users')) || {};//שליפת הנותונים מהlocalStorage
+    const user = users[username];//קבלת נתוני המשתמש הספיציפי
+
+    if (!user) {//אם לא קיים משתמש כזה
+        alert('שם משתמש לא קיים!');
+        return;
+    }
+
+    const oldPassword = prompt('הזן את הסיסמה הנוכחית:');//
+    if (user.password !== oldPassword) {//אם הסיסמה שהוזנה היא לא הסיסמה הנכונה
+        alert('סיסמה נוכחית שגויה!');
+        return;
+    }
+
+    //הזנת סיסמה חדשה ואימות
+    const newPassword = prompt('הזן סיסמה חדשה:');
+    const confirmNewPassword = prompt('אמת את הסיסמה החדשה:');
+    if (newPassword !== confirmNewPassword) {
+        alert('הסיסמאות החדשות אינן תואמות!');
+        return;
+    }
+
+    //עדכון הסיסמה החדשה בlocalStorage
+    user.password = newPassword;
+    localStorage.setItem('users', JSON.stringify(users));
+    alert('הסיסמה שונתה בהצלחה!');
+});
+
+
+// ========= ניהול מחיקת משתמש ========= //
+
+// טיפול במחיקת משתמש
+document.getElementById('deleteUserButton').addEventListener('click', () => {//ההזנה ללחיצה על כפתור מחיקת משתמש
+    const users = JSON.parse(localStorage.getItem('users')) || {};//שליפת הנותונים מהlocalStorage
+    const user = users[username];//קבלת נתוני המשתמש הספיציפי
+
+    if (!user) {//אם לא קיים משתמש כזה
+        alert('שם משתמש לא קיים!');
+        return;
+    }
+
+    const oldPassword = prompt('הזן את הסיסמה הנוכחית:');
+    if (user.password !== oldPassword) {//אם הסיסמה שהוזנה היא לא הסיסמה הנכונה
+        alert('סיסמה נוכחית שגויה!');
+        return;
+    }
+
+    //אימות הרצון במחיקת המשתמש
+    const confirmDelete = confirm('האם אתה בטוח שברצונך למחוק את המשתמש? פעולה זו אינה הפיכה.');
+    if (confirmDelete) {
+        delete users[username];//מחיקת המשתמש מקובץ הjson
+        localStorage.setItem('users', JSON.stringify(users));//הזנת הנתונים מקובץ הjson במקום הנתונים השמורים בlocalStorage
+        alert('המשתמש נמחק בהצלחה!');
+        window.location.href = "login.html"; // מעבר לעמוד הכניסה
+    }
 });
