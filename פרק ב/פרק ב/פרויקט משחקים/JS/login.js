@@ -45,7 +45,8 @@ registerForm.addEventListener('submit', (e) => {
     users[username] = { 
         password,            // שמירת סיסמה
         attempts: 0,         // אתחול ניסיונות כניסה שגויים
-        wins: 0              // אתחול מספר ניצחונות
+        wins: 0 ,             // אתחול מספר ניצחונות
+        block: false,         // חסימת משתמש
     };
     localStorage.setItem('users', JSON.stringify(users)); // שמירת רשימת המשתמשים ב-localStorage
     alert('נרשמת בהצלחה!'); // הודעת הצלחה
@@ -70,10 +71,17 @@ loginForm.addEventListener('submit', (e) => {
         return;
     }
 
+    // בדיקה אם המשתמש חסום
+    if (user.block) {
+        alert('משתמש זה נחסם עקב מספר ניסיונות שגויים!');
+        return;
+    }
+
     // בדיקה אם הסיסמה תואמת
     if (user.password !== password) {
         user.attempts = (user.attempts || 0) + 1; // הגדלת מונה ניסיונות כניסה שגויים
         if (user.attempts >= 3) {
+            user.block = true; // חסימת המשתמש
             alert('חשבון נחסם עקב 3 ניסיונות שגויים!'); // הודעה על חסימה
         } else {
             alert('סיסמה שגויה! נותרו ' + (3 - user.attempts) + ' ניסיונות.'); // הודעה עם מספר ניסיונות שנותרו
