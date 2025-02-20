@@ -121,9 +121,21 @@ function handleRegistration() {
     });
 }
 
-// טיפול בעמוד המשחק
-function handleToDo() {
+function relodePage(){
     const table = document.getElementById("ToDo-table");
+    // שמירת כותרת הטבלה
+    const headerHTML = `
+        <tr>
+            <th>ID</th>
+            <th>תיאור</th>
+            <th>סטטוס</th>
+            <th>תאריך התחלה</th>
+        </tr>
+    `;
+
+    table.innerHTML = headerHTML; // מחיקת כל התוכן אך שמירה על הכותרת
+
+    const loggedInUser = localStorage.getItem("loggedInUser");
     
     FXMLHttpRequest.get("/taskDB", (response) => {
         console.log("📥 Tasks received from server:", response);
@@ -131,17 +143,22 @@ function handleToDo() {
         let tasks = response.data; // ⬅️ שימוש רק בנתונים שב`data`
         tasks = Array.isArray(tasks) ? tasks : []; // ווידוא שזה מערך
 
-        const loggedInUser = localStorage.getItem("loggedInUser");
         const userTasks = tasks.filter(task => task.user === loggedInUser);
 
         userTasks.forEach(task => {
             const row = table.insertRow();
-            row.innerHTML = `<td>${task.id}</td><td>${task.description}</td><td>${task.finished}</td><td>${task.start_date}</td>`;
+            row.innerHTML = `
+            <td>${task.id}</td>
+            <td>${task.description}</td>
+            <td>${task.finished ? "✅" : "❌"}</td>
+            <td>${task.start_date}</td>`;
         });
     }, (error) => {
         console.error("Error fetching tasks: ", error);
     });
+}
 
+function setupEventListeners(){
     /*const getButton = document.getElementById("get-btn");
     getButton.addEventListener("click", () => {
         const index = prompt("הכנס את מספר המשימה")
@@ -164,7 +181,7 @@ function handleToDo() {
             console.log("📬 Server response:", response); // 🔍 בדיקה
         if (response.status === 201) {
             alert("✅ המשימה נוספה בהצלחה!");
-            location.reload();
+            relodePage(); // ⬅️ במקום לרענן את הדף, מרנדרים מחדש את הטבלה
         } else {
             alert("❌ שגיאה בהוספת משימה: " + response.error);
         }
@@ -202,7 +219,7 @@ function handleToDo() {
             FXMLHttpRequest.put(`/taskDB/${index}`, updatedTask, (response) => {
                 if (response.status === 200) {
                     alert("✅ המשימה עודכנה בהצלחה!");
-                    location.reload();
+                    relodePage(); // ⬅️ במקום לרענן את הדף, מרנדרים מחדש את הטבלה
                 } else {
                     alert("❌ שגיאה בעדכון משימה: " + response.error);
                 }
@@ -224,7 +241,7 @@ function handleToDo() {
         FXMLHttpRequest.delete(`/taskDB/${index}`, (response) => {
             if (response.status === 200) {
                 alert("✅ המשימה נמחקה בהצלחה!");
-                location.reload();
+                relodePage(); // ⬅️ במקום לרענן את הדף, מרנדרים מחדש את הטבלה
             } else {
                 alert("❌ שגיאה במחיקת משימה: " + response.error);
             }
@@ -237,6 +254,16 @@ function handleToDo() {
         window.location.hash = "#login";
     });
 }
+
+// טיפול בעמוד המשחק
+function handleToDo() {
+    
+    relodePage();
+
+    setupEventListeners();
+}
+
+
 
 // האזנה לשינויים ב-URL
 window.addEventListener("hashchange", handleRouting);
