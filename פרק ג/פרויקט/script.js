@@ -215,13 +215,19 @@ function handleToDo() {
 
     const deleteButton = document.getElementById("delete-btn");
     deleteButton.addEventListener("click", () => {
-        const index = prompt("הכנס את מספר המשימה")
+        const index = prompt("🔹 הכנס את מספר זיהוי המשימה למחיקה:");
+        if (!index || isNaN(index)) {
+            alert("❌ מספר זיהוי לא חוקי!");
+            return;
+        }
         
-        FXMLHttpRequest.delete(`/taskDB/${index}`, null, () => {
-            alert("המשימה נמחקה בהצלחה!");
-            location.reload();
-        }, (error) => {
-            console.error("Error deleting task: ", error);
+        FXMLHttpRequest.delete(`/taskDB/${index}`, (response) => {
+            if (response.status === 200) {
+                alert("✅ המשימה נמחקה בהצלחה!");
+                location.reload();
+            } else {
+                alert("❌ שגיאה במחיקת משימה: " + response.error);
+            }
         });
     });
 

@@ -33,7 +33,7 @@ class Database {
     static update(dbName, id, updatedRecord) {
         const db = this.getDB(dbName);
         const index = db.findIndex(record => record.id === id);
-        
+
         if (index === -1) return false; // אם לא נמצא
 
         db[index] = { ...db[index], ...updatedRecord };

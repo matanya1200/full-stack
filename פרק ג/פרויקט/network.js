@@ -50,7 +50,15 @@ class FXMLHttpRequest {
             const taskId = Number(url.split("/taskDB/")[1]); // חילוץ ה-ID כ-Number
             console.log("📩 Updating Task ID:", taskId, "With Data:", data); // 🔍 בדיקה
 
-            return TaskServer.updateTask(data.user, taskId, data);
+            if (data) { // אם יש מידע, זו בקשת עדכון
+                return TaskServer.updateTask(data.user, taskId, data);
+            }
+
+            // אחרת זו מחיקה
+            console.log("🗑 Deleting Task ID:", taskId); // 🔍 בדיקה
+            const loggedInUser = localStorage.getItem("loggedInUser");
+            return TaskServer.deleteTask(loggedInUser, taskId);
+            
         }
 
         if (url.startsWith("/taskDB")) {

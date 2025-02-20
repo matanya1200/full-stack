@@ -38,9 +38,12 @@ class TaskServer {
             : { status: 500, error: "Failed to update task" };
     }
 
-    static deleteTask(id) {
+    static deleteTask(username, id) {
         const task = Database.getById("taskDB", id);
+        console.log("🗑 Checking task for deletion:", task);
+
         if (!task || task.user !== username) {
+            console.log("❌ Task not found or not authorized:", id);
             return { status: 404, error: "Task not found or not authorized" };
         }
 
