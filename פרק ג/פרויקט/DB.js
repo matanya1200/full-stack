@@ -33,15 +33,21 @@ class Database {
     static update(dbName, id, updatedRecord) {
         const db = this.getDB(dbName);
         const index = db.findIndex(record => record.id === id);
-        if (index !== -1) {
-            db[index] = { ...db[index], ...updatedRecord };
-            this.saveDB(dbName, db);
-        }
+        
+        if (index === -1) return false; // אם לא נמצא
+
+        db[index] = { ...db[index], ...updatedRecord };
+        this.saveDB(dbName, db);
+        return true;
     }
 
     static delete(dbName, id) {
-        const db = this.getDB(dbName);
-        const updatedDB = db.filter(record => record.id !== id);
-        this.saveDB(dbName, updatedDB);
+        let db = this.getDB(dbName);
+        const filteredDB = db.filter(record => record.id != id);
+
+        if (filteredDB.length === db.length) return false; // אם לא נמחק
+
+        this.saveDB(dbName, filteredDB);
+        return true;
     }
 }

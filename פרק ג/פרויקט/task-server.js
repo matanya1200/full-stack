@@ -5,9 +5,10 @@ class TaskServer {
     }
 
     static getTask(username, id) {
-        const tasks = TaskServer.getTasks(username);
-        const task = tasks.find(t => t.id === id);
-        return task ? { status: 200, task } : { status: 404, error: "Task not found" };
+        const task = Database.getById("taskDB", id);
+        return task && task.user === username
+            ? { status: 200, task }
+            : { status: 404, error: "Task not found or not authorized" };
     }
 
     static addTask(username, task) {
@@ -26,37 +27,26 @@ class TaskServer {
     }
 
     static updateTask(username, id, updatedTask) {
-        let tasks = Database.getAll("taskDB");
-
-        id = Number(id);
-
-        console.log("🔍 Searching for task ID:", id); // 🔍 בדיקה
-
-        const index = tasks.findIndex(task => task.id == id);
-
-        if (index === -1 || tasks[index].user !== username) {
-            console.log("❌ Task not found or user mismatch:", id);
-            return { status: 404, error: "Task not found" };
+        const task = Database.getById("taskDB", id);
+        if (!task || task.user !== username) {
+            return { status: 404, error: "Task not found or not authorized" };
         }
 
-        console.log("🔄 Before update:", tasks[index]);
-
-        tasks[index] = {
-            ...tasks[index],
-            description: updatedTask.description ?? tasks[index].description,
-            finished: updatedTask.finished ?? tasks[index].finished
-        };
-        
-        Database.saveDB("taskDB", tasks);
-        console.log("✅ After update:", tasks[index]);
-
-        return { status: 200, message: "Task updated successfully" };
+        const success = Database.update("taskDB", id, updatedTask);
+        return success
+            ? { status: 200, message: "Task updated successfully" }
+            : { status: 500, error: "Failed to update task" };
     }
 
-    static deleteTask(username, id) {
-        const task = this.getTask(username, id);
-        if (!task) return { status: 404, error: "Task not found" };
-        Database.delete("taskDB", id);
-        return { status: 200, message: "Task deleted successfully" };
+    static deleteTask(id) {
+        const task = Database.getById("taskDB", id);
+        if (!task || task.user !== username) {
+            return { status: 404, error: "Task not found or not authorized" };
+        }
+
+        const success = Database.delete("taskDB", id);
+        return success
+            ? { status: 200, message: "Task deleted successfully" }
+            : { status: 500, error: "Failed to delete task" };
     }
 }
