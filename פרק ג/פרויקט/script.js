@@ -136,7 +136,7 @@ function relodePage(){
     table.innerHTML = headerHTML; // מחיקת כל התוכן אך שמירה על הכותרת
 
     const loggedInUser = localStorage.getItem("loggedInUser");
-    
+
     FXMLHttpRequest.get("/taskDB", (response) => {
         console.log("📥 Tasks received from server:", response);
 
