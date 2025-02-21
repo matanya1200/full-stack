@@ -169,6 +169,11 @@ function setupEventListeners(){
     addButton.addEventListener("click", () => {
         const description = prompt("הכנס את תיאור המשימה")
 
+        if (!description || description.trim() === "") {  // ✅ בודק אם הקלט ריק
+            alert("❌ לא ניתן ליצור משימה ללא תיאור!");
+            return;
+        }
+
         const newTask = {
             user: localStorage.getItem("loggedInUser"),
             id: Date.now(),//? אולי עדיף להשתמש במונה או לשלוף את כל המשימות ולקחת את הidשל המשימה האחרונה ועוד 1
@@ -179,12 +184,12 @@ function setupEventListeners(){
 
         FXMLHttpRequest.post("/taskDB", newTask, (response) => {
             console.log("📬 Server response:", response); // 🔍 בדיקה
-        if (response.status === 201) {
-            alert("✅ המשימה נוספה בהצלחה!");
-            relodePage(); // ⬅️ במקום לרענן את הדף, מרנדרים מחדש את הטבלה
-        } else {
-            alert("❌ שגיאה בהוספת משימה: " + response.error);
-        }
+            if (response.status === 201) {
+                alert("✅ המשימה נוספה בהצלחה!");
+                relodePage(); // ⬅️ במקום לרענן את הדף, מרנדרים מחדש את הטבלה
+            } else {
+                alert("❌ שגיאה בהוספת משימה: " + response.error);
+            }
         });
     });
 
