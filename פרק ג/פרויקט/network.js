@@ -35,8 +35,10 @@ class FXMLHttpRequest {
             return response;
         }
           
-        const users = Database.getAll("userDB");
-        return { status: 200, data: Array.isArray(users) ? users : [] }; // וידוא החזרת מערך
+        return { status: 200, data: UserServer.getUsers() };
+        /*const DB = new Database("userDB");
+        const users = DB.getAll();
+        return { status: 200, data: Array.isArray(users) ? users : [] }; // וידוא החזרת מערך*/
     }
 
     if (url.startsWith("/taskDB/")) {
@@ -53,7 +55,8 @@ class FXMLHttpRequest {
     }
 
     if (url.startsWith("/taskDB")) {
-        return data ? TaskServer.addTask(data.user, data) : { status: 200, data: Database.getAll("taskDB") };
+      //const DB = new Database("taskDB");
+      return data ? TaskServer.addTask(data.user, data) : { status: 200, data: TaskServer.getAllTasks() };
     }
 
     return { status: 404, error: "Not Found" };

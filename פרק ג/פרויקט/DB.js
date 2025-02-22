@@ -1,4 +1,4 @@
-class Database {
+/*class Database {
     static getDB(dbName) {
         const data = JSON.parse(localStorage.getItem(dbName));
         return Array.isArray(data) ? data : []; // ✅ החזרת מערך תמיד
@@ -43,4 +43,4 @@ class Database {
         this.saveDB(dbName, filteredDB);
         return true;
     }
-}
+}*/
