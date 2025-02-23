@@ -14,15 +14,36 @@ class Database {
     localStorage.setItem(this.dbName, JSON.stringify(data));
   }
 
-  // ----- public methods -----
-
-  searchBy(key, value) {
-    const db = this.#getDB();
-    return db.filter((record) => record[key].includes(value));
+  #getFilterFunction(record, { field, operator, value }) {
+    switch (operator) {
+      case "equals":
+        return record[field] === value;
+      case "contains":
+        return record[field].includes(value);
+      default:
+        throw new Error(`Unsupported operator: ${operator}`);
+    }
   }
 
-  getAll() {
-    return this.#getDB();
+  // ----- public methods -----
+
+  getAll(query) {
+    let db = this.#getDB();
+
+    if (query) {
+      db = db.filter((record) => {
+        if (query.conector === "or") {
+          return query.filters.some((filter) =>
+            this.#getFilterFunction(record, filter)
+          );
+        }
+        return query.filters.every((filter) =>
+          this.#getFilterFunction(record, filter)
+        );
+      });
+    }
+
+    return db;
   }
 
   getById(id) {

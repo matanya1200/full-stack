@@ -1,59 +1,156 @@
 class TaskServer {
-  static getTasks(username) {
-    const tasksDB = new Database("taskDB");
-    const tasks = tasksDB.getAll();
-    return tasks.filter((task) => task.user === username);
+  tasksDB = new Database("taskDB");
+
+  // ----- private methods -----
+
+  static #getTasks(userId, search = "") {
+    if (!userId) {
+      return {
+        status: HTTP_STATUS_CODES.BAD_REQUEST,
+        error: "User ID is required",
+      };
+    }
+
+    return tasksDB.getAll({
+      conctor: "and",
+      filters: [
+        { field: "user", operator: "equals", value: userId },
+        { field: "description", operator: "contains", value: search },
+      ],
+    });
   }
 
-  static getTask(username, id) {
-    const tasksDB = new Database("taskDB");
-    const task = tasksDB.getById(id);
-    return task && task.user === username
-      ? { status: 200, task }
-      : { status: 404, error: "Task not found or not authorized" };
+  static #getTask(userId, taskId) {
+    if (!userId || !taskId) {
+      return {
+        status: HTTP_STATUS_CODES.BAD_REQUEST,
+        error: "User ID and Task ID are required",
+      };
+    }
+
+    const tasks = tasksDB.getAll({
+      conctor: "and",
+      filters: [
+        { field: "id", operator: "equals", value: taskId },
+        { field: "user", operator: "equals", value: userId },
+      ],
+    });
+
+    if (!tasks.length) {
+      return {
+        status: HTTP_STATUS_CODES.BAD_REQUEST,
+        error: "Task not found",
+      };
+    }
+
+    return {
+      status: HTTP_STATUS_CODES.OK,
+      message: "Task found",
+      data: tasks[0],
+    };
   }
 
-  static addTask(username, task) {
-    const tasksDB = new Database("taskDB");
-    console.log("📌 Adding task:", task); // 🔍 בדיקה
-    let tasks = tasksDB.getAll();
-    console.log("📋 Tasks before adding:", tasks);
+  static #addTask(userId, task) {
+    if (!userId || !task?.description) {
+      return {
+        status: HTTP_STATUS_CODES.BAD_REQUEST,
+        error: "User ID and task are required",
+      };
+    }
 
-    task.user = username;
-    task.id = new Date().getTime(); // ייצור ID ייחודי
-
+    task.user = userId;
+    const id = new Date().getTime(); // timestamp as unique ID
+    task.id = id.toString();
     tasksDB.create(task);
-    console.log("📋 Tasks after adding:", tasksDB.getAll());
 
-    return { status: 201, message: "Task added successfully" };
+    return {
+      status: HTTP_STATUS_CODES.CREATED,
+      message: "Task added successfully",
+      data: task,
+    };
   }
 
-  static updateTask(username, id, updatedTask) {
-    const tasksDB = new Database("taskDB");
-    const task = tasksDB.getById(id);
-    if (!task || task.user !== username) {
-      return { status: 404, error: "Task not found or not authorized" };
+  static #updateTask(userId, taskId, updatedTask) {
+    if (!userId || !taskId) {
+      return {
+        status: HTTP_STATUS_CODES.BAD_REQUEST,
+        error: "User ID and Task ID are required",
+      };
     }
 
-    const success = tasksDB.update(id, updatedTask);
-    return success
-      ? { status: 200, message: "Task updated successfully" }
-      : { status: 500, error: "Failed to update task" };
+    try {
+      const task = tasksDB.getById(taskId);
+      if (task.user !== userId) {
+        throw new Error("Task not authorized");
+      }
+    } catch (error) {
+      return {
+        status: HTTP_STATUS_CODES.BAD_REQUEST,
+        error: error.message,
+      };
+    }
+
+    tasksDB.update(taskId, updatedTask);
+    return {
+      status: HTTP_STATUS_CODES.OK,
+      message: "Task updated successfully",
+      data: updatedTask,
+    };
   }
 
-  static deleteTask(username, id) {
-    const tasksDB = new Database("taskDB");
-    const task = tasksDB.getById(id);
-    console.log("🗑 Checking task for deletion:", task);
-
-    if (!task || task.user !== username) {
-      console.log("❌ Task not found or not authorized:", id);
-      return { status: 404, error: "Task not found or not authorized" };
+  static #deleteTask(userId, taskId) {
+    if (!userId || !taskId) {
+      return {
+        status: HTTP_STATUS_CODES.BAD_REQUEST,
+        error: "User ID and Task ID are required",
+      };
     }
 
-    const success = tasksDB.delete(id);
-    return success
-      ? { status: 200, message: "Task deleted successfully" }
-      : { status: 500, error: "Failed to delete task" };
+    try {
+      const task = tasksDB.getById(taskId);
+      if (task.user !== userId) {
+        throw new Error("Task not authorized");
+      }
+    } catch (error) {
+      return {
+        status: HTTP_STATUS_CODES.BAD_REQUEST,
+        error: error.message,
+      };
+    }
+
+    tasksDB.delete(taskId);
+    return {
+      status: HTTP_STATUS_CODES.OK,
+      message: "Task deleted successfully",
+    };
+  }
+
+  // ----- public methods -----
+
+  static controller(method, url, data) {
+    const taskId = url.split("/")[1];
+
+    switch (method) {
+      case HTTP_METHODS.GET:
+        if (taskId) {
+          return this.#getTask(data.user, taskId);
+        }
+        return this.#getTasks(data.user, data.search);
+
+      case HTTP_METHODS.POST:
+        return this.#addTask(data.user, data);
+
+      case HTTP_METHODS.PUT:
+        return this.#updateTask(data.user, taskId, data);
+
+      case HTTP_METHODS.DELETE:
+        return this.#deleteTask(data.user, taskId);
+
+      default:
+        return {
+          status: HTTP_STATUS_CODES.NOT_FOUND,
+          error: "Route Not Found",
+        };
+    }
   }
 }
