@@ -134,7 +134,6 @@ function relodePage() {
   table.innerHTML = headerHTML; // מחיקת כל התוכן אך שמירה על הכותרת
 
   const loggedInUser = localStorage.getItem("loggedInUser");
-
   FXMLHttpRequest.get(
     "/taskDB",
     (response) => {
@@ -258,6 +257,25 @@ function setupEventListeners() {
         relodePage(); // ⬅️ במקום לרענן את הדף, מרנדרים מחדש את הטבלה
       } else {
         alert("❌ שגיאה במחיקת משימה: " + response.error);
+      }
+    });
+  });
+
+  const deleteuserButton = document.getElementById("delete-user-btn");
+  deleteuserButton.addEventListener("click", () => {
+    FXMLHttpRequest.deleteAllTasks(`/taskDB/`, (response) => {
+      if (response.status === 200) {
+        FXMLHttpRequest.deleteUser(`/userDB/`, (response) => {
+          if (response.status === 200) {
+            alert("✅ המשתמש נמחק בהצלחה!");
+            localStorage.removeItem("loggedInUser");
+            window.location.hash = "#login";
+          } else {
+            alert("❌ שגיאה במחיקת משתמש: " + response.error);
+          }
+        });
+      } else {
+        alert("❌ שגיאה במחיקת משימות המשתמש: " + response.error);
       }
     });
   });

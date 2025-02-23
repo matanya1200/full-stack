@@ -7,8 +7,6 @@ class FXMLHttpRequest {
   }
 
   static post(url, data, callback) {
-    console.log(`📡 Sending POST request to ${url} with data:`, data);
-
     setTimeout(() => {
       const response = this.#mockRequest(HTTP_METHODS.POST, url, data);
       callback(response);
