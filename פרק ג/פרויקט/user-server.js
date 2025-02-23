@@ -1,3 +1,5 @@
+//כל מה שבהערות זה אם נחנו רוצים להשתמש בקובץ DB
+
 class UserServer {
   static #usersDb = new Database("userDB");
 
@@ -105,3 +107,6 @@ class UserServer {
     }
   }
 }
+
+// יצירת מופע של UserServer
+//const userServer = new UserServer();

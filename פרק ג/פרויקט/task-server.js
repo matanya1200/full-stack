@@ -1,3 +1,5 @@
+//כל מה שבהערות זה אם נחנו רוצים להשתמש בקובץ DB
+
 class TaskServer {
   tasksDB = new Database("taskDB");
 
@@ -154,3 +156,6 @@ class TaskServer {
     }
   }
 }
+
+// יצירת מופע של TaskServer (כדי שהבקשות יעברו דרכו)
+//const taskServer = new TaskServer();
