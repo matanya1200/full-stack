@@ -253,6 +253,26 @@ function setupEventListeners(){
         });
     });
 
+    const deleteuserButton = document.getElementById("delete-user-btn");
+    deleteuserButton.addEventListener("click", () => {
+        
+        FXMLHttpRequest.deleteAllTasks(`/taskDB/`, (response) => {
+            if (response.status === 200) {
+                FXMLHttpRequest.deleteUser(`/userDB/`, (response) => {
+                    if (response.status === 200) {
+                        alert("✅ המשתמש נמחק בהצלחה!");
+                        localStorage.removeItem("loggedInUser");
+                        window.location.hash = "#login";
+                    } else {
+                        alert("❌ שגיאה במחיקת משתמש: " + response.error);
+                    }
+                })
+            } else {
+                alert("❌ שגיאה במחיקת משימות המשתמש: " + response.error);
+            }
+        });
+    });
+
     const logoutButton = document.getElementById("logout-btn");
     logoutButton.addEventListener("click", () => {
         localStorage.removeItem("loggedInUser");

@@ -12,7 +12,7 @@ class TaskServer {
 
   static getTasks(username) {
     this.db = new Database("taskDB");
-    return this.db.getAll.filter(task => task.user === username);
+    return this.db.getAll().filter(task => task.user === username);
     /*const tasks = Database.getAll("taskDB");
     return tasks.filter(task => task.user === username);*/
   }
@@ -75,9 +75,9 @@ class TaskServer {
             }
             this.db.delete(id);
             return { status: 200, message: "Task deleted successfully" };
-        } catch (error) {
-            return { status: 404, error: error.message };
-        }
+          } catch (error) {
+              return { status: 404, error: error.message };
+          }
     /*const task = Database.getById("taskDB", id);
     
     if (!task || task.user !== username) {
@@ -88,6 +88,20 @@ class TaskServer {
     return success
         ? { status: 200, message: "Task deleted successfully" }
         : { status: 500, error: "Failed to delete task" };*/
+  }
+
+  static deleteUser(username){
+    try{
+      const userTasks = this.getTasks(username);
+  
+      userTasks.forEach(task => {
+        this.deleteTask(username, task.id);
+      });
+
+      return { status: 200, message: "all tasks deleted successfully" };
+    }catch (error) {
+        return { status: 404, error: error.message };
+    }
   }
 }
 

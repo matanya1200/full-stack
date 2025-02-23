@@ -27,6 +27,20 @@ class FXMLHttpRequest {
     }, 500);
   }
 
+  static deleteAllTasks(url, callback) {
+    setTimeout(() => {
+        const response = this.mockRequest(url);
+        callback(response);
+    }, 500);
+  }
+
+  static deleteUser(url, callback) {
+    setTimeout(() => {
+        const response = this.mockRequest(url);
+        callback(response);
+    }, 500);
+  }
+
   static mockRequest(url, data = null) {
     if (url === "/userDB") {
         if (data) {
@@ -41,7 +55,22 @@ class FXMLHttpRequest {
         return { status: 200, data: Array.isArray(users) ? users : [] }; // וידוא החזרת מערך*/
     }
 
+    //מחיקת המשתמש
+    if(url === "/userDB/"){
+      const loggedInUser = localStorage.getItem("loggedInUser");
+
+      return UserServer.deleteUser(loggedInUser);
+    }
+
     if (url.startsWith("/taskDB/")) {
+
+      const loggedInUser = localStorage.getItem("loggedInUser");
+
+      //מחיקת כל המשימות של המשתמש
+      if(url === "/taskDB/"){
+        return TaskServer.deleteUser(loggedInUser);
+      }
+      
       const taskId = Number(url.split("/taskDB/")[1]); // חילוץ ה-ID כ-Number
 
       if (data) { 
@@ -50,7 +79,6 @@ class FXMLHttpRequest {
       }
 
       // אחרת זו מחיקה
-      const loggedInUser = localStorage.getItem("loggedInUser");
       return TaskServer.deleteTask(loggedInUser, taskId);        
     }
 

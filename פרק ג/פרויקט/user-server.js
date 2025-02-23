@@ -29,6 +29,14 @@ class UserServer {
     this.db = new Database("userDB");
     return this.db.getAll();
   }
+
+  static deleteUser(username){
+    this.db = new Database("userDB");
+    this.db.deleteUser(username);
+    const users = this.db.getAll();
+    const user = users.find(u => u.username === username && u.password === password);
+    return user ? { status: 402, message: "user not delted", user } : { status: 200, error: "user deleted" };
+  }
 }
 
 // יצירת מופע של UserServer
