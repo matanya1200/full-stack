@@ -5,26 +5,25 @@ class Database {
 
   // ----- private methods -----
 
+  //קבלת בסיס הנתונים
   #getDB() {
     const data = JSON.parse(localStorage.getItem(this.dbName));
     return Array.isArray(data) ? data : [];
   }
 
+  //שמירת בסיס הנתונים
   #saveDB(data) {
     localStorage.setItem(this.dbName, JSON.stringify(data));
   }
 
   // ----- public methods -----
 
-  searchBy(key, value) {
-    const db = this.#getDB();
-    return db.filter((record) => record[key].includes(value));
-  }
-
+  //קבלת כל המשימות
   getAll() {
     return this.#getDB();
   }
 
+  //קבלת משימה
   getById(id) {
     const db = this.#getDB();
 
@@ -36,12 +35,14 @@ class Database {
     return item;
   }
 
+  //יצירה
   create(record) {
     const db = this.#getDB();
     db.push(record);
     this.#saveDB(db);
   }
 
+  //עדכון
   update(id, updatedRecord) {
     const db = this.#getDB();
 
@@ -54,25 +55,13 @@ class Database {
     this.#saveDB(db);
   }
 
-  //מחיקת משימה 
+  //מחיקה 
   delete(id) {
     let db = this.#getDB();
 
     const filteredDB = db.filter((record) => record.id != id);
     if (filteredDB.length === db.length) {
       throw new Error(`Record with id ${id} not found`);
-    }
-
-    this.#saveDB(filteredDB);
-  }
-
-  //מחיקת משתמש
-  deleteUser(name) {
-    let db = this.#getDB();
-
-    const filteredDB = db.filter((record) => record.username != name);
-    if (filteredDB.length === db.length) {
-      throw new Error(`Record with name ${name} not found`);
     }
 
     this.#saveDB(filteredDB);
