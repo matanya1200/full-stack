@@ -1,4 +1,5 @@
 class FXMLHttpRequest {
+
   static get(url, callback) {
     setTimeout(() => {
         const response = this.mockRequest(url);
@@ -27,66 +28,51 @@ class FXMLHttpRequest {
     }, 500);
   }
 
-  static deleteAllTasks(url, callback) {
-    setTimeout(() => {
-        const response = this.mockRequest(url);
-        callback(response);
-    }, 500);
-  }
-
-  static deleteUser(url, callback) {
-    setTimeout(() => {
-        const response = this.mockRequest(url);
-        callback(response);
-    }, 500);
-  }
-
   static mockRequest(url, data = null) {
+
+    //רישום משתמש (אם מקבלים מידע) או קבלת כל המשתמשים
     if (url === "/userDB") {
-        if (data) {
-            // קריאה לרישום משתמש חדש
-            const response = UserServer.registerUser(data);
-            return response;
-        }
-          
-        return { status: 200, data: UserServer.getUsers() };
-        /*const DB = new Database("userDB");
-        const users = DB.getAll();
-        return { status: 200, data: Array.isArray(users) ? users : [] }; // וידוא החזרת מערך*/
+      return data ? UserServer.addUser(data) : UserServer.getUsers();
     }
 
+    //הוספת משימה (אם מקבלים מידע) או קבלת כל המשימות
+    if (url === "/taskDB") {
+      return data ? TaskServer.addTask(data.user, data) : TaskServer.getAllTasks() ;
+    }
+
+    
     //מחיקת המשתמש
     if(url === "/userDB/"){
-      const loggedInUser = localStorage.getItem("loggedInUser");
-
-      return UserServer.deleteUser(loggedInUser);
+      return UserServer.deleteUser(getCookie("loggedInUser"));
     }
+    
 
     if (url.startsWith("/taskDB/")) {
-
-      const loggedInUser = localStorage.getItem("loggedInUser");
+      
+      const taskId = Number(url.split("/taskDB/")[1]);
 
       //מחיקת כל המשימות של המשתמש
       if(url === "/taskDB/"){
-        return TaskServer.deleteUser(loggedInUser);
-      }
-      
-      const taskId = Number(url.split("/taskDB/")[1]); // חילוץ ה-ID כ-Number
-
-      if (data) { 
-        // אם יש מידע, זו בקשת עדכון
-        return TaskServer.updateTask(data.user, taskId, data);
+        let tasks = TaskServer.getAllTasks().data.filter(task => task.user == getCookie("loggedInUser"));
+        tasks.forEach(task => {
+          TaskServer.deleteTask(task.user,task.id);
+        });
+        return { status: 200, message: "all you're taskd been deleted" };
       }
 
-      // אחרת זו מחיקה
-      return TaskServer.deleteTask(loggedInUser, taskId);        
-    }
-
-    if (url.startsWith("/taskDB")) {
-      //const DB = new Database("taskDB");
-      return data ? TaskServer.addTask(data.user, data) : { status: 200, data: TaskServer.getAllTasks() };
+      // אם יש מידע זו בקשת עדכון ואם אין זו בקשת מחיקה
+      return data ? TaskServer.updateTask(data.user, taskId, data) : TaskServer.deleteTask(getCookie("loggedInUser"), taskId);       
     }
 
     return { status: 404, error: "Not Found" };
   }
+}
+
+function getCookie(name) {
+  const cookies = document.cookie.split('; ');
+  for (let cookie of cookies) {
+      const [key, value] = cookie.split('=');
+      if (key === name) return decodeURIComponent(value);
+  }
+  return null;
 }
