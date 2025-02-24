@@ -75,25 +75,12 @@ class Database {
     this.#saveDB(db);
   }
 
-  //מחיקת משימה 
   delete(id) {
     let db = this.#getDB();
 
     const filteredDB = db.filter((record) => record.id != id);
     if (filteredDB.length === db.length) {
       throw new Error(`Record with id ${id} not found`);
-    }
-
-    this.#saveDB(filteredDB);
-  }
-
-  //מחיקת משתמש
-  deleteUser(name) {
-    let db = this.#getDB();
-
-    const filteredDB = db.filter((record) => record.username != name);
-    if (filteredDB.length === db.length) {
-      throw new Error(`Record with name ${name} not found`);
     }
 
     this.#saveDB(filteredDB);
