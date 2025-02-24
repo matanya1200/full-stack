@@ -1,8 +1,9 @@
 class TaskServer {
+
+  static db = new Database("taskDB");
   
   //קבלת כל המשימות
   static getAllTasks(){
-    this.db = new Database("taskDB");
     return { status: 200, data: this.db.getAll() };
   }
 
@@ -11,7 +12,6 @@ class TaskServer {
     task.user = username;
     task.id = new Date().getTime(); // ייצור ID ייחודי
     
-    this.db = new Database("taskDB");
     this.db.create(task);
       
     return { status: 201, message: "Task added successfully" };
@@ -19,7 +19,6 @@ class TaskServer {
 
   //עדכון משימה
   static updateTask(username, id, updatedTask) {
-    this.db = new Database("taskDB");
     try {
             const task = this.db.getById(id);
             if (task.user !== username) {
@@ -34,7 +33,6 @@ class TaskServer {
 
   //מחיקת משימה
   static deleteTask(username, id) {
-    this.db = new Database("taskDB");
      try {
             const task = this.db.getById(id);
             if (task.user !== username) {
