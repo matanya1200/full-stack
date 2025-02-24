@@ -16,8 +16,10 @@
       <form id="login-form">
         <label for="login-username">שם משתמש:</label>
         <input type="text" id="login-username" required />
+
         <label for="login-password">סיסמא:</label>
         <input type="password" id="login-password" required />
+
         <button type="submit">כניסה</button>
       </form>
       <p>עדיין לא רשום? <a href="#registration">עבור לרישום</a></p>
@@ -28,21 +30,14 @@
       <h1>רישום</h1>
       <form id="registration-form">
         <label for="register-username">שם משתמש:</label>
-        <input
-          type="text"
-          id="register-username"
-          required
-          pattern="^[a-zA-Z0-9]{4,}$"
-        />
+        <input type="text" id="register-username" required />
+
         <label for="register-email">מייל:</label>
         <input type="email" id="register-email" />
+
         <label for="register-password">סיסמא:</label>
-        <input
-          type="password"
-          id="register-password"
-          required
-          pattern=".{6,}"
-        />
+        <input type="password" id="register-password" required />
+
         <button type="submit">רישום</button>
       </form>
       <p>כבר רשום? <a href="#login">חזור לעמוד הכניסה</a></p>
@@ -55,17 +50,18 @@
         <thead>
           <tr>
             <td>מספר משימה</td>
-            <td>תיאור רמשימה</td>
+            <td>משימה</td>
             <td>סטטוס</td>
-            <td>תאריך יצירה</td>
+            <td>תאריך סיום</td>
           </tr>
         </thead>
       </table>
       <div id="buttens">
-        <!--<button id="get-btn">קבלת משימה</button>-->
         <button id="add-btn">הוספת משימה</button>
         <button id="update-btn">עדכון משימה</button>
         <button id="delete-btn">מחיקת משימה</button>
+      </div>
+      <div id="buttens">
         <button id="delete-user-btn">מחיקת משתמש</button>
       </div>
       <button id="logout-btn">יציאה</button>
@@ -74,12 +70,9 @@
     <script src="DB-API.js"></script>
     <script src="http-status-codes.js"></script>
     <script src="http-methods.js"></script>
-    <!--<script src="DB.js"></script>-->
     <script src="network.js"></script>
-    <!-- ⬅️ קודם נטען ה-"תקשורת" -->
     <script src="user-server.js"></script>
     <script src="task-server.js"></script>
     <script src="script.js"></script>
-    <!-- ⬅️ עכשיו אפשר לקרוא ל-FXMLHttpRequest -->
   </body>
 </html>
