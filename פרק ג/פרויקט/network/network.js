@@ -35,20 +35,11 @@ class FXMLHttpRequest {
     }
 
     if (resource === "tasks") {
-      const userId = localStorage.getItem("loggedInUser");
-      data.user = userId;
+      const loggedInUser = getCookie("loggedInUser"); // TODO: maybe fron another place in the code
+      data.user = loggedInUser;
       return TaskServer.controller(method, rest.join("/"), data);
     }
 
     return { status: HTTP_STATUS_CODES.NOT_FOUND, error: "Not Found" };
   }
-}
-
-function getCookie(name) {
-  const cookies = document.cookie.split("; ");
-  for (let cookie of cookies) {
-    const [key, value] = cookie.split("=");
-    if (key === name) return decodeURIComponent(value);
-  }
-  return null;
 }
