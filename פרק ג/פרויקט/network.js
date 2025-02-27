@@ -35,7 +35,6 @@ class FXMLHttpRequest {
     }
 
     if (resource === "taskDB") {
-      data.user = localStorage.getItem("loggedInUser");
       return TaskServer.controller(method, rest.join("/"), data);
     }
 

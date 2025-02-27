@@ -92,14 +92,14 @@ function handleRegistration() {
   form.addEventListener("submit", (event) => {
     event.preventDefault();
 
-    const id = document.getElementById("register-username").value;
+    const username = document.getElementById("register-username").value;
     const email = document.getElementById("register-email").value;
     const password = document.getElementById("register-password").value;
 
-    const newUser = { id, email, password };
+    const newUser = { username, email, password };
 
     FXMLHttpRequest.post(
-      "/userDB",
+      "/userDB/registration",
       newUser,
       (response) => {
         if (response.status === 201) {
