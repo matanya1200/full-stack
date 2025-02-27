@@ -1,0 +1,99 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+}
+
+form {
+    margin: 20px auto;
+    max-width: 300px;
+}
+
+input {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 8px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+a {
+    color: blue;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+#buttens{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+    margin: 10px;
+    gap: 20px; 
+    padding: 20px;
+}
+
+/* עיצוב טבלה */
+.ToDo-table {
+    margin: 20px auto;
+    padding: 10px;
+    max-width: 90%;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow-x: auto; /* תמיכה בתצוגה צרה */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    font-size: 1em;
+    color: #333;
+    margin-top: 50px;
+    margin-bottom: 25px;
+}
+
+table thead {
+    background-color: #4caf50;
+    color: white;
+}
+
+table th, table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+table tr:nth-child(even) {
+    background-color: #aa2727;
+}
+
+table tr {
+    background-color: #530707;
+}
+
+table tbody tr:hover {
+    background-color: #7d7da8;
+}
+
+table th {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.hidden {
+    display: none;
+}
