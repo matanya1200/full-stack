@@ -27,14 +27,16 @@ class FXMLHttpRequest {
     }, 500);
   }
 
-  static #mockRequest(method, url, data = null) {
+  static #mockRequest(method, url, data = {}) {
     const [_blank, resource, ...rest] = url.split("/");
 
-    if (resource === "userDB") {
+    if (resource === "users") {
       return UserServer.controller(method, rest.join("/"), data);
     }
 
-    if (resource === "taskDB") {
+    if (resource === "tasks") {
+      const userId = localStorage.getItem("loggedInUser");
+      data.user = userId;
       return TaskServer.controller(method, rest.join("/"), data);
     }
 

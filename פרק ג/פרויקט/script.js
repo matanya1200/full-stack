@@ -29,7 +29,7 @@ function handleRouting() {
   } else if (hash === "#ToDo") {
     const loggedInUser = localStorage.getItem("loggedInUser");
     FXMLHttpRequest.get(
-      "/userDB/" + loggedInUser,
+      "/users/" + loggedInUser,
       (response) => {
         console.log("📥 Users received from server:", response);
 
@@ -61,7 +61,7 @@ function handleLogin() {
     const password = document.getElementById("login-password").value;
 
     FXMLHttpRequest.post(
-      "/userDB/login",
+      "/users/login",
       { username, password },
       (response) => {
         console.log("📥 Users received from server:", response); // 🔍 בדיקה
@@ -99,7 +99,7 @@ function handleRegistration() {
     const newUser = { username, email, password };
 
     FXMLHttpRequest.post(
-      "/userDB/registration",
+      "/users/registration",
       newUser,
       (response) => {
         if (response.status === 201) {
@@ -138,14 +138,10 @@ function relodePage() {
 
   table.innerHTML = headerHTML;
 
-  const loggedInUser = getCookie("loggedInUser");
-
-  FXMLHttpRequest.get("/taskDB", (response) => {
+  FXMLHttpRequest.get("/tasks", (response) => {
     let tasks = response.data;
 
-    const userTasks = tasks.filter((task) => task.user === loggedInUser);
-
-    userTasks.forEach((task) => {
+    tasks.forEach((task) => {
       const row = table.insertRow();
       row.innerHTML = `
             <td>${task.id}</td>
@@ -180,7 +176,7 @@ function setupEventListeners() {
       finishData: finishData,
     };
 
-    FXMLHttpRequest.post("/taskDB", newTask, (response) => {
+    FXMLHttpRequest.post("/tasks", newTask, (response) => {
       if (response.status === 201) {
         alert("✅ המשימה נוספה בהצלחה!");
         relodePage();
@@ -204,7 +200,7 @@ function setupEventListeners() {
     const loggedInUser = getCookie("loggedInUser");
 
     FXMLHttpRequest.get(
-      "/taskDB",
+      "/tasks",
       (response) => {
         let task = response.data.find((task) => task.id == index);
 
@@ -219,7 +215,7 @@ function setupEventListeners() {
 
         const updatedTask = { user: loggedInUser, title, finished, finishData };
 
-        FXMLHttpRequest.put(`/taskDB/${index}`, updatedTask, (response) => {
+        FXMLHttpRequest.put(`/tasks/${index}`, updatedTask, (response) => {
           if (response.status === 200) {
             alert("✅ המשימה עודכנה בהצלחה!");
             relodePage();
@@ -245,7 +241,7 @@ function setupEventListeners() {
       return;
     }
 
-    FXMLHttpRequest.delete(`/taskDB/${index}`, (response) => {
+    FXMLHttpRequest.delete(`/tasks/${index}`, (response) => {
       if (response.status === 200) {
         alert("✅ המשימה נמחקה בהצלחה!");
         relodePage();
@@ -261,7 +257,7 @@ function setupEventListeners() {
 
     const password = prompt("🔹 הכנס סיסמא");
 
-    FXMLHttpRequest.get("/userDB", (response) => {
+    FXMLHttpRequest.get("/users", (response) => {
       const loggedInUser = getCookie("loggedInUser");
       let users = response.data;
       const user = users.find(
@@ -269,9 +265,9 @@ function setupEventListeners() {
       );
 
       if (user) {
-        FXMLHttpRequest.delete(`/taskDB/`, (response) => {
+        FXMLHttpRequest.delete(`/tasks/`, (response) => {
           if (response.status === 200) {
-            FXMLHttpRequest.delete(`/userDB/`, (response) => {
+            FXMLHttpRequest.delete(`/users/`, (response) => {
               if (response.status === 200) {
                 alert("✅ המשתמש נמחק");
                 document.cookie = "loggedInUser=; max-age=0";
