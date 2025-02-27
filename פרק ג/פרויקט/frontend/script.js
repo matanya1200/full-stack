@@ -1,12 +1,3 @@
-function getCookie(name) {
-  const cookies = document.cookie.split("; ");
-  for (let cookie of cookies) {
-    const [key, value] = cookie.split("=");
-    if (key === name) return decodeURIComponent(value);
-  }
-  return null;
-}
-
 // אלמנט ה-root שבו נטען את העמודים
 const app = document.getElementById("app");
 // טעינת תבנית לפי ID
@@ -27,7 +18,7 @@ function handleRouting() {
     loadTemplate("registration-template");
     handleRegistration();
   } else if (hash === "#ToDo") {
-    const loggedInUser = localStorage.getItem("loggedInUser");
+    const loggedInUser = getCookie("loggedInUser");
     FXMLHttpRequest.get(
       "/users/" + loggedInUser,
       (response) => {
@@ -68,7 +59,7 @@ function handleLogin() {
 
         let user = response.data; // 🔹 שימוש במערך שבתוך `data`
         if (user) {
-          localStorage.setItem("loggedInUser", user.id);
+          setCookie("loggedInUser", response.data.id, 1);
           window.location.hash = "#ToDo";
         } else {
           alert("שם משתמש או סיסמה לא נכונים");
@@ -270,7 +261,7 @@ function setupEventListeners() {
             FXMLHttpRequest.delete(`/users/`, (response) => {
               if (response.status === 200) {
                 alert("✅ המשתמש נמחק");
-                document.cookie = "loggedInUser=; max-age=0";
+                deleteCookie("loggedInUser");
                 window.location.hash = "#login";
               } else {
                 alert("❌ שגיאה במחיקת המשתמש: " + response.error);
@@ -290,7 +281,7 @@ function setupEventListeners() {
   logoutButton.addEventListener("click", (event) => {
     event.preventDefault();
 
-    document.cookie = "loggedInUser=; max-age=0";
+    deleteCookie("loggedInUser");
     window.location.hash = "#login";
   });
 }
