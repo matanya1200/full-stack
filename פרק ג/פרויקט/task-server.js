@@ -1,5 +1,5 @@
 class TaskServer {
-  tasksDB = new Database("taskDB");
+  static #tasksDB = new Database("taskDB");
 
   // ----- private methods -----
 
@@ -11,13 +11,19 @@ class TaskServer {
       };
     }
 
-    return tasksDB.getAll({
-      conctor: "and",
-      filters: [
-        { field: "user", operator: "equals", value: userId },
-        { field: "description", operator: "contains", value: search },
-      ],
-    });
+    const filters = [{ field: "user", operator: "equals", value: userId }];
+    if (search) {
+      filters.push({ field: "title", operator: "contains", value: search });
+    }
+
+    return {
+      status: HTTP_STATUS_CODES.OK,
+      message: "Tasks found",
+      data: this.#tasksDB.getAll({
+        conctor: "and",
+        filters,
+      }),
+    };
   }
 
   static #getTask(userId, taskId) {
@@ -28,7 +34,7 @@ class TaskServer {
       };
     }
 
-    const tasks = tasksDB.getAll({
+    const tasks = this.#tasksDB.getAll({
       conctor: "and",
       filters: [
         { field: "id", operator: "equals", value: taskId },
@@ -51,7 +57,7 @@ class TaskServer {
   }
 
   static #addTask(userId, task) {
-    if (!userId || !task?.description) {
+    if (!userId || !task?.title) {
       return {
         status: HTTP_STATUS_CODES.BAD_REQUEST,
         error: "User ID and task are required",
@@ -61,7 +67,7 @@ class TaskServer {
     task.user = userId;
     const id = new Date().getTime(); // timestamp as unique ID
     task.id = id.toString();
-    tasksDB.create(task);
+    this.#tasksDB.create(task);
 
     return {
       status: HTTP_STATUS_CODES.CREATED,
@@ -79,7 +85,7 @@ class TaskServer {
     }
 
     try {
-      const task = tasksDB.getById(taskId);
+      const task = this.#tasksDB.getById(taskId);
       if (task.user !== userId) {
         throw new Error("Task not authorized");
       }
@@ -90,7 +96,7 @@ class TaskServer {
       };
     }
 
-    tasksDB.update(taskId, updatedTask);
+    this.#tasksDB.update(taskId, updatedTask);
     return {
       status: HTTP_STATUS_CODES.OK,
       message: "Task updated successfully",
@@ -107,7 +113,7 @@ class TaskServer {
     }
 
     try {
-      const task = tasksDB.getById(taskId);
+      const task = this.#tasksDB.getById(taskId);
       if (task.user !== userId) {
         throw new Error("Task not authorized");
       }
@@ -118,7 +124,7 @@ class TaskServer {
       };
     }
 
-    tasksDB.delete(taskId);
+    this.#tasksDB.delete(taskId);
     return {
       status: HTTP_STATUS_CODES.OK,
       message: "Task deleted successfully",
@@ -128,7 +134,7 @@ class TaskServer {
   // ----- public methods -----
 
   static controller(method, url, data) {
-    const taskId = url.split("/")[1];
+    const taskId = url.split("/")[0];
 
     switch (method) {
       case HTTP_METHODS.GET:
