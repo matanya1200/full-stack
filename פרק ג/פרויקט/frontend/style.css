@@ -144,6 +144,7 @@ a {
   align-items: flex-start;
   gap: 1rem;
   padding: 1rem 2rem;
+  margin-inline: 0;
 }
 
 #add-task-form {
@@ -204,4 +205,36 @@ table {
   color: var(--stone-500);
   font-size: 1.5rem;
   display: none;
+}
+
+.header {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  gap: 1rem;
+  width: 100%;
+}
+
+.search-container {
+  position: relative;
+  min-width: 25rem;
+
+  input {
+    width: 100%;
+    padding-inline-end: 2rem;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  }
+
+  .icon-container {
+    display: flex;
+    width: 1rem;
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+
+    img {
+      width: 100%;
+    }
+  }
 }
