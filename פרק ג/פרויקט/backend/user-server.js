@@ -3,21 +3,6 @@ class UserServer {
 
   // ----- private methods -----
 
-  static #getById(id) {
-    try {
-      return {
-        status: HTTP_STATUS_CODES.OK,
-        message: "User found",
-        data: JSON.stringify(this.#usersDb.getById(id)),
-      };
-    } catch (error) {
-      return {
-        status: HTTP_STATUS_CODES.NOT_FOUND,
-        error: error.message,
-      };
-    }
-  }
-
   static #registerUser(user) {
     if (!user.username || !user.email || !user.password) {
       return {
@@ -82,15 +67,9 @@ class UserServer {
   // ----- public methods -----
 
   static controller(method, url, data) {
-    const userId = url.split("/")[0];
     data = JSON.parse(data);
 
     switch (method) {
-      case HTTP_METHODS.GET:
-        if (userId) {
-          return this.#getById(userId);
-        }
-
       case HTTP_METHODS.POST:
         if (url === "registration") {
           return this.#registerUser(data);
