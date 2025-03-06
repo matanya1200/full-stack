@@ -99,7 +99,7 @@ function handleRegistration() {
         const newUser = { user, email, password };
 
         FXMLHttpRequest.post("/userDB", newUser, (response) => {
-            if (response.status === 201) {
+            if (response.status === 201) {//HTTP_STATUS_CODES.CREATED
                 alert("✅ ההרשמה הצליחה!");
                 window.location.hash = "#login";
             } else {
@@ -189,7 +189,7 @@ function setupEventListeners(){
         };
 
         FXMLHttpRequest.post("/taskDB", newTask, (response) => {
-            if (response.status === 201) {
+            if (response.status === 201) {//HTTP_STATUS_CODES.CREATED
                 alert("✅ המשימה נוספה בהצלחה!");
                 relodePage();
             } else {
@@ -228,7 +228,7 @@ function setupEventListeners(){
             const updatedTask = { title, finished, finishDate };
 
             FXMLHttpRequest.put(`/taskDB/${taskId}`, updatedTask, (response) => {
-                if (response.status === 200) {
+                if (response.status === 200) {//HTTP_STATUS_CODES.OK
                     alert("✅ המשימה עודכנה בהצלחה!");
                     relodePage();
                 } else {
@@ -254,7 +254,7 @@ function setupEventListeners(){
         }
         
         FXMLHttpRequest.delete(`/taskDB/${taskId}`, (response) => {
-            if (response.status === 200) {
+            if (response.status === 200) {//HTTP_STATUS_CODES.OK
                 alert("✅ המשימה נמחקה בהצלחה!");
                 relodePage();
             } else {
@@ -311,7 +311,7 @@ function setupEventListeners(){
                 const updatedTask = { user: getCookie('loggedInUser'), description: newDescription };
 
                 FXMLHttpRequest.put(`/taskDB/${task.id}`, updatedTask, (response) => {
-                    if (response.status === 200) {
+                    if (response.status === 200) {//HTTP_STATUS_CODES.OK
                         alert("✅ תיאור המשימה עודכן בהצלחה!");
                     } else {
                         alert("❌ שגיאה בעדכון המשימה: " + response.error);
@@ -342,9 +342,9 @@ function setupEventListeners(){
 
             if(user){
                 FXMLHttpRequest.delete("/taskDB", (response) => {
-                    if (response.status === 200) {
+                    if (response.status === 200) {//HTTP_STATUS_CODES.OK
                         FXMLHttpRequest.delete("/userDB", (response) => {
-                            if (response.status === 200) {
+                            if (response.status === 200) {//HTTP_STATUS_CODES.OK
                                 alert("✅ המשתמש נמחק");
                                 document.cookie = "loggedInUser=; max-age=0";
                                 window.location.hash = "#login";
@@ -384,9 +384,9 @@ function setupEventListeners(){
                 updateUserName = {user: newUserName};
 
                 FXMLHttpRequest.put("/taskDB",updateUserName, (response) => {
-                    if (response.status === 200) {
+                    if (response.status === 200) {//HTTP_STATUS_CODES.OK
                         FXMLHttpRequest.put("/userDB",updateUserName, (response) => {
-                            if (response.status === 200) {
+                            if (response.status === 200) {//HTTP_STATUS_CODES.OK
                                 alert("✅ המשתמש עודכן");
                                 document.cookie = "loggedInUser=; max-age=0";
                                 document.cookie = `loggedInUser=${newUserName}; max-age=7200`;

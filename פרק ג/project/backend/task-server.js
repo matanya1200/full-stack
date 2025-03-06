@@ -4,7 +4,7 @@ class TaskServer {
   
   //קבלת כל המשימות
   static getAllTasks(){
-    return { status: 200, data: this.db.getAll() };
+    return { status: HTTP_STATUS_CODES.OK, data: this.db.getAll() };
   }
 
   //הוספת משימה
@@ -14,7 +14,7 @@ class TaskServer {
     
     this.db.create(task);
       
-    return { status: 201, message: "Task added successfully" };
+    return { status: HTTP_STATUS_CODES.CREATED, message: "Task added successfully" };
   }
 
   //עדכון משימה
@@ -23,12 +23,12 @@ class TaskServer {
             const task = this.db.getById(id);
             console.log(task)
             if (task.user !== username) {
-                return { status: 403, error: "Not authorized to update this task" };
+                return { status: HTTP_STATUS_CODES.UNAUTHORIZED, error: "Not authorized to update this task" };
             }
             this.db.updateTask(id, updatedTask);
-            return { status: 200, message: "Task updated successfully" };
+            return { status: HTTP_STATUS_CODES.OK, message: "Task updated successfully" };
         } catch (error) {
-            return { status: 404, error: error.message };
+            return { status: HTTP_STATUS_CODES.NOT_FOUND, error: error.message };
         }
   }
 
@@ -37,12 +37,12 @@ class TaskServer {
      try {
             const task = this.db.getById(id);
             if (task.user !== username) {
-                return { status: 403, error: "Not authorized to delete this task" };
+                return { status: HTTP_STATUS_CODES.UNAUTHORIZED, error: "Not authorized to delete this task" };
             }
             this.db.deleteTask(id);
-            return { status: 200, message: "Task deleted successfully" };
+            return { status: HTTP_STATUS_CODES.OK, message: "Task deleted successfully" };
           } catch (error) {
-              return { status: 404, error: error.message };
+              return { status: HTTP_STATUS_CODES.NOT_FOUND, error: error.message };
           }
   }
 }
