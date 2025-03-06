@@ -106,6 +106,11 @@ function deleteTask() {
     { user: loggedInUser },
     () => {
       this.closest("tr").remove();
+
+      const table = document.querySelector("#ToDo-table tbody");
+      if (table.rows.length === 0) {
+        document.getElementById("empty-tasks").style.display = "block";
+      }
     },
     (error) => {
       alert("❌ שגיאה במחיקת משימה: " + error);
@@ -148,6 +153,9 @@ function reloadPage() {
 
   makeRequest(HTTP_METHODS.GET, "/tasks", { user: loggedInUser }, (tasks) => {
     tasks.forEach((task) => addRow(table, task));
+    if (tasks.length === 0) {
+      document.getElementById("empty-tasks").style.display = "block";
+    }
   });
 }
 
@@ -174,6 +182,11 @@ function setupEventListeners() {
       "/tasks",
       newTask,
       (response) => {
+        const emptyTasks = document.getElementById("empty-tasks");
+        if (emptyTasks.style.display === "block") {
+          emptyTasks.style.display = "none";
+        }
+
         const table = document.querySelector("#ToDo-table tbody");
         addRow(table, response);
         addTaskForm.reset();

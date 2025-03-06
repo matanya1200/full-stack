@@ -59,7 +59,6 @@ class TaskServer {
   }
 
   static #addTask(userId, task) {
-    console.log(userId, task);
     if (!userId || !task?.title) {
       return {
         status: HTTP_STATUS_CODES.BAD_REQUEST,

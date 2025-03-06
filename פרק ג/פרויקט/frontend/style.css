@@ -199,3 +199,9 @@ table {
     }
   }
 }
+
+#empty-tasks {
+  color: var(--stone-500);
+  font-size: 1.5rem;
+  display: none;
+}
