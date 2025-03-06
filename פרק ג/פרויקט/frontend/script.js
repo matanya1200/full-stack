@@ -1,15 +1,20 @@
-// אלמנט ה-root שבו נטען את העמודים
 const app = document.getElementById("app");
-// טעינת תבנית לפי ID
+
 function loadTemplate(templateId) {
   const template = document.getElementById(templateId).content.cloneNode(true);
   app.innerHTML = "";
   app.appendChild(template);
 }
 
-// מעבר בין עמודים
 function handleRouting() {
-  const hash = window.location.hash || "#login";
+  let hash = window.location.hash || "#login";
+
+  const loggedInUser = getCookie("loggedInUser");
+  if (loggedInUser && (hash === "#login" || hash === "#registration")) {
+    window.location.hash = "#ToDo";
+  } else if (!loggedInUser && hash === "#ToDo") {
+    window.location.hash = "#login";
+  }
 
   if (hash === "#login") {
     loadTemplate("login-template");
@@ -18,68 +23,46 @@ function handleRouting() {
     loadTemplate("registration-template");
     handleRegistration();
   } else if (hash === "#ToDo") {
-    const loggedInUser = getCookie("loggedInUser");
-    FXMLHttpRequest.get(
-      "/users/" + loggedInUser,
-      (response) => {
-        console.log("📥 Users received from server:", response);
-
-        let user = response.data; // ⬅️ שימוש רק בנתונים שב`data`
-
-        if (user) {
-          loadTemplate("ToDo-template");
-          handleToDo();
-        } else {
-          window.location.hash = "#login";
-        }
-      },
-      (error) => {
-        console.error("Error checking user: ", error);
-        window.location.hash = "#login";
-      }
-    );
+    loadTemplate("ToDo-template");
+    handleToDo();
+  } else if (hash.startsWith("#update-task")) {
+    loadTemplate("edit-task-template");
+    setupTodoUpdate();
   } else {
-    window.location.hash = "#login";
+    loadTemplate("404-template");
   }
 }
 
-// טיפול בעמוד הכניסה
 function handleLogin() {
   const form = document.getElementById("login-form");
+
   form.addEventListener("submit", (event) => {
     event.preventDefault();
     const username = document.getElementById("login-username").value;
     const password = document.getElementById("login-password").value;
 
-    FXMLHttpRequest.post(
+    makeRequest(
+      HTTP_METHODS.POST,
       "/users/login",
       { username, password },
-      (response) => {
-        console.log("📥 Users received from server:", response); // 🔍 בדיקה
-
-        let user = response.data; // 🔹 שימוש במערך שבתוך `data`
+      (user) => {
         if (user) {
-          setCookie("loggedInUser", response.data.id, 1);
+          setCookie("loggedInUser", user.id, 1);
           window.location.hash = "#ToDo";
         } else {
           alert("שם משתמש או סיסמה לא נכונים");
         }
       },
-      (error) => {
-        console.error("Error logging in: ", error);
+      () => {
         alert("אירעה שגיאה בעת ניסיון ההתחברות");
       }
     );
-    /*העברת שם משתמש וסיסמה לשרת משתמשים לצורך אימות 
-        אם הפרטים אכן אומתו
-            window.location.hash = "#ToDo";
-        אם לא הצרת הודעת שגיאה*/
   });
 }
 
-// טיפול בעמוד הרישום
 function handleRegistration() {
   const form = document.getElementById("registration-form");
+
   form.addEventListener("submit", (event) => {
     event.preventDefault();
 
@@ -89,205 +72,191 @@ function handleRegistration() {
 
     const newUser = { username, email, password };
 
-    FXMLHttpRequest.post(
+    makeRequest(
+      HTTP_METHODS.POST,
       "/users/registration",
       newUser,
-      (response) => {
-        if (response.status === 201) {
-          alert("✅ ההרשמה הצליחה!");
-          window.location.hash = "#login";
-        } else {
-          alert("❌ שגיאה בהרשמה: " + response.error);
-        }
-      },
       () => {
-        alert("אירעה שגיאה בעת ניסיון הרשמה");
+        window.location.hash = "#login";
+      },
+      (error) => {
+        alert("❌ שגיאה בהרשמה: " + error);
       }
     );
   });
 }
 
-// טיפול בעמוד המשימות
 function handleToDo() {
-  relodePage();
-
+  reloadPage();
   setupEventListeners();
 }
 
-//טעינה מחדש של העמוד בלי לרענן אותו בשביל SPA
-function relodePage() {
-  const table = document.getElementById("ToDo-table");
+function updatedTask() {
+  const taskId = this.getAttribute("data-id");
+  window.location.hash = `#update-task/${taskId}`;
+}
 
-  const headerHTML = `
-        <tr>
-            <th>ID</th>
-            <th>משימה</th>
-            <th>סטטוס</th>
-            <th>תאריך סיום</th>
-        </tr>
-    `;
+function deleteTask() {
+  const taskId = this.getAttribute("data-id");
+  const loggedInUser = getCookie("loggedInUser");
 
-  table.innerHTML = headerHTML;
+  makeRequest(
+    HTTP_METHODS.DELETE,
+    `/tasks/${taskId}`,
+    { user: loggedInUser },
+    () => {
+      this.closest("tr").remove();
+    },
+    (error) => {
+      alert("❌ שגיאה במחיקת משימה: " + error);
+    }
+  );
+}
 
-  FXMLHttpRequest.get("/tasks", (response) => {
-    let tasks = response.data;
+function addRow(table, task) {
+  const row = table.insertRow(0);
 
-    tasks.forEach((task) => {
-      const row = table.insertRow();
-      row.innerHTML = `
-            <td>${task.id}</td>
-            <td>${task.title}</td>
-            <td>${task.finished ? "✅" : "❌"}</td>
-            <td>${task.finishData}</td>`;
-    });
+  row.innerHTML = `
+    <td>${task.title}</td>
+    <td>${task.finished ? "✅" : "❌"}</td>
+    <td>${task.finishData}</td>
+    <td></td>
+  `;
+
+  // edit icon
+  const editButton = document.createElement("button");
+  editButton.classList.add("icon-btn");
+  editButton.addEventListener("click", updatedTask);
+  editButton.innerHTML = `<img src="/frontend/assets/edit.svg" />`;
+  editButton.setAttribute("data-id", task.id);
+
+  // delete icon
+  const deleteButton = document.createElement("button");
+  deleteButton.classList.add("icon-btn");
+  deleteButton.addEventListener("click", deleteTask);
+  deleteButton.innerHTML = `<img src="/frontend/assets/delete.svg" />`;
+  deleteButton.setAttribute("data-id", task.id);
+
+  // add to last td
+  row.cells[3].appendChild(editButton);
+  row.cells[3].appendChild(deleteButton);
+}
+
+function reloadPage() {
+  const table = document.querySelector("#ToDo-table tbody");
+  const loggedInUser = getCookie("loggedInUser");
+
+  makeRequest(HTTP_METHODS.GET, "/tasks", { user: loggedInUser }, (tasks) => {
+    tasks.forEach((task) => addRow(table, task));
   });
 }
 
-//ההזנה ללחיצה על כפתורים
 function setupEventListeners() {
-  const addButton = document.getElementById("add-btn");
-  addButton.addEventListener("click", (event) => {
+  const loggedInUser = getCookie("loggedInUser");
+
+  const addTaskForm = document.getElementById("add-task-form");
+  addTaskForm.addEventListener("submit", (event) => {
     event.preventDefault();
 
-    const loggedInUser = getCookie("loggedInUser");
-
-    const title = prompt("הכנס את כותרת המשימה");
-    const finishData = prompt("הכנס את תאריך הסיום למשימה");
-
-    if (!title || title.trim() === "") {
-      alert("❌ לא ניתן ליצור משימה ללא תיאור!");
-      return;
-    }
+    const formData = new FormData(addTaskForm);
+    const title = formData.get("task-name");
+    const finishData = formData.get("task-date");
 
     const newTask = {
-      user: loggedInUser,
-      id: Date.now(),
       title,
+      finishData,
       finished: false,
-      finishData: finishData,
+      user: loggedInUser,
     };
 
-    FXMLHttpRequest.post("/tasks", newTask, (response) => {
-      if (response.status === 201) {
-        alert("✅ המשימה נוספה בהצלחה!");
-        relodePage();
-      } else {
-        alert("❌ שגיאה בהוספת משימה: ");
-      }
-    });
-  });
-
-  const updateButton = document.getElementById("update-btn");
-  updateButton.addEventListener("click", (event) => {
-    event.preventDefault();
-
-    const index = prompt("🔹 הכנס את מספר זיהוי המשימה:");
-
-    if (!index || isNaN(index)) {
-      alert("❌ מספר זיהוי לא חוקי!");
-      return;
-    }
-
-    const loggedInUser = getCookie("loggedInUser");
-
-    FXMLHttpRequest.get(
+    makeRequest(
+      HTTP_METHODS.POST,
       "/tasks",
+      newTask,
       (response) => {
-        let task = response.data.find((task) => task.id == index);
-
-        if (!task) {
-          alert("❌ משימה לא נמצאה!");
-          return;
-        }
-
-        const title = prompt("✏️ עדכן את המשימה:", task.title);
-        const finished = confirm("✅ האם המשימה הושלמה?");
-        const finishData = prompt("✏️ עדכן את תאריך הסיום:", task.finishData);
-
-        const updatedTask = { user: loggedInUser, title, finished, finishData };
-
-        FXMLHttpRequest.put(`/tasks/${index}`, updatedTask, (response) => {
-          if (response.status === 200) {
-            alert("✅ המשימה עודכנה בהצלחה!");
-            relodePage();
-          } else {
-            alert("❌ שגיאה בעדכון משימה: " + response.error);
-          }
-        });
+        const table = document.querySelector("#ToDo-table tbody");
+        addRow(table, response);
+        addTaskForm.reset();
       },
       () => {
-        console.error("Error fetching tasks:");
+        alert("❌ שגיאה בהוספת משימה");
       }
     );
   });
 
-  const deleteButton = document.getElementById("delete-btn");
-  deleteButton.addEventListener("click", (event) => {
-    event.preventDefault();
-
-    const index = prompt("🔹 הכנס את מספר זיהוי המשימה למחיקה:");
-
-    if (!index || isNaN(index)) {
-      alert("❌ מספר זיהוי לא חוקי!");
-      return;
-    }
-
-    FXMLHttpRequest.delete(`/tasks/${index}`, (response) => {
-      if (response.status === 200) {
-        alert("✅ המשימה נמחקה בהצלחה!");
-        relodePage();
-      } else {
-        alert("❌ שגיאה במחיקת משימה: " + response.error);
-      }
-    });
-  });
-
-  const deleteUserButton = document.getElementById("delete-user-btn");
-  deleteUserButton.addEventListener("click", (event) => {
-    event.preventDefault();
-
-    const password = prompt("🔹 הכנס סיסמא");
-
-    FXMLHttpRequest.get("/users", (response) => {
-      const loggedInUser = getCookie("loggedInUser");
-      let users = response.data;
-      const user = users.find(
-        (u) => u.id === loggedInUser && u.password === password
-      );
-
-      if (user) {
-        FXMLHttpRequest.delete(`/tasks/`, (response) => {
-          if (response.status === 200) {
-            FXMLHttpRequest.delete(`/users/`, (response) => {
-              if (response.status === 200) {
-                alert("✅ המשתמש נמחק");
-                deleteCookie("loggedInUser");
-                window.location.hash = "#login";
-              } else {
-                alert("❌ שגיאה במחיקת המשתמש: " + response.error);
-              }
-            });
-          } else {
-            alert("❌ שגיאה במחיקת משימות: " + response.error);
-          }
-        });
-      } else {
-        alert("❌ הסיסמה שגויה: ");
-      }
-    });
-  });
-
   const logoutButton = document.getElementById("logout-btn");
-  logoutButton.addEventListener("click", (event) => {
-    event.preventDefault();
-
+  logoutButton.addEventListener("click", () => {
     deleteCookie("loggedInUser");
     window.location.hash = "#login";
   });
 }
 
-// האזנה לשינויים ב-URL
-window.addEventListener("hashchange", handleRouting);
+function setupTodoUpdate() {
+  const loggedInUser = getCookie("loggedInUser");
+  const taskId = window.location.hash.split("/")[1];
+  const form = document.getElementById("edit-task-form");
 
-// טעינה ראשונית
+  makeRequest(
+    HTTP_METHODS.GET,
+    `/tasks/${taskId}`,
+    { user: loggedInUser },
+    (task) => {
+      // fill the form with the task data
+      form.taskId = task.id;
+      form.querySelector("#edit-task-name").value = task.title;
+      form.querySelector("#edit-task-date").value = task.finishData;
+      form.querySelector("#edit-task-completed").checked = task.finished;
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(form);
+        const title = formData.get("edit-task-name");
+        const finishData = formData.get("edit-task-date");
+        const finished = formData.get("edit-task-completed");
+
+        const updatedTask = { title, finishData, finished, user: loggedInUser };
+
+        makeRequest(
+          HTTP_METHODS.PUT,
+          `/tasks/${taskId}`,
+          updatedTask,
+          () => {
+            window.location.hash = "#ToDo";
+          },
+          (error) => {
+            alert("❌ שגיאה בעדכון משימה: " + error);
+          }
+        );
+      });
+    },
+    () => {
+      alert("❌ שגיאה בטעינת המשימה");
+    }
+  );
+}
+
+window.addEventListener("hashchange", handleRouting);
 handleRouting();
+
+function makeRequest(method, url, data, onload, onerror) {
+  const xhr = new FXMLHttpRequest();
+  xhr.open(method, url);
+
+  xhr.onload = () => {
+    if (xhr.status >= HTTP_STATUS_CODES.BAD_REQUEST) {
+      onerror(xhr.responseText);
+    } else {
+      try {
+        onload(JSON.parse(xhr.responseText));
+      } catch {
+        onload(xhr.responseText);
+      }
+    }
+  };
+  xhr.onerror = () => {
+    alert("שגיאה בשליחת הבקשה. נסה שנית.");
+  };
+
+  xhr.send(JSON.stringify(data));
+}

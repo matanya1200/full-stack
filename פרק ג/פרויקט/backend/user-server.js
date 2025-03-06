@@ -8,7 +8,7 @@ class UserServer {
       return {
         status: HTTP_STATUS_CODES.OK,
         message: "User found",
-        data: this.#usersDb.getById(id),
+        data: JSON.stringify(this.#usersDb.getById(id)),
       };
     } catch (error) {
       return {
@@ -49,8 +49,8 @@ class UserServer {
     };
   }
 
-  static #loginUser(username, password) {
-    if (!username || !password) {
+  static #loginUser(user) {
+    if (!user.username || !user.password) {
       return {
         status: HTTP_STATUS_CODES.BAD_REQUEST,
         error: "Missing required fields",
@@ -60,8 +60,8 @@ class UserServer {
     const users = this.#usersDb.getAll({
       conector: "and",
       filters: [
-        { field: "username", operator: "equals", value: username },
-        { field: "password", operator: "equals", value: password },
+        { field: "username", operator: "equals", value: user.username },
+        { field: "password", operator: "equals", value: user.password },
       ],
     });
 
@@ -75,7 +75,7 @@ class UserServer {
     return {
       status: HTTP_STATUS_CODES.OK,
       message: "Login successful",
-      data: users[0],
+      data: JSON.stringify(users[0]),
     };
   }
 
@@ -83,18 +83,19 @@ class UserServer {
 
   static controller(method, url, data) {
     const userId = url.split("/")[0];
+    data = JSON.parse(data);
 
     switch (method) {
       case HTTP_METHODS.GET:
         if (userId) {
           return this.#getById(userId);
         }
+
       case HTTP_METHODS.POST:
         if (url === "registration") {
           return this.#registerUser(data);
-        }
-        if (url === "login") {
-          return this.#loginUser(data.username, data.password);
+        } else if (url === "login") {
+          return this.#loginUser(data);
         }
 
       default:
