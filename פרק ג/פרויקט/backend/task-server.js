@@ -19,10 +19,12 @@ class TaskServer {
     return {
       status: HTTP_STATUS_CODES.OK,
       message: "Tasks found",
-      data: this.#tasksDB.getAll({
-        conctor: "and",
-        filters,
-      }),
+      data: JSON.stringify(
+        this.#tasksDB.getAll({
+          conctor: "and",
+          filters,
+        })
+      ),
     };
   }
 
@@ -52,11 +54,12 @@ class TaskServer {
     return {
       status: HTTP_STATUS_CODES.OK,
       message: "Task found",
-      data: tasks[0],
+      data: JSON.stringify(tasks[0]),
     };
   }
 
   static #addTask(userId, task) {
+    console.log(userId, task);
     if (!userId || !task?.title) {
       return {
         status: HTTP_STATUS_CODES.BAD_REQUEST,
@@ -72,7 +75,7 @@ class TaskServer {
     return {
       status: HTTP_STATUS_CODES.CREATED,
       message: "Task added successfully",
-      data: task,
+      data: JSON.stringify(task),
     };
   }
 
@@ -100,7 +103,7 @@ class TaskServer {
     return {
       status: HTTP_STATUS_CODES.OK,
       message: "Task updated successfully",
-      data: updatedTask,
+      data: JSON.stringify(updatedTask),
     };
   }
 
@@ -135,6 +138,7 @@ class TaskServer {
 
   static controller(method, url, data) {
     const taskId = url.split("/")[0];
+    data = JSON.parse(data);
 
     switch (method) {
       case HTTP_METHODS.GET:

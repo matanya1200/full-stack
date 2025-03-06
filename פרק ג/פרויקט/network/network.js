@@ -1,45 +1,38 @@
-class FXMLHttpRequest {
-  static get(url, callback) {
-    setTimeout(() => {
-      const response = this.#mockRequest(HTTP_METHODS.GET, url);
-      callback(response);
-    }, 500);
+class Network {
+  static #randomDelay() {
+    return Math.floor(Math.random() * 3000) + 1000;
   }
 
-  static post(url, data, callback) {
-    setTimeout(() => {
-      const response = this.#mockRequest(HTTP_METHODS.POST, url, data);
-      callback(response);
-    }, 500);
+  static #randomOmit() {
+    return Math.random() < Math.random() * 0.4 + 0.1;
   }
 
-  static put(url, data, callback) {
-    setTimeout(() => {
-      const response = this.#mockRequest(HTTP_METHODS.PUT, url, data);
-      callback(response);
-    }, 500);
-  }
+  static mockRequest(method, url, data = {}, callback) {
+    const randomDelay = this.#randomDelay();
+    const randomOmit = false; // this.#randomOmit();
 
-  static delete(url, callback) {
-    setTimeout(() => {
-      const response = this.#mockRequest(HTTP_METHODS.DELETE, url);
-      callback(response);
-    }, 500);
-  }
+    console.log(`[Network] ${method} ${url} (delay: ${randomDelay}ms)`);
+    console.log(data);
+    console.log("omit:", randomOmit);
 
-  static #mockRequest(method, url, data = {}) {
     const [_blank, resource, ...rest] = url.split("/");
+    let response = "";
 
-    if (resource === "users") {
-      return UserServer.controller(method, rest.join("/"), data);
+    if (!randomOmit) {
+      if (resource === "users") {
+        response = UserServer.controller(method, rest.join("/"), data);
+      } else if (resource === "tasks") {
+        response = TaskServer.controller(method, rest.join("/"), data);
+      } else {
+        response = {
+          status: HTTP_STATUS_CODES.NOT_FOUND,
+          error: "Not Found",
+        };
+      }
     }
 
-    if (resource === "tasks") {
-      const loggedInUser = getCookie("loggedInUser"); // TODO: maybe fron another place in the code
-      data.user = loggedInUser;
-      return TaskServer.controller(method, rest.join("/"), data);
-    }
-
-    return { status: HTTP_STATUS_CODES.NOT_FOUND, error: "Not Found" };
+    setTimeout(() => {
+      callback(response);
+    }, randomDelay);
   }
 }
