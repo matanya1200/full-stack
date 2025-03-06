@@ -87,7 +87,7 @@ function handleRegistration() {
 }
 
 function handleToDo() {
-  reloadPage();
+  loadTasks();
   setupEventListeners();
 }
 
@@ -147,16 +147,22 @@ function addRow(table, task) {
   row.cells[3].appendChild(deleteButton);
 }
 
-function reloadPage() {
+function loadTasks(search = "") {
   const table = document.querySelector("#ToDo-table tbody");
   const loggedInUser = getCookie("loggedInUser");
 
-  makeRequest(HTTP_METHODS.GET, "/tasks", { user: loggedInUser }, (tasks) => {
-    tasks.forEach((task) => addRow(table, task));
-    if (tasks.length === 0) {
-      document.getElementById("empty-tasks").style.display = "block";
+  makeRequest(
+    HTTP_METHODS.GET,
+    "/tasks",
+    { user: loggedInUser, search },
+    (tasks) => {
+      table.innerHTML = "";
+      tasks.forEach((task) => addRow(table, task));
+      if (tasks.length === 0) {
+        document.getElementById("empty-tasks").style.display = "block";
+      }
     }
-  });
+  );
 }
 
 function setupEventListeners() {
@@ -195,6 +201,13 @@ function setupEventListeners() {
         alert("❌ שגיאה בהוספת משימה");
       }
     );
+  });
+
+  const searchInput = document.getElementById("search");
+  searchInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      loadTasks(searchInput.value);
+    }
   });
 
   const logoutButton = document.getElementById("logout-btn");

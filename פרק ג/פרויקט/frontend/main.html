@@ -13,7 +13,6 @@
     <template id="login-template">
       <main>
         <div class="card">
-
           <h1>כניסה</h1>
           <form id="login-form">
             <div class="form-field">
@@ -67,24 +66,33 @@
       </header>
 
       <main>
-        <div class="card">
-        <h2>הוספת משימה</h2>
-          <form id="add-task-form">
-            <div class="form-field">
-              <label for="task-name">שם משימה:</label>
-              <input type="text" id="task-name" name="task-name" required />
+        <div class="header">
+          <div class="search-container">
+            <input type="text" id="search" placeholder="חיפוש משימה" />
+            <div class="icon-container">
+              <img src="./assets/search.svg" alt="Search Icon">
             </div>
-            <div class="form-field">
-              <label for="task-date">תאריך סיום:</label>
-              <input type="date" id="task-date" name="task-date" />
-            </div>
-            
-            <div class="inverse">
-              <button class="icon-btn" type="submit">
-                <img src="./assets/add.svg" alt="">
-              </button>
-            </div>
-          </form>
+          </div>
+          
+          <div class="card">
+            <h2>הוספת משימה</h2>
+            <form id="add-task-form">
+              <div class="form-field">
+                <label for="task-name">שם משימה:</label>
+                <input type="text" id="task-name" name="task-name" required />
+              </div>
+              <div class="form-field">
+                <label for="task-date">תאריך סיום:</label>
+                <input type="date" id="task-date" name="task-date" />
+              </div>
+              
+              <div class="inverse">
+                <button class="icon-btn" type="submit">
+                  <img src="./assets/add.svg" alt="">
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
 
         <table id="ToDo-table">
