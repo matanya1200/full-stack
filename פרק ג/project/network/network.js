@@ -57,14 +57,14 @@ class NetworkManager {
             .forEach(task => {
               TaskServer.deleteTask(task.user,task.id);
             });
-            return { status: 200, message: "all you're taskd been deleted" };
+            return { status: HTTP_STATUS_CODES.OK, message: "all you're taskd been deleted" };
           } ;
           if (method === "PUT"){
             TaskServer.getAllTasks().data.filter(task => task.user == getCookie("loggedInUser"))
             .forEach(task => {
               TaskServer.updateTask(task.user,task.id, data);
             });
-            return { status: 200, message: "all you're taskd been updated" };
+            return { status: HTTP_STATUS_CODES.OK, message: "all you're taskd been updated" };
           };
       }
 
@@ -75,7 +75,7 @@ class NetworkManager {
           if (method === "DELETE") return TaskServer.deleteTask(loggedInUser, taskId);
       }
 
-      return { status: 404, error: "Not Found" };
+      return { status: HTTP_STATUS_CODES.NOT_FOUND, error: "Not Found" };
   }
 }
 
