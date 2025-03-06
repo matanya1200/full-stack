@@ -11,7 +11,6 @@ class FXMLHttpRequest {
 
   send(data) {
     Network.mockRequest(this.method, this.url, data, (res) => {
-      console.log(res);
       if (!res) {
         this.onerror();
       } else {
