@@ -160,6 +160,8 @@ function loadTasks(search = "") {
       tasks.forEach((task) => addRow(table, task));
       if (tasks.length === 0) {
         document.getElementById("empty-tasks").style.display = "block";
+      } else {
+        document.getElementById("empty-tasks").style.display = "none";
       }
     }
   );
