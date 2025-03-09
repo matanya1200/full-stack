@@ -243,4 +243,28 @@ table {
   }
 }
 
-/* responsive search input and add task and button */
+.loader {
+  width: 36px;
+  height: 36px;
+  border: 4px solid var(--rose-900);
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  animation: rotation 1s linear infinite;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.hidden {
+  display: none;
+}

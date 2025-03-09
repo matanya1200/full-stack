@@ -1,4 +1,5 @@
 const app = document.getElementById("app");
+const loader = document.querySelector(".loader");
 
 function loadTemplate(templateId) {
   const template = document.getElementById(templateId).content.cloneNode(true);
@@ -268,6 +269,7 @@ window.addEventListener("hashchange", handleRouting);
 handleRouting();
 
 function makeRequest(method, url, data, onload, onerror) {
+  loader.classList.remove("hidden");
   const xhr = new FXMLHttpRequest();
   xhr.open(method, url);
 
@@ -281,9 +283,11 @@ function makeRequest(method, url, data, onload, onerror) {
         onload(xhr.responseText);
       }
     }
+    loader.classList.add("hidden");
   };
   xhr.onerror = () => {
     alert("שגיאה בשליחת הבקשה. נסה שנית.");
+    loader.classList.add("hidden");
   };
 
   xhr.send(JSON.stringify(data));
