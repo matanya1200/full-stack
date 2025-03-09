@@ -110,7 +110,7 @@ function deleteTask() {
 
       const table = document.querySelector("#ToDo-table tbody");
       if (table.rows.length === 0) {
-        document.getElementById("empty-tasks").style.display = "block";
+        document.getElementById("empty-tasks").classList.remove("hidden");
       }
     },
     (error) => {
@@ -160,9 +160,9 @@ function loadTasks(search = "") {
       table.innerHTML = "";
       tasks.forEach((task) => addRow(table, task));
       if (tasks.length === 0) {
-        document.getElementById("empty-tasks").style.display = "block";
+        document.getElementById("empty-tasks").classList.remove("hidden");
       } else {
-        document.getElementById("empty-tasks").style.display = "none";
+        document.getElementById("empty-tasks").classList.add("hidden");
       }
     }
   );
@@ -192,8 +192,8 @@ function setupEventListeners() {
       newTask,
       (response) => {
         const emptyTasks = document.getElementById("empty-tasks");
-        if (emptyTasks.style.display === "block") {
-          emptyTasks.style.display = "none";
+        if (!emptyTasks.className.includes("hidden")) {
+          emptyTasks.classList.add("hidden");
         }
 
         const table = document.querySelector("#ToDo-table tbody");
