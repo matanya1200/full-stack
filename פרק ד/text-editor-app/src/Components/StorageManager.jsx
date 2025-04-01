@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Styles/StorageManager.css";
 
-function StorageManager({ text, selectedFont, selectedSize, selectedColor }) {
+function StorageManager({ text, selectedFont, selectedSize, selectedColor,activeUserName }) {
   const [fileName, setFileName] = useState("");
 
   const saveText = () => {
@@ -13,7 +13,8 @@ function StorageManager({ text, selectedFont, selectedSize, selectedColor }) {
         size: size || selectedSize,
         color: color || selectedColor
       })),
-      style: { font: selectedFont, size: selectedSize, color: selectedColor }
+      style: { font: selectedFont, size: selectedSize, color: selectedColor },
+      owner: activeUserName,
     };
     localStorage.setItem(fileName, JSON.stringify(content));
     alert(`הטקסט נשמר בשם "${fileName}"`);
@@ -28,7 +29,8 @@ function StorageManager({ text, selectedFont, selectedSize, selectedColor }) {
     if (name) {
       const content = {
         text: text,
-        style: { font: selectedFont, size: selectedSize, color: selectedColor }
+        style: { font: selectedFont, size: selectedSize, color: selectedColor },
+        owner: activeUserName,
       };
       localStorage.setItem(name, JSON.stringify(content));
       setFileName(name);
