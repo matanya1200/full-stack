@@ -5,6 +5,8 @@ import TextEditorContainer from "./Components/MultiText/TextEditorContainer";
 
 function App() {
   const [texts, setTexts] = useState([]);
+  const [activeUserName, setActiveUserName] = useState(""); // התחל כערך ריק
+  const [enteredUserName, setEnteredUserName] = useState(""); // שם משתמש מהאינפוט
   const [activeTextId, setActiveTextId] = useState(null);
   const [cursorPos, setCursorPos] = useState(0);
   const [selectedFont, setFont] = useState("Arial");
@@ -18,6 +20,7 @@ function App() {
       font: selectedFont,
       size: selectedSize,
       color: selectedColor,
+      owner: activeUserName,
     };
     setTexts([...texts, newText]);
     setActiveTextId(newText.id);
@@ -31,6 +34,11 @@ function App() {
     }
     const savedContent = JSON.parse(localStorage.getItem(name));
 
+    if (savedContent.owner !== activeUserName) {
+      alert("אין לך הרשאה לפתוח קובץ זה!");
+      return;
+    }
+
     const newText = {
       id: Date.now(),
       name,
@@ -38,6 +46,7 @@ function App() {
       font: savedContent.style.font,
       size: savedContent.style.size,
       color: savedContent.style.color,
+      owner: activeUserName,
     };
 
     setTexts([...texts, newText]);
@@ -50,7 +59,8 @@ function App() {
       if (fileName) {
         localStorage.setItem(fileName, JSON.stringify({
           text: texts.find(text => text.id === id).content,
-          style: { font: selectedFont, size: selectedSize, color: selectedColor }
+          style: { font: selectedFont, size: selectedSize, color: selectedColor },
+          owner: activeUserName,
         }));
         alert("הטקסט נשמר בהצלחה!");
       }
@@ -71,9 +81,26 @@ function App() {
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
       <h1>🎨 עורך טקסט מתקדם</h1>
-      <Toolbar createNewText={createNewText} openTextFromStorage={openTextFromStorage} />
-      <TextTabs texts={texts} activeTextId={activeTextId} setActiveTextId={setActiveTextId} closeText={closeText} />
-      <TextEditorContainer {...{ activeText, texts, setTexts, activeTextId, setFont, setSize, setColor, selectedFont, selectedSize, selectedColor, cursorPos, setCursorPos, addCharToText, openTextFromStorage }} />
+
+      {!activeUserName ? (
+        <>
+          <input 
+            type="text" 
+            value={enteredUserName} 
+            onChange={(e) => setEnteredUserName(e.target.value)} 
+            placeholder="הזן שם משתמש"
+          />
+          <button onClick={() => setActiveUserName(enteredUserName)}>כניסה למערכת</button>
+        </>
+      ) : (
+        <>
+          <h2>שלום, {activeUserName}!</h2>
+          <Toolbar createNewText={createNewText} openTextFromStorage={openTextFromStorage} />
+          <TextTabs texts={texts} activeTextId={activeTextId} setActiveTextId={setActiveTextId} closeText={closeText} />
+          <TextEditorContainer {...{ activeText, texts, setTexts, activeTextId, setFont, setSize, setColor, selectedFont,
+             selectedSize, selectedColor, cursorPos, setCursorPos, addCharToText, openTextFromStorage, activeUserName }} />
+        </>
+      )}
     </div>
   );
 }

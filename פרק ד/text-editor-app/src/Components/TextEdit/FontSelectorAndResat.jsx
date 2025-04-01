@@ -2,7 +2,7 @@ import React from "react";
 
 const fonts = ["Arial", "Courier New", "Times New Roman", "Verdana", "Georgia"];
 const sizes = [12, 16, 20, 24, 28, 32, 36];
-const colors = [ "black", "white", "blue", "red", "yellow", "gray", "brown"]
+const colors = [ "black", "green", "blue", "red", "yellow", "gray", "brown"]
 
 function FontSelectorAndResat({ selectedFont, handleFontChange, selectedColor, handleSizeChange, selectedSize, handleColorChange, handleResetText }) {
   return (
