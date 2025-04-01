@@ -1,0 +1,56 @@
+.keyboard-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .switch-layout {
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 16px;
+    background-color: purple;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+
+  .switch-layout:hover{
+    background-color: rgb(212, 93, 212);
+  }
+  
+  .keys-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 5px;
+    margin-top: 10px;
+  }
+  
+  .key {
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background-color: #d1cbcb;
+  }
+  
+  .key:hover {
+    background-color: #817e7e;
+  }
+  
+  .special-keys {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .special {
+    background-color: #444;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .backspace { background-color: red; }
+  .enter { background-color: blue; }
+  .space { background-color: darkgray; width: 120px; }
+  .arrow { background-color: rgb(145, 81, 81); }
+  
