@@ -1,0 +1,47 @@
+/* סגנון כללי */
+.storage-manager {
+    margin-top: 20px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* שדה שם הקובץ */
+  .storage-manager input {
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  /* כפתורים */
+  .storage-manager button {
+    padding: 8px 12px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+  }
+  
+  /* צבעים שונים לכל כפתור */
+  .storage-manager button:nth-child(2) {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .storage-manager button:nth-child(3) {
+    background-color: #2196F3;
+    color: white;
+  }
+  
+  .storage-manager button:nth-child(4) {
+    background-color: #f0ad4e;
+    color: white;
+  }
+  
+  /* אפקט hover */
+  .storage-manager button:hover {
+    opacity: 0.8;
+  }

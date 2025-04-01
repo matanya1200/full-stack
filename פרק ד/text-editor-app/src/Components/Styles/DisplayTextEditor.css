@@ -1,0 +1,38 @@
+/* סגנון כללי לאזור העריכה */
+.editor-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  /* תפריטים נפתחים */
+  .select-menu {
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  /* כפתור איפוס */
+  .reset-button {
+    background-color: red;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  .reset-button:hover {
+    background-color: darkred;
+  }
+  
+  /* שדה חיפוש */
+  .search-bar {
+    margin-bottom: 10px;
+    padding: 5px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
