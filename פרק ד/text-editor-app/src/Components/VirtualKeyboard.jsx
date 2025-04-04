@@ -9,7 +9,7 @@ function VirtualKeyboard({ text, setText, cursorPos, setCursorPos, addCharToText
   const layouts = {
     english: [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ.,!?"],
     english_lower: [..."abcdefghijklmnopqrstuvwxyz.,!?"],
-    hebrew: [..."אבגדהוזחטיכלמנסעפצקרשת.,!?"],
+    hebrew: [..."אבגדהוזחטיכלמנסעפצקרשתםןץףך.,!?"],
     emojis:  ["😀", "😂", "😍", "🥳", "😎", "😢", "😡", "👍", "👎", "🙏",
         "❤️", "🔥", "🎉", "💯", "💡", "🎵", "🌍", "🚀", "⚽", "🏆"],
     numbers: [..."1234567890+-*/=()&%@#$![]{}"]
