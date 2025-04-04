@@ -74,6 +74,7 @@ function App() {
     setTexts(texts.map(text =>
       text.id === activeTextId ? { ...text, content: [...text.content, newChar] } : text
     ));
+    setCursorPos(cursorPos + 1)
   };
 
   const activeText = texts.find(text => text.id === activeTextId);
