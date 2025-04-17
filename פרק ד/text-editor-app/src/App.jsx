@@ -71,8 +71,17 @@ function App() {
 
   const addCharToText = (char) => {
     const newChar = { char, font: selectedFont, size: selectedSize, color: selectedColor };
-    setTexts(texts.map(text =>
-      text.id === activeTextId ? { ...text, content: [...text.content, newChar] } : text
+    setTexts(texts.map(text => {
+      if (text.id !== activeTextId) return text;
+
+      const before = text.content.slice(0, cursorPos);
+      const after = text.content.slice(cursorPos);
+
+      return {
+        ...text,
+        content: [...before, newChar, ...after]
+      };
+    }
     ));
     setCursorPos(cursorPos + 1)
   };
