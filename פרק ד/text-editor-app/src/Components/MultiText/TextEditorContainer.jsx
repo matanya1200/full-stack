@@ -18,7 +18,7 @@ const TextEditorContainer = ({
   setCursorPos,
   addCharToText,
   openTextFromStorage,
-  activeUserName
+  activeUserName,
 }) => {
   if (!activeText) return null; // אם אין טקסט פעיל, אל תציג כלום
 
@@ -56,6 +56,7 @@ const TextEditorContainer = ({
         setColor={setColor}
         openText={openTextFromStorage}
         activeUserName={activeUserName}
+        cursorPos={cursorPos}
       />
 
       <VirtualKeyboard 

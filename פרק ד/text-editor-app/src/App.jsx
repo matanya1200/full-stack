@@ -24,6 +24,7 @@ function App() {
     };
     setTexts([...texts, newText]);
     setActiveTextId(newText.id);
+    setCursorPos(savedContent.cursorPos || 0);
   };
 
   const openTextFromStorage = () => {
@@ -51,6 +52,7 @@ function App() {
 
     setTexts([...texts, newText]);
     setActiveTextId(newText.id);
+    setCursorPos(savedContent.cursorPos || 0);
   };
 
   const closeText = (id) => {
@@ -61,6 +63,7 @@ function App() {
           text: texts.find(text => text.id === id).content,
           style: { font: selectedFont, size: selectedSize, color: selectedColor },
           owner: activeUserName,
+          cursorPos: cursorPos
         }));
         alert("הטקסט נשמר בהצלחה!");
       }
@@ -108,7 +111,7 @@ function App() {
           <Toolbar createNewText={createNewText} openTextFromStorage={openTextFromStorage} />
           <TextTabs texts={texts} activeTextId={activeTextId} setActiveTextId={setActiveTextId} closeText={closeText} />
           <TextEditorContainer {...{ activeText, texts, setTexts, activeTextId, setFont, setSize, setColor, selectedFont,
-             selectedSize, selectedColor, cursorPos, setCursorPos, addCharToText, openTextFromStorage, activeUserName }} />
+             selectedSize, selectedColor, cursorPos, setCursorPos, addCharToText, openTextFromStorage, activeUserName, cursorPos }} />
         </>
       )}
     </div>
