@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import FontSelectorAndResat from "./TextEdit/FontSelectorAndResat";
-import SearchBar from "./TextEdit/SearchBar";
-import EditorArea from "./TextEdit/EditorArea";
-import "./Styles/DisplayTextEditor.css";
+import FontSelectorAndResat from "./FontSelectorAndResat";
+import SearchBar from "./SearchBar";
+import EditorArea from "./EditorArea";
+import "../Styles/DisplayTextEditor.css";
 
 function DisplayTextEditor({ text, setText, selectedFont, setFont, selectedSize, setSize, selectedColor, setColor }) {
   
