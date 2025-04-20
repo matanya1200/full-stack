@@ -1,7 +1,7 @@
 import React from "react";
-import DisplayTextEditor from "../DisplayTextEditor";
-import StorageManager from "../StorageManager";
-import VirtualKeyboard from "../VirtualKeyboard";
+import DisplayTextEditor from "../TextEdit/DisplayTextEditor";
+import StorageManager from "../Storage/StorageManager";
+import VirtualKeyboard from "../KeyBoard/VirtualKeyboard";
 
 const TextEditorContainer = ({
   activeText,

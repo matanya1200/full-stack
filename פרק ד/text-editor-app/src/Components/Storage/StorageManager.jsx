@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Styles/StorageManager.css";
+import "../Styles/StorageManager.css";
 
 function StorageManager({ text, selectedFont, selectedSize, selectedColor,activeUserName, cursorPos }) {
   const [fileName, setFileName] = useState("");

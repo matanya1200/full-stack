@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import LanguageSwitcher from "./KeyBoard/LanguageSwitcher"
-import KeyboardLayout from "./KeyBoard/KeyboardLayout";
-import KeyboardControls from "./KeyBoard/KeyboardControls";
-import "./Styles/VirtualKeyboard.css";
+import LanguageSwitcher from "./LanguageSwitcher"
+import KeyboardLayout from "./KeyboardLayout";
+import KeyboardControls from "./KeyboardControls";
+import "../Styles/VirtualKeyboard.css";
 
 function VirtualKeyboard({ text, setText, cursorPos, setCursorPos, addCharToText }) {
 
