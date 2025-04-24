@@ -4,7 +4,7 @@ const fonts = ["Arial", "Courier New", "Times New Roman", "Verdana", "Georgia"];
 const sizes = [12, 16, 20, 24, 28, 32, 36];
 const colors = [ "black", "green", "blue", "red", "yellow", "gray", "brown"]
 
-function FontSelectorAndResat({ selectedFont, handleFontChange, selectedColor, handleSizeChange, selectedSize, handleColorChange, handleResetText }) {
+function FontSelectorAndResat({ selectedFont, handleFontChange, selectedColor, handleSizeChange, selectedSize, handleColorChange }) {
   return (
     <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
         <select onChange={handleFontChange} value={selectedFont} className="select-menu">
@@ -24,10 +24,6 @@ function FontSelectorAndResat({ selectedFont, handleFontChange, selectedColor, h
             <option key={color} value={color}>{color}</option>
           ))}
         </select>
-
-        <button onClick={handleResetText} className="reset-button">
-          🗑 איפוס טקסט
-        </button>
     </div>
   );
 }
