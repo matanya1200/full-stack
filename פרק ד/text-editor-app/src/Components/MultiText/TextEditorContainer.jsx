@@ -17,7 +17,6 @@ const TextEditorContainer = ({
   cursorPos,
   setCursorPos,
   addCharToText,
-  openTextFromStorage,
   activeUserName,
 }) => {
   if (!activeText) return null; // אם אין טקסט פעיל, אל תציג כלום
@@ -42,19 +41,9 @@ const TextEditorContainer = ({
 
       <StorageManager 
         text={activeText.content}
-        setText={(newContent) => {
-          const updatedTexts = texts.map((text) =>
-            text.id === activeTextId ? { ...text, content: newContent } : text
-          );
-          setTexts(updatedTexts);
-        }}
         selectedFont={selectedFont}
         selectedSize={selectedSize}
         selectedColor={selectedColor}
-        setFont={setFont}
-        setSize={setSize}
-        setColor={setColor}
-        openText={openTextFromStorage}
         activeUserName={activeUserName}
         cursorPos={cursorPos}
       />
