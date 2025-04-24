@@ -1,6 +1,12 @@
 import React from "react";
 
-const TextTabs = ({ texts, activeTextId, setActiveTextId, closeText }) => {
+const TextTabs = ({ texts, activeTextId, setActiveTextId, setTexts }) => {
+
+  const closeText = (id) => {
+    setTexts(texts.filter(text => text.id !== id));
+    setActiveTextId(null);
+  };
+
   return (
     <div>
       {texts.map((text) => (

@@ -24,52 +24,7 @@ function App() {
     };
     setTexts([...texts, newText]);
     setActiveTextId(newText.id);
-    setCursorPos(savedContent.cursorPos || 0);
-  };
-
-  const openTextFromStorage = () => {
-    const name = prompt("הזן שם קובץ לפתיחה:");
-    if (!name || !localStorage.getItem(name)) {
-      alert("קובץ לא נמצא!");
-      return;
-    }
-    const savedContent = JSON.parse(localStorage.getItem(name));
-
-    if (savedContent.owner !== activeUserName) {
-      alert("אין לך הרשאה לפתוח קובץ זה!");
-      return;
-    }
-
-    const newText = {
-      id: Date.now(),
-      name,
-      content: savedContent.text,
-      font: savedContent.style.font,
-      size: savedContent.style.size,
-      color: savedContent.style.color,
-      owner: activeUserName,
-    };
-
-    setTexts([...texts, newText]);
-    setActiveTextId(newText.id);
-    setCursorPos(savedContent.cursorPos || 0);
-  };
-
-  const closeText = (id) => {
-    if (window.confirm("האם ברצונך לשמור את הטקסט?")) {
-      const fileName = prompt("הזן שם לקובץ:");
-      if (fileName) {
-        localStorage.setItem(fileName, JSON.stringify({
-          text: texts.find(text => text.id === id).content,
-          style: { font: selectedFont, size: selectedSize, color: selectedColor },
-          owner: activeUserName,
-          cursorPos: cursorPos
-        }));
-        alert("הטקסט נשמר בהצלחה!");
-      }
-    }
-    setTexts(texts.filter(text => text.id !== id));
-    setActiveTextId(null);
+    setCursorPos(0);
   };
 
   const addCharToText = (char) => {
@@ -108,10 +63,10 @@ function App() {
       ) : (
         <>
           <h2>שלום, {activeUserName}!</h2>
-          <Toolbar createNewText={createNewText} openTextFromStorage={openTextFromStorage} />
-          <TextTabs texts={texts} activeTextId={activeTextId} setActiveTextId={setActiveTextId} closeText={closeText} />
+          <Toolbar texts={texts} createNewText={createNewText} activeUserName={activeUserName} setTexts={setTexts} />
+          <TextTabs texts={texts} activeTextId={activeTextId} setActiveTextId={setActiveTextId} setTexts={setTexts} />
           <TextEditorContainer {...{ activeText, texts, setTexts, activeTextId, setFont, setSize, setColor, selectedFont,
-             selectedSize, selectedColor, cursorPos, setCursorPos, addCharToText, openTextFromStorage, activeUserName, cursorPos }} />
+             selectedSize, selectedColor, cursorPos, setCursorPos, addCharToText, activeUserName }} />
         </>
       )}
     </div>
