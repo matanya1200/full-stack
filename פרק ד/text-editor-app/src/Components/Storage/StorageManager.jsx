@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../Styles/StorageManager.css";
 
-function StorageManager({ text, selectedFont, selectedSize, selectedColor,activeUserName, cursorPos }) {
+function StorageManager({ activeTextId, text, selectedFont, selectedSize, selectedColor,activeUserName, cursorPos, closeText }) {
   const [fileName, setFileName] = useState("");
 
 
@@ -17,6 +17,7 @@ function StorageManager({ text, selectedFont, selectedSize, selectedColor,active
       localStorage.setItem(name, JSON.stringify(content));
       setFileName(name);
       alert(`הטקסט נשמר בשם "${name}"`);
+      closeText(activeTextId);
     }
   };
 

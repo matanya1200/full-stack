@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import Toolbar from "./Components/MultiText/Toolbar";
 import TextTabs from "./Components/MultiText/TextTabs";
-import TextEditorContainer from "./Components/MultiText/TextEditorContainer";
+import VirtualKeyboard from "./Components/KeyBoard/VirtualKeyboard";
+import FontSelectorAndResat from "./Components/TextEdit/FontSelectorAndResat";
 
 function App() {
   const [texts, setTexts] = useState([]);
@@ -12,6 +13,10 @@ function App() {
   const [selectedFont, setFont] = useState("Arial");
   const [selectedSize, setSize] = useState(16);
   const [selectedColor, setColor] = useState("black");
+
+  const handleFontChange = (event) => setFont(event.target.value);
+  const handleSizeChange = (event) => setSize(parseInt(event.target.value, 10));
+  const handleColorChange = (event) => setColor(event.target.value);
 
   const createNewText = () => {
     const newText = {
@@ -48,7 +53,7 @@ function App() {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-      <h1>🎨 עורך טקסט מתקדם</h1>
+      <h1>🎨 עורך טקסט</h1>
 
       {!activeUserName ? (
         <>
@@ -64,9 +69,30 @@ function App() {
         <>
           <h2>שלום, {activeUserName}!</h2>
           <Toolbar texts={texts} createNewText={createNewText} activeUserName={activeUserName} setTexts={setTexts} />
-          <TextTabs texts={texts} activeTextId={activeTextId} setActiveTextId={setActiveTextId} setTexts={setTexts} />
-          <TextEditorContainer {...{ activeText, texts, setTexts, activeTextId, setFont, setSize, setColor, selectedFont,
+          <TextTabs {...{ setActiveTextId, activeText, texts, setTexts, activeTextId, setFont, setSize, setColor, selectedFont,
              selectedSize, selectedColor, cursorPos, setCursorPos, addCharToText, activeUserName }} />
+
+          <FontSelectorAndResat
+            selectedFont={selectedFont}
+            handleFontChange={handleFontChange}
+            selectedSize={selectedSize}
+            handleSizeChange={handleSizeChange}
+            selectedColor={selectedColor}
+            handleColorChange={handleColorChange}
+          />
+
+          <VirtualKeyboard 
+            text={texts.content}
+            setText={(newContent) => {
+              const updatedTexts = texts.map((text) =>
+                text.id === activeTextId ? { ...text, content: newContent } : text
+              );
+              setTexts(updatedTexts);
+            }}
+            cursorPos={cursorPos} 
+            setCursorPos={setCursorPos} 
+            addCharToText={addCharToText}
+          />
         </>
       )}
     </div>

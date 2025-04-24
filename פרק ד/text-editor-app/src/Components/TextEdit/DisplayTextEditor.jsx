@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import FontSelectorAndResat from "./FontSelectorAndResat";
 import SearchBar from "./SearchBar";
 import EditorArea from "./EditorArea";
 import "../Styles/DisplayTextEditor.css";
@@ -7,9 +6,7 @@ import "../Styles/DisplayTextEditor.css";
 function DisplayTextEditor({ text, setText, selectedFont, setFont, selectedSize, setSize, selectedColor, setColor }) {
   
   const [searchTerm, setSearchTerm] = useState("");
-  const handleFontChange = (event) => setFont(event.target.value);
-  const handleSizeChange = (event) => setSize(parseInt(event.target.value, 10));
-  const handleColorChange = (event) => setColor(event.target.value);
+  
   const handleResetText = () => setText([]);
 
   const handleInput = (e) => {
@@ -51,18 +48,6 @@ function DisplayTextEditor({ text, setText, selectedFont, setFont, selectedSize,
   return (
     <div className="editor-container">
 
-      {/* תפריטים נפתחים לבחירת גופן וגודל טקסט */}
-
-      <FontSelectorAndResat
-        selectedFont={selectedFont}
-        handleFontChange={handleFontChange}
-        selectedSize={selectedSize}
-        handleSizeChange={handleSizeChange}
-        selectedColor={selectedColor}
-        handleColorChange={handleColorChange}
-        handleResetText={handleResetText}
-      />
-
       {/*שדה חיפוש תו */}
       <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
@@ -77,6 +62,9 @@ function DisplayTextEditor({ text, setText, selectedFont, setFont, selectedSize,
         selectedSize={selectedSize}
         selectedColor={selectedColor}
       />
+      <button onClick={handleResetText} className="reset-button">
+          🗑 איפוס טקסט
+      </button>
 
     </div>
   );

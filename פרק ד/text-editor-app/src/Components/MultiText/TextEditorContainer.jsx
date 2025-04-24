@@ -1,7 +1,6 @@
 import React from "react";
 import DisplayTextEditor from "../TextEdit/DisplayTextEditor";
 import StorageManager from "../Storage/StorageManager";
-import VirtualKeyboard from "../KeyBoard/VirtualKeyboard";
 
 const TextEditorContainer = ({
   activeText,
@@ -18,6 +17,7 @@ const TextEditorContainer = ({
   setCursorPos,
   addCharToText,
   activeUserName,
+  closeText
 }) => {
   if (!activeText) return null; // אם אין טקסט פעיל, אל תציג כלום
 
@@ -40,25 +40,14 @@ const TextEditorContainer = ({
       />
 
       <StorageManager 
+        activeTextId={activeTextId}
         text={activeText.content}
         selectedFont={selectedFont}
         selectedSize={selectedSize}
         selectedColor={selectedColor}
         activeUserName={activeUserName}
         cursorPos={cursorPos}
-      />
-
-      <VirtualKeyboard 
-        text={activeText.content}
-        setText={(newContent) => {
-          const updatedTexts = texts.map((text) =>
-            text.id === activeTextId ? { ...text, content: newContent } : text
-          );
-          setTexts(updatedTexts);
-        }}
-        cursorPos={cursorPos} 
-        setCursorPos={setCursorPos} 
-        addCharToText={addCharToText}
+        closeText={closeText}
       />
     </>
   );
