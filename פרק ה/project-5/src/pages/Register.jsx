@@ -3,9 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "../CSS/Register.css";
 
 function Register() {
-  const [name, setName] = useState("");
   const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [verifyPassword, setVerifyPassword] = useState("");
   const [error, setError] = useState("");
@@ -16,13 +14,10 @@ function Register() {
 
     if(username == "") {
       setError("הכנס שם משתמש")
+      return
     }
 
-    if(!error && email == "") {
-      setError("הכנס אימייל")
-    }
-
-    if (!error && password !== verifyPassword) {
+    if (password !== verifyPassword) {
       setError("הסיסמאות לא תואמות");
       return;
     }
@@ -35,10 +30,10 @@ function Register() {
     }
 
     const newUser = {
-      name: name || "משתמש חדש",
+      name: null,
       username,
-      email: email,
-      website: password, // כמו סיסמה
+      email: null,
+      website: password,
       address:{street:null},
       phone:null,
       company:{name:null}
@@ -62,17 +57,21 @@ function Register() {
   return (
     <div className="register-wrapper">
       <form className="register-form" onSubmit={handleRegister}>
+
         <h2>Register</h2>
-        <input placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
+
         <input placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-        <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
         <input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         <input placeholder="Verify Password" type="password" value={verifyPassword} onChange={(e) => setVerifyPassword(e.target.value)} />
+
         {error && <p className="error">{error}</p>}
+
         <button type="submit">Create Account</button>
+
         <p className="redirect">
           Already have an account? <a onClick={returnfanc}>Login</a>
         </p>
+
       </form>
     </div>
   );
