@@ -178,8 +178,11 @@ return (
 
   <ul className="posts-list">
     {filtered.map(post => (
-      <li key={post.id} className="post-item">
+     <li key={post.id} className="post-item">
+      <div className="post-info">
         <strong>{post.id}</strong>: {post.title}
+      </div>
+      <div className="post-actions">
         <button className="posts-btn" onClick={() => selectPost(post)}>בחר</button>
         {post.userId == id && (
           <>
@@ -187,7 +190,9 @@ return (
             <button className="posts-btn delete" onClick={() => deletePost(post.id)}>מחק</button>
           </>
         )}
-      </li>
+      </div>
+    </li>
+   
     ))}
   </ul>
 </div>

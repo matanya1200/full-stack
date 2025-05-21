@@ -16,7 +16,7 @@ function Home() {
 
   return (
 <div className="home-wrapper">
-  <h2 className="home-title">שלום, {user.name}</h2>
+  <h2 className="home-title">Hello, {user.name}</h2>
 
   <NavBar logout={logout} user={user} />
 
