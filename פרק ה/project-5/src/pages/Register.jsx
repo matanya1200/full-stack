@@ -47,7 +47,7 @@ function Register() {
 
     const savedUser = await postRes.json();
     localStorage.setItem("user", JSON.stringify(savedUser));
-    navigate("/login");
+    navigate(`/home/users/${savedUser.id}/info`);
   };
 
   const returnfanc = () => {
