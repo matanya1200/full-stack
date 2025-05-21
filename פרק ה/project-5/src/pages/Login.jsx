@@ -30,7 +30,7 @@ function Login() {
         {error && <p className="error">{error}</p>}
         <button type="submit">Login</button>
         <p className="redirect">
-          Don’t have an account? <a href="/register">Register</a>
+          Don’t have an account? <a onClick={()=>{navigate("/register")}}>Register</a>
         </p>
       </form>
     </div>

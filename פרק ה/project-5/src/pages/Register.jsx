@@ -52,8 +52,12 @@ function Register() {
 
     const savedUser = await postRes.json();
     localStorage.setItem("user", JSON.stringify(savedUser));
-    navigate("/home");
+    navigate("/login");
   };
+
+  const returnfanc = () => {
+    navigate("/login");
+  }
 
   return (
     <div className="register-wrapper">
@@ -67,7 +71,7 @@ function Register() {
         {error && <p className="error">{error}</p>}
         <button type="submit">Create Account</button>
         <p className="redirect">
-          Already have an account? <a href="/login">Login</a>
+          Already have an account? <a onClick={returnfanc}>Login</a>
         </p>
       </form>
     </div>
