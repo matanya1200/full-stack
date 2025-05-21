@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {useParams} from "react-router-dom"
+import "../CSS/todos.css";
 
 function Todos() {
   const { id } = useParams();
@@ -86,54 +87,65 @@ function Todos() {
     setNewTitle("");
   };
 
-  return (
-    <div>
-      <h3>רשימת המשימות</h3>
+return (
+  <div className="table-scroll">
+    <div className="todos-wrapper">
+      <h3 className="todos-title">רשימת המשימות</h3>
 
-      <div style={{ marginBottom: "10px" }}>
-        <input placeholder="הוסף משימה חדשה..." value={newTitle} onChange={(e) => setNewTitle(e.target.value)} />
-        <button onClick={addTodo}>הוסף</button>
+      <div className="todos-add">
+        <input
+          className="todos-input"
+          placeholder="הוסף משימה חדשה..."
+          value={newTitle}
+          onChange={(e) => setNewTitle(e.target.value)}
+        />
+        <button className="todos-btn" onClick={addTodo}>הוסף</button>
       </div>
 
-      <div style={{ marginBottom: "10px" }}>
+      <div className="todos-filter">
         <label>סינון: </label>
-        <input placeholder="חפש לפי id / כותרת / מצב" value={search} onChange={(e) => setSearch(e.target.value)} />
-        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+        <input
+          className="todos-input"
+          placeholder="חפש לפי id / כותרת / מצב"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <select className="todos-select" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
           <option value="id">לפי ID</option>
           <option value="title">לפי כותרת</option>
           <option value="completed">לפי מצב</option>
         </select>
       </div>
-
-      <table border="1" cellPadding="6">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>כותרת</th>
-            <th>בוצע?</th>
-            <th>פעולות</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filtered.map(todo => (
-            <tr key={todo.id}>
-              <td>{todo.id}</td>
-              <td>{todo.title}</td>
-              <td>
-                <input
-                  type="checkbox"
-                  checked={todo.completed}
-                  onChange={() => toggleCompletion(todo.id, todo.completed)}
-                />
-              </td>
-              <td>
-                <button onClick={() => updateTitle(todo.id, todo.title)}>עדכן</button>{" "}
-                <button onClick={() => deleteTodo(todo.id)}>מחק</button>
-              </td>
+        <table className="todos-table" border="1" cellPadding="6">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>כותרת</th>
+              <th>בוצע?</th>
+              <th>פעולות</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filtered.map(todo => (
+              <tr key={todo.id} className={todo.completed ? "todo-row completed" : "todo-row"}>
+                <td>{todo.id}</td>
+                <td>{todo.title}</td>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={todo.completed}
+                    onChange={() => toggleCompletion(todo.id, todo.completed)}
+                  />
+                </td>
+                <td>
+                  <button className="action-btn update" onClick={() => updateTitle(todo.id, todo.title)}>עדכן</button>{" "}
+                  <button className="action-btn delete" onClick={() => deleteTodo(todo.id)}>מחק</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../CSS/login.css";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -21,15 +22,17 @@ function Login() {
   };
 
   return (
-    <div>
-      <h2>התחברות</h2>
-      <form onSubmit={handleLogin}>
+    <div className="login-wrapper">
+      <form className="login-form" onSubmit={handleLogin}>
+        <h2>Login</h2>
         <input placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
         <input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        {error && <p className="error">{error}</p>}
         <button type="submit">Login</button>
+        <p className="redirect">
+          Don’t have an account? <a href="/register">Register</a>
+        </p>
       </form>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <p>אין לך משתמש? <a href="/register">להרשמה</a></p>
     </div>
   );
 }

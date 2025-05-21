@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../CSS/Register.css";
 
 function Register() {
   const [name, setName] = useState("");
@@ -55,18 +56,20 @@ function Register() {
   };
 
   return (
-    <div>
-      <h2>הרשמה</h2>
-      <form onSubmit={handleRegister}>
+    <div className="register-wrapper">
+      <form className="register-form" onSubmit={handleRegister}>
+        <h2>Register</h2>
         <input placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
         <input placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
         <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
         <input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         <input placeholder="Verify Password" type="password" value={verifyPassword} onChange={(e) => setVerifyPassword(e.target.value)} />
-        <button type="submit">Register</button>
+        {error && <p className="error">{error}</p>}
+        <button type="submit">Create Account</button>
+        <p className="redirect">
+          Already have an account? <a href="/login">Login</a>
+        </p>
       </form>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <p> חזרה לעמוד כניסה<a href="/login"> לכניסה</a></p>
     </div>
   );
 }
