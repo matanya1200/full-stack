@@ -1,0 +1,101 @@
+.todos-wrapper {
+    max-width: 800px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', sans-serif;
+    direction: rtl;
+  }
+  
+  .todos-title {
+    text-align: center;
+    font-size: 24px;
+    color: #4e54c8;
+    margin-bottom: 2rem;
+  }
+  
+  .todos-add,
+  .todos-filter {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .todos-input,
+  .todos-select {
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    flex: 1;
+    min-width: 200px;
+  }
+  
+  .todos-btn {
+    background-color: #4e54c8;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.6rem 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .todos-btn:hover {
+    background-color: #3d42a5;
+  }
+  
+  .todos-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+  
+  .todos-table th,
+  .todos-table td {
+    text-align: center;
+    padding: 0.75rem;
+  }
+  
+  .todo-row.completed td {
+    background-color: #e6ffe6;
+    text-decoration: line-through;
+    color: #3c763d;
+  }
+  
+  .action-btn {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    margin: 0 4px;
+  }
+  
+  .action-btn.update {
+    background-color: #0077cc;
+    color: white;
+  }
+  
+  .action-btn.update:hover {
+    background-color: #005fa3;
+  }
+  
+  .action-btn.delete {
+    background-color: #ff4d4f;
+    color: white;
+  }
+  
+  .action-btn.delete:hover {
+    background-color: #d9363e;
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  

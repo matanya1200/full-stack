@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {useParams} from "react-router-dom"
+import "../CSS/albums.css";
 
 function Albums() {
   const { id } = useParams();
@@ -112,104 +113,94 @@ function Albums() {
   };
 
   return (
-    <div>
-      <h3>רשימת האלבומים</h3>
+<div className="albums-wrapper">
+  <h3 className="albums-title">רשימת האלבומים</h3>
 
-      <input
-        placeholder="חיפוש לפי כותרת או ID"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+  <input
+    className="albums-search"
+    placeholder="חיפוש לפי כותרת או ID"
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+  />
 
-      <div style={{ marginTop: "10px", marginBottom: "10px" }}>
+  <div className="albums-add">
+    <input
+      className="albums-input"
+      placeholder="כותרת אלבום חדש"
+      value={newAlbumTitle}
+      onChange={(e) => setNewAlbumTitle(e.target.value)}
+    />
+    <button className="albums-btn" onClick={addAlbum}>הוסף אלבום</button>
+  </div>
+
+  <ul className="albums-list">
+    {filtered.map(album => (
+      <li key={album.id} className="album-item">
+        <strong>{album.id}</strong>:{" "}
+        <span
+          className={`album-title ${selectedAlbumId === album.id ? "selected" : ""}`}
+          onClick={() => selectAlbum(album)}
+        >
+          {album.title}
+        </span>
+        <button className="albums-btn" onClick={() => updateAlbum(album.id, album.title)}>עדכן</button>
+        <button className="albums-btn delete" onClick={() => deleteAlbum(album.id)}>מחק</button>
+      </li>
+    ))}
+  </ul>
+
+  {selectedAlbum && (
+    <div className="photos-wrapper">
+      <h4>תמונות באלבום: {selectedAlbum.title}</h4>
+
+      <div className="photos-add">
         <input
-          placeholder="כותרת אלבום חדש"
-          value={newAlbumTitle}
-          onChange={(e) => setNewAlbumTitle(e.target.value)}
+          className="albums-input"
+          placeholder="כתובת תמונה חדשה"
+          value={newPhotoUrl}
+          onChange={(e) => setNewPhotoUrl(e.target.value)}
         />
-        <button onClick={addAlbum}>הוסף אלבום</button>
+        <input
+          className="albums-input"
+          placeholder="שם תמונה חדשה"
+          value={newPhotoName}
+          onChange={(e) => setnewPhotoName(e.target.value)}
+        />
+        <button className="albums-btn" onClick={addPhoto}>הוסף תמונה</button>
       </div>
 
-      <ul>
-        {filtered.map(album => (
-          <li key={album.id} style={{ marginTop: "10px"}}> 
-            <strong>{album.id}</strong>:{" "}
-            <span
-              style={{ color: selectedAlbumId === album.id ? "red" : "blue", cursor: "pointer" }}
-              onClick={() => selectAlbum(album)}
-            >
-              {album.title}
-            </span>
-            <button onClick={() => updateAlbum(album.id, album.title)}>עדכן</button>
-            <button onClick={() => deleteAlbum(album.id)}>מחק</button>
-          </li>
-        ))}
-      </ul>
-
-      {selectedAlbum && (
-        <div style={{ border: "1px solid black", padding: 10, marginTop: 20 }}>
-          <h4>תמונות באלבום: {selectedAlbum.title}</h4>
-
-          <div style={{ marginBottom: 10 }}>
-            <input
-              placeholder="כתובת תמונה חדשה"
-              value={newPhotoUrl}
-              onChange={(e) => setNewPhotoUrl(e.target.value)}
-            />
-            <input
-              placeholder="שם תמונה חדשה"
-              value={newPhotoName}
-              onChange={(e) => setnewPhotoName(e.target.value)}
-            />
-            <button onClick={addPhoto}>הוסף תמונה</button>
-          </div>
-
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-            {photos.slice(0, visiblePhotos).map(photo => (
-              <div key={photo.id} style={{ border: "1px solid #ccc", padding: 5 }}>
-                <img src={photo.thumbnailUrl} alt={photo.title} width="150" onClick={() => setSelectedPhoto(photo)} 
-                style={{cursor: "pointer"}}/>
-                <div>{photo.title}</div>
-                <button onClick={() => updatePhoto(photo.id, photo.url, photo.title)}>עדכן</button>
-                <button onClick={() => deletePhoto(photo.id)}>מחק</button>
-              </div>
-            ))}
-          </div>
-
-          {visiblePhotos < photos.length && (
-            <button onClick={loadMorePhotos} style={{ marginTop: 10 }}>
-              טען עוד תמונות
-            </button>
-          )}
-
-          {selectedPhoto && (
-          <div
-            onClick={() => setSelectedPhoto(null)}
-            style={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              width: "100vw",
-              height: "100vh",
-              backgroundColor: "rgba(0,0,0,0.8)",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              zIndex: 1000,
-              cursor: "pointer"
-            }}
-          >
+      <div className="photos-grid">
+        {photos.slice(0, visiblePhotos).map(photo => (
+          <div key={photo.id} className="photo-card">
             <img
-              src={selectedPhoto.url}
-              alt={selectedPhoto.title}
-              style={{ maxHeight: "90%", maxWidth: "90%" }}
+              src={photo.thumbnailUrl}
+              alt={photo.title}
+              width="150"
+              onClick={() => setSelectedPhoto(photo)}
+              className="photo-thumb"
             />
+            <div>{photo.title}</div>
+            <button className="albums-btn" onClick={() => updatePhoto(photo.id, photo.url, photo.title)}>עדכן</button>
+            <button className="albums-btn delete" onClick={() => deletePhoto(photo.id)}>מחק</button>
           </div>
-        )}
+        ))}
+      </div>
 
+      {visiblePhotos < photos.length && (
+        <button className="albums-btn load-more" onClick={loadMorePhotos}>
+          טען עוד תמונות
+        </button>
+      )}
+
+      {selectedPhoto && (
+        <div className="photo-popup" onClick={() => setSelectedPhoto(null)}>
+          <img src={selectedPhoto.url} alt={selectedPhoto.title} className="photo-full" />
         </div>
       )}
     </div>
+  )}
+</div>
+
   );
 }
 

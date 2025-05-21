@@ -1,0 +1,104 @@
+.posts-wrapper {
+    max-width: 800px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', sans-serif;
+    direction: rtl;
+  }
+  
+  .posts-title {
+    font-size: 24px;
+    text-align: center;
+    color: #4e54c8;
+    margin-bottom: 1.5rem;
+  }
+  
+  .posts-filter,
+  .posts-add,
+  .add-comment {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .posts-input {
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    flex: 1;
+    min-width: 200px;
+  }
+  
+  .posts-btn {
+    background-color: #4e54c8;
+    color: white;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .posts-btn:hover {
+    background-color: #3d42a5;
+  }
+  
+  .posts-btn.delete {
+    background-color: #ff4d4f;
+  }
+  .posts-btn.delete:hover {
+    background-color: #d9363e;
+  }
+  
+  .posts-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .post-item {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: #f9f9f9;
+  }
+  
+  .selected-post {
+    border: 1px solid #4e54c8;
+    padding: 1rem;
+    border-radius: 10px;
+    background-color: #eef2ff;
+    margin-top: 1.5rem;
+  }
+  
+  .comments-section {
+    margin-top: 1rem;
+  }
+  
+  .comment-item {
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .comment-btn {
+    margin-right: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 13px;
+    cursor: pointer;
+    background-color: #6c757d;
+    color: white;
+  }
+  
+  .comment-btn.delete {
+    background-color: #dc3545;
+  }
+  

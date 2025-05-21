@@ -1,0 +1,49 @@
+html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  #root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .home-wrapper {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, #eef1f8, #ffffff);
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  
+  .home-title {
+    text-align: center;
+    color: #4e54c8;
+    font-size: 28px;
+    margin-bottom: 1rem;
+  }
+  
+  .home-content {
+    flex: 1;
+    padding: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  }
+  

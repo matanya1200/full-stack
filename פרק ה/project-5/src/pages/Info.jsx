@@ -1,5 +1,6 @@
 import { use, useState } from "react";
 import {useParams} from "react-router-dom"
+import "../CSS/Info.css";
 function Info() {
   const { id } = useParams();
   const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -73,38 +74,43 @@ function Info() {
   }
   
   return (
-    <div>
-      <h3>פרטי משתמש</h3>
-      <p>שם: {user.name}</p>
-      <p>שם משתמש: {user.username || null}</p>
-      <p>אימייל: {user.email || null}</p>
+<div className="info-wrapper">
+  <h3 className="info-title">פרטי משתמש</h3>
+    
+    <p className="info-line">שם: <span className="info-value">{user.name}</span></p>
+    <p className="info-line">שם משתמש: <span className="info-value">{user.username || "אין"}</span></p>
+    <p className="info-line">אימייל: <span className="info-value">{user.email || "אין"}</span></p>
 
-      <p>כתובת:</p>
-      <p>רחוב: {user.address.street || "אין"}</p>
-      <p>עיר:{user.address.city || "אין"}</p>
-      {(user.address.street == null || user.address.city == null) &&
-      (<div>
-        <input placeholder="רחוב" value={newStreet} onChange={(e) => setNewStreet(e.target.value)} />
-        <input placeholder="עיר" value={newCity} onChange={(e) => setNewCity(e.target.value)} />
-        <button onClick={() => handleAddAddress(user)}>הוסף</button>
-      </div>)}
+    <p className="info-subtitle">כתובת:</p>
+    <p className="info-line">רחוב: <span className="info-value">{user.address.street || "אין"}</span></p>
+    <p className="info-line">עיר: <span className="info-value">{user.address.city || "אין"}</span></p>
 
-      <p>טלפון: {user.phone || "אין"}</p>
-      
-      {user.phone == null &&
-      (<div>
-        <input placeholder="טלפון" value={newPhone} onChange={(e) => setNewPhone(e.target.value)} />
-        <button onClick={() => handleAddPhone(user)}>הוסף</button>
-      </div>)}
+    {(user.address.street == null || user.address.city == null) && (
+      <div className="info-form">
+        <input className="info-input" placeholder="רחוב" value={newStreet} onChange={(e) => setNewStreet(e.target.value)} />
+        <input className="info-input" placeholder="עיר" value={newCity} onChange={(e) => setNewCity(e.target.value)} />
+        <button className="info-btn" onClick={() => handleAddAddress(user)}>הוסף</button>
+      </div>
+    )}
 
-      <p>חברה: {user.company.name || "אין"}</p>
-      
-      {user.company.name == null &&
-      (<div>
-        <input placeholder="חברה" value={newCompany} onChange={(e) => setNewCompany(e.target.value)} />
-        <button onClick={() => handleAddCompany(user)}>הוסף</button>
-      </div>)}
+    <p className="info-line">טלפון: <span className="info-value">{user.phone || "אין"}</span></p>
+  {user.phone == null && (
+    <div className="info-form">
+      <input className="info-input" placeholder="טלפון" value={newPhone} onChange={(e) => setNewPhone(e.target.value)} />
+      <button className="info-btn" onClick={() => handleAddPhone(user)}>הוסף</button>
     </div>
+  )}
+
+  <p className="info-line">חברה: <span className="info-value">{user.company.name || "אין"}</span></p>
+
+  {user.company.name == null && (
+    <div className="info-form">
+      <input className="info-input" placeholder="חברה" value={newCompany} onChange={(e) => setNewCompany(e.target.value)} />
+      <button className="info-btn" onClick={() => handleAddCompany(user)}>הוסף</button>
+    </div>
+  )}
+</div>
+
   );
 }
 

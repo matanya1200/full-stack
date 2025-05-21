@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {useParams} from "react-router-dom"
+import "../CSS/posts.css";
 
 function Posts() {
   const { id } = useParams();
@@ -107,84 +108,90 @@ function Posts() {
     }
   };
 
-  return (
-    <div>
-      <h3>רשימת הפוסטים</h3>
+return (
+<div className="posts-wrapper">
+  <h3 className="posts-title">רשימת הפוסטים</h3>
 
-      <input
-        placeholder="חפש לפי כותרת או ID"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+  <div className="posts-filter">
+    <input
+      className="posts-input"
+      placeholder="חפש לפי כותרת או ID"
+      value={search}
+      onChange={(e) => setSearch(e.target.value)}
+    />
+  </div>
 
-      <div style={{ marginTop: "10px", marginBottom: "10px"}}>
-        <input
-          placeholder="כותרת חדשה"
-          value={newTitle}
-          onChange={(e) => setNewTitle(e.target.value)}
-        />
-        <input style={{marginLeft: "5px" }}
-          placeholder="תוכן חדש"
-          value={newBody}
-          onChange={(e) => setNewBody(e.target.value)}
-        />
-        <button onClick={addPost}>הוסף פוסט</button>
-      </div>
+  <div className="posts-add">
+    <input
+      className="posts-input"
+      placeholder="כותרת חדשה"
+      value={newTitle}
+      onChange={(e) => setNewTitle(e.target.value)}
+    />
+    <input
+      className="posts-input"
+      placeholder="תוכן חדש"
+      value={newBody}
+      onChange={(e) => setNewBody(e.target.value)}
+    />
+    <button className="posts-btn" onClick={addPost}>הוסף פוסט</button>
+  </div>
 
-      {selectedPost && (
-        <div style={{ border: "1px solid black", padding: 10, marginTop: 20 }}>
-          <h4>פוסט נבחר</h4>
-          <h5>{selectedPost.title}</h5>
-          <p>{selectedPost.body}</p>
+  {selectedPost && (
+    <div className="selected-post">
+      <h4>פוסט נבחר</h4>
+      <h5>{selectedPost.title}</h5>
+      <p>{selectedPost.body}</p>
 
-          <button onClick={() => loadComments(selectedPost.id)}>הצג תגובות</button>
+      <button className="posts-btn" onClick={() => loadComments(selectedPost.id)}>הצג תגובות</button>
 
-          {comments.length > 0 && (
-            <div style={{ marginTop: 10 }}>
-              <h5>תגובות:</h5>
-              <ul>
-                {comments.map(c => (
-                  <li key={c.id}>
-                    {c.email}{": "}{c.body}{" "}
-                    {c.email == user.email && (
-                      <>
-                        <button onClick={() => updateComment(c.id, c.body, c.email)}>עדכן</button>
-                        <button onClick={() => deleteComment(c.id, c.email)}>מחק</button>
-                      </>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-          <div style={{ marginTop: 10 }}>
-              <input
-                placeholder="תגובה חדשה"
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-              />
-              <button onClick={addComment}>הוסף תגובה</button>
-          </div>
+      {comments.length > 0 && (
+        <div className="comments-section">
+          <h5>תגובות:</h5>
+          <ul className="comments-list">
+            {comments.map(c => (
+              <li key={c.id} className="comment-item">
+                {c.email}{": "}{c.body}{" "}
+                {c.email == user.email && (
+                  <>
+                    <button className="comment-btn" onClick={() => updateComment(c.id, c.body, c.email)}>עדכן</button>
+                    <button className="comment-btn delete" onClick={() => deleteComment(c.id, c.email)}>מחק</button>
+                  </>
+                )}
+              </li>
+            ))}
+          </ul>
         </div>
       )}
 
-      <ul>
-        {filtered.map(post => (
-          <li key={post.id} style={{ marginTop: 10 }}>
-            <strong>{post.id}</strong>: {post.title}
-            <button onClick={() => selectPost(post)}>בחר</button>
-            {post.userId == id && (
-              <>
-            <button onClick={() => updatePost(post.id, post.title, post.body)}>עדכן</button>
-            <button onClick={() => deletePost(post.id)}>מחק</button>
-            </>
-            )}
-          </li>
-        ))}
-      </ul>
-
-      
+      <div className="add-comment">
+        <input
+          className="posts-input"
+          placeholder="תגובה חדשה"
+          value={newComment}
+          onChange={(e) => setNewComment(e.target.value)}
+        />
+        <button className="posts-btn" onClick={addComment}>הוסף תגובה</button>
+      </div>
     </div>
+  )}
+
+  <ul className="posts-list">
+    {filtered.map(post => (
+      <li key={post.id} className="post-item">
+        <strong>{post.id}</strong>: {post.title}
+        <button className="posts-btn" onClick={() => selectPost(post)}>בחר</button>
+        {post.userId == id && (
+          <>
+            <button className="posts-btn update" onClick={() => updatePost(post.id, post.title, post.body)}>עדכן</button>
+            <button className="posts-btn delete" onClick={() => deletePost(post.id)}>מחק</button>
+          </>
+        )}
+      </li>
+    ))}
+  </ul>
+</div>
+
   );
 }
 
