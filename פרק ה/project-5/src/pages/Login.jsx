@@ -14,7 +14,7 @@ function Login() {
 
     if (data.length && data[0].website === password) {
       localStorage.setItem("user", JSON.stringify(data[0]));
-      navigate("/home");
+      navigate(`/home/users/${data[0].id}/info`);
     } else {
       setError("שם משתמש או סיסמה שגויים.");
     }

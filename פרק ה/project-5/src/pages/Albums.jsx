@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import {useParams} from "react-router-dom"
 
 function Albums() {
+  const { id } = useParams();
   const user = JSON.parse(localStorage.getItem("user"));
   const [albums, setAlbums] = useState([]);
   const [selectedAlbum, setSelectedAlbum] = useState(null);
@@ -14,7 +16,7 @@ function Albums() {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:3001/albums?userId=${user.id}`)
+    fetch(`http://localhost:3001/albums?userId=${id}`)
       .then(res => res.json())
       .then(data => setAlbums(data));
   }, [user.id]);
@@ -43,7 +45,7 @@ function Albums() {
     const res = await fetch(`http://localhost:3001/albums`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId: user.id, title: newAlbumTitle }),
+      body: JSON.stringify({ userId: id, title: newAlbumTitle }),
     });
     const data = await res.json();
     setAlbums([...albums, data]);

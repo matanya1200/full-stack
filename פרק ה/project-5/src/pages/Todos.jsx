@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import {useParams} from "react-router-dom"
 
 function Todos() {
+  const { id } = useParams();
   const user = JSON.parse(localStorage.getItem("user"));
   const [todos, setTodos] = useState([]);
   const [filtered, setFiltered] = useState([]);
@@ -10,7 +12,7 @@ function Todos() {
 
   // Load todos on mount
   useEffect(() => {
-    fetch(`http://localhost:3001/todos?userId=${user.id}`)
+    fetch(`http://localhost:3001/todos?userId=${id}`)
       .then(res => res.json())
       .then(data => {
         setTodos(data);
@@ -77,7 +79,7 @@ function Todos() {
     const res = await fetch(`http://localhost:3001/todos`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId: user.id, title: newTitle, completed: false }),
+      body: JSON.stringify({ userId: id, title: newTitle, completed: false }),
     });
     const data = await res.json();
     setTodos([...todos, data]);

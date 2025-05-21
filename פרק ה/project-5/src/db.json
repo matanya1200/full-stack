@@ -237,7 +237,8 @@
       "email": "name@gmail.com",
       "website": "123abc",
       "address": {
-        "street": "משהו"
+        "street": "",
+        "city": "X"
       },
       "phone": "052-555-5555",
       "company": {

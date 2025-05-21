@@ -1,6 +1,8 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import {useParams} from "react-router-dom"
 
 function Posts() {
+  const { id } = useParams();
   const user = JSON.parse(localStorage.getItem("user"));
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null);
@@ -27,7 +29,7 @@ function Posts() {
     const res = await fetch("http://localhost:3001/posts", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId: user.id, title: newTitle, body: newBody }),
+      body: JSON.stringify({ userId: id, title: newTitle, body: newBody }),
     });
     const data = await res.json();
     setPosts([...posts, data]);
@@ -171,7 +173,7 @@ function Posts() {
           <li key={post.id} style={{ marginTop: 10 }}>
             <strong>{post.id}</strong>: {post.title}
             <button onClick={() => selectPost(post)}>בחר</button>
-            {post.userId == user.id && (
+            {post.userId == id && (
               <>
             <button onClick={() => updatePost(post.id, post.title, post.body)}>עדכן</button>
             <button onClick={() => deletePost(post.id)}>מחק</button>
