@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
 
-function NavBar({ logout }) {
+function NavBar({ logout, user }) {
   return (
     <nav style={{ marginBottom: "20px" }}>
-      <Link to="/home/info">Info</Link> |{" "}
-      <Link to="/home/todos">Todos</Link> |{" "}
-      <Link to="/home/posts">Posts</Link> |{" "}
-      <Link to="/home/albums">Albums</Link> |{" "}
+      <Link to={`/home/users/${user.id}/info`}>Info</Link> |{" "}
+      <Link to={`/home/users/${user.id}/todos`}>Todos</Link> |{" "}
+      <Link to={`/home/users/${user.id}/posts`}>Posts</Link> |{" "}
+      <Link to={`/home/users/${user.id}/albums`}>Albums</Link> |{" "}
       <button onClick={logout}>Logout</button>
     </nav>
   );

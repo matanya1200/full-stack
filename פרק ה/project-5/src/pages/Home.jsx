@@ -17,12 +17,12 @@ function Home() {
   return (
     <div>
       <h2>שלום, {user.name}</h2>
-      <NavBar logout={logout} />
+      <NavBar logout={logout} user={user}/>
       <Routes>
-        <Route path="info" element={<Info />} />
-        <Route path="todos" element={<Todos />} />
-        <Route path="posts" element={<Posts />} />
-        <Route path="albums" element={<Albums />} />
+        <Route path="users/:id/info" element={<Info />} />
+        <Route path="users/:id/todos" element={<Todos />} />
+        <Route path="users/:id/posts" element={<Posts />} />
+        <Route path="users/:id/albums" element={<Albums />} />
       </Routes>
     </div>
   );
