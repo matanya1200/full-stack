@@ -44,7 +44,7 @@
   }
   
   .navbar a:hover {
-    color: rgb(51, 235, 192);
+    color: rgb(234, 109, 109);
     transform: scale(1.1);
   }
   
@@ -61,7 +61,7 @@
   }
   
   .logout-btn:hover {
-    color: rgb(51, 235, 192);
+    color: rgb(234, 109, 109);
     transform: scale(1.1);
   }
 

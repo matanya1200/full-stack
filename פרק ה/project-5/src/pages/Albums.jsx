@@ -136,16 +136,21 @@ function Albums() {
   <ul className="albums-list">
     {filtered.map(album => (
       <li key={album.id} className="album-item">
-        <strong>{album.id}</strong>:{" "}
-        <span
-          className={`album-title ${selectedAlbumId === album.id ? "selected" : ""}`}
-          onClick={() => selectAlbum(album)}
-        >
-          {album.title}
-        </span>
-        <button className="albums-btn" onClick={() => updateAlbum(album.id, album.title)}>עדכן</button>
-        <button className="albums-btn delete" onClick={() => deleteAlbum(album.id)}>מחק</button>
+        <div className="album-info">
+          <strong>{album.id}</strong>:{" "}
+          <span
+            className={`album-title ${selectedAlbumId === album.id ? "selected" : ""}`}
+            onClick={() => selectAlbum(album)}
+          >
+            {album.title}
+          </span>
+        </div>
+        <div className="album-actions">
+          <button className="albums-btn" onClick={() => updateAlbum(album.id, album.title)}>עדכן</button>
+          <button className="albums-btn delete" onClick={() => deleteAlbum(album.id)}>מחק</button>
+        </div>
       </li>
+
     ))}
   </ul>
 
