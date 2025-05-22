@@ -1,5 +1,15 @@
 import { useEffect, useState } from "react";
 import {useParams} from "react-router-dom"
+import {
+  fetchPosts,
+  createPost,
+  updatePostServer,
+  deletePostServer,
+  fetchComments,
+  createComment,
+  updateComment,
+  deleteComment
+} from "../API/postsService";
 import "../CSS/posts.css";
 
 function Posts() {
@@ -14,9 +24,7 @@ function Posts() {
   const [newComment, setNewComment] = useState("");
 
   useEffect(() => {
-    fetch(`http://localhost:3001/posts`)
-      .then(res => res.json())
-      .then(data => setPosts(data));
+    fetchPosts().then(setPosts);//its a promise that returns an array of posts and we set the posts state with it
   }, [user.id]);
 
   const filtered = posts.filter(
@@ -27,19 +35,14 @@ function Posts() {
 
   const addPost = async () => {
     if (!newTitle || !newBody) return;
-    const res = await fetch("http://localhost:3001/posts", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId: id, title: newTitle, body: newBody }),
-    });
-    const data = await res.json();
-    setPosts([...posts, data]);
+    const newPost = await createPost(id, newTitle, newBody);
+    setPosts([...posts, newPost]); // מוסיף את הפוסט החדש לרשימה
     setNewTitle("");
     setNewBody("");
   };
 
   const deletePost = async (id) => {
-    await fetch(`http://localhost:3001/posts/${id}`, { method: "DELETE" });
+    await deletePostServer,(id);
     setPosts(posts.filter(p => p.id !== id));
     if (selectedPost?.id === id) {
       setSelectedPost(null);
@@ -51,11 +54,7 @@ function Posts() {
     const title = prompt("כותרת חדשה:", oldTitle);
     const body = prompt("תוכן חדש:", oldBody);
     if (title && body) {
-      await fetch(`http://localhost:3001/posts/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, body }),
-      });
+      await updatePostServer(id, title, body);
       setPosts(posts.map(p => (p.id === id ? { ...p, title, body } : p)));
       if (selectedPost?.id === id) setSelectedPost({ ...selectedPost, title, body });
     }
@@ -67,31 +66,19 @@ function Posts() {
   };
 
   const loadComments = async (postId) => {
-    const res = await fetch(`http://localhost:3001/comments?postId=${postId}`);
-    const data = await res.json();
-    setComments(data);
+    await fetchComments(postId).then(setComments);
   };
 
   const addComment = async () => {
     if (!newComment.trim() || !selectedPost) return;
-    const res = await fetch(`http://localhost:3001/comments`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        postId: selectedPost.id,
-        name: user.username,
-        email: user.email,
-        body: newComment,
-      }),
-    });
-    const data = await res.json();
+    const data = await createComment(selectedPost.id, user.username, user.email, newComment);
     setComments([...comments, data]);
     setNewComment("");
   };
 
   const deleteComment = async (id, ownerEmail) => {
     if (ownerEmail !== user.email) return;
-    await fetch(`http://localhost:3001/comments/${id}`, { method: "DELETE" });
+    await deleteComment(id);
     setComments(comments.filter(c => c.id !== id));
   };
 
@@ -99,11 +86,7 @@ function Posts() {
     if (ownerEmail !== user.email) return;
     const body = prompt("עדכן תגובה:", oldText);
     if (body && body !== oldText) {
-      await fetch(`http://localhost:3001/comments/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ body }),
-      });
+      await updateComment(id, body);
       setComments(comments.map(c => (c.id === id ? { ...c, body } : c)));
     }
   };

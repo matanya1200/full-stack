@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getUserByUsername, createUser} from "../API/userService";
 import "../CSS/Register.css";
 
 function Register() {
@@ -22,8 +23,7 @@ function Register() {
       return;
     }
 
-    const res = await fetch(`http://localhost:3001/users?username=${username}`);
-    const existing = await res.json();
+    const existing = await getUserByUsername(username);
     if (existing.length > 0) {
       setError("שם המשתמש כבר קיים");
       return;
@@ -39,13 +39,7 @@ function Register() {
       company:{name:null}
     };
 
-    const postRes = await fetch("http://localhost:3001/users", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newUser),
-    });
-
-    const savedUser = await postRes.json();
+    const savedUser = await createUser(newUser);
     localStorage.setItem("user", JSON.stringify(savedUser));
     navigate(`/home/users/${savedUser.id}/info`);
   };
