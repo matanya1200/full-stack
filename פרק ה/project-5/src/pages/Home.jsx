@@ -4,10 +4,17 @@ import Info from "./Info";
 import Todos from "./Todos";
 import Posts from "./Posts";
 import Albums from "./Albums";
+import { useState, useEffect } from "react";
 import "../CSS/Home.css";
 function Home() {
+
   const navigate = useNavigate();
+
+  const [userName, setName] = useState(JSON.parse(localStorage.getItem("user")).username);
   const user = JSON.parse(localStorage.getItem("user"));
+  useEffect(() => {
+    setName(JSON.parse(localStorage.getItem("user")).username);
+  },[userName])
 
   const logout = () => {
     localStorage.removeItem("user");
@@ -16,7 +23,7 @@ function Home() {
 
   return (
 <div className="home-wrapper">
-  <h2 className="home-title">Hello, {user.name}</h2>
+  <h2 className="home-title">Hello, {userName}</h2>
 
   <NavBar logout={logout} user={user} />
 
