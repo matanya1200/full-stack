@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {useParams} from "react-router-dom"
+import {getTodos, addTodoServer, updateTodo, deleteTodoServer, updateTodoTitel} from "../API/todosService";
 import "../CSS/todos.css";
 
 function Todos() {
@@ -13,8 +14,7 @@ function Todos() {
 
   // Load todos on mount
   useEffect(() => {
-    fetch(`http://localhost:3001/todos?userId=${id}`)
-      .then(res => res.json())
+    getTodos(user.id)
       .then(data => {
         setTodos(data);
         setFiltered(data);
@@ -47,11 +47,7 @@ function Todos() {
 
   // Toggle completion
   const toggleCompletion = async (id, completed) => {
-    await fetch(`http://localhost:3001/todos/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ completed: !completed }),
-    });
+    await updateTodo(id, { completed: !completed });
     setTodos(todos.map(t => t.id === id ? { ...t, completed: !completed } : t));
   };
 
@@ -59,30 +55,21 @@ function Todos() {
   const updateTitle = async (id, title) => {
     const newTitle = prompt("הכנס כותרת חדשה:", title);
     if (newTitle && newTitle !== title) {
-      await fetch(`http://localhost:3001/todos/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title: newTitle }),
-      });
+      await updateTodoTitel(id, newTitle);
       setTodos(todos.map(t => t.id === id ? { ...t, title: newTitle } : t));
     }
   };
 
   // Delete todo
   const deleteTodo = async (id) => {
-    await fetch(`http://localhost:3001/todos/${id}`, { method: "DELETE" });
+    await deleteTodoServer(id);
     setTodos(todos.filter(t => t.id !== id));
   };
 
   // Add new todo
   const addTodo = async () => {
     if (!newTitle.trim()) return;
-    const res = await fetch(`http://localhost:3001/todos`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId: id, title: newTitle, completed: false }),
-    });
-    const data = await res.json();
+    const data = await addTodoServer(user.id, newTitle);
     setTodos([...todos, data]);
     setNewTitle("");
   };

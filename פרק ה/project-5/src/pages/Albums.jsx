@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import {useParams} from "react-router-dom"
+import {getAlbums, addAlbumServer, updateAlbumServer, deleteAlbumServer} from "../API/AlbumsService";
+import {getPhotos, addPhotoServer, updatePhotoServer, deletePhotoServer} from "../API/AlbumsService";
 import "../CSS/albums.css";
 
 function Albums() {
@@ -17,9 +19,7 @@ function Albums() {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:3001/albums?userId=${id}`)
-      .then(res => res.json())
-      .then(data => setAlbums(data));
+    getAlbums(user.id).then(setAlbums);
   }, [user.id]);
 
   const filtered = albums.filter(
@@ -32,9 +32,7 @@ function Albums() {
     setSelectedAlbumId(album.id);
     setSelectedAlbum(album);
     setVisiblePhotos(5);
-    const res = await fetch(`http://localhost:3001/photos?albumId=${album.id}`);
-    const data = await res.json();
-    setPhotos(data);
+    await getPhotos(album.id).then(setPhotos);
   };
 
   const loadMorePhotos = () => {
@@ -43,18 +41,13 @@ function Albums() {
 
   const addAlbum = async () => {
     if (!newAlbumTitle) return;
-    const res = await fetch(`http://localhost:3001/albums`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId: id, title: newAlbumTitle }),
-    });
-    const data = await res.json();
+    const data = await addAlbumServer(user.id, newAlbumTitle);
     setAlbums([...albums, data]);
     setNewAlbumTitle("");
   };
 
   const deleteAlbum = async (id) => {
-    await fetch(`http://localhost:3001/albums/${id}`, { method: "DELETE" });
+    await deleteAlbumServer(id);
     setAlbums(albums.filter(a => a.id !== id));
     if (selectedAlbum?.id === id) {
       setSelectedAlbum(null);
@@ -65,11 +58,7 @@ function Albums() {
   const updateAlbum = async (id, oldTitle) => {
     const title = prompt("כותרת חדשה לאלבום:", oldTitle);
     if (title && title !== oldTitle) {
-      await fetch(`http://localhost:3001/albums/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title }),
-      });
+      await updateAlbumServer(id, { title });
       setAlbums(albums.map(a => (a.id === id ? { ...a, title } : a)));
       if (selectedAlbum?.id === id) setSelectedAlbum({ ...selectedAlbum, title });
     }
@@ -78,24 +67,14 @@ function Albums() {
   const addPhoto = async () => {
     if (!newPhotoUrl || !selectedAlbum) return;
     const thumbnailUrl = newPhotoUrl//.replace("/600/400", "/150/100");
-    const res = await fetch(`http://localhost:3001/photos`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        albumId: selectedAlbum.id,
-        url: newPhotoUrl,
-        title: newPhotoName || `Photo ${photos.length + 1}`,
-        thumbnailUrl: thumbnailUrl
-      }),
-    });
-    const data = await res.json();
+    const data = await addPhotoServer(selectedAlbum.id, newPhotoName, newPhotoUrl);
     setPhotos([...photos, data]);
     setNewPhotoUrl("");
     setnewPhotoName("");
   };
 
   const deletePhoto = async (id) => {
-    await fetch(`http://localhost:3001/photos/${id}`, { method: "DELETE" });
+    await deletePhotoServer(id);
     setPhotos(photos.filter(p => p.id !== id));
   };
 
@@ -103,11 +82,7 @@ function Albums() {
     const url = prompt("כתובת חדשה לתמונה:", oldUrl);
     const title = prompt("שם חדש לתמונה:", oldTitle);
     if (url && url !== oldUrl) {
-      await fetch(`http://localhost:3001/photos/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url:url , title:title, thumbnailUrl:url}),
-      });
+      await updatePhotoServer(id, { url, title });
       setPhotos(photos.map(p => (p.id === id ? { ...p, url } : p)));
     }
   };

@@ -1,5 +1,6 @@
 import { use, useState } from "react";
 import {useParams} from "react-router-dom"
+import { updateUser} from "../API/userService";
 import "../CSS/Info.css";
 
 function Info() {
@@ -15,94 +16,49 @@ function Info() {
   const neetMore = false;
 
   const handleAddName = async (user) => {
-    const res = await fetch(`http://localhost:3001/users/${id}`, {  
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: newName }),
-    });
-    if (res.ok) {
-      const updatedUser = { ...user, name: newName };
-      setUser(updatedUser);
-      localStorage.setItem("user", JSON.stringify(updatedUser)); 
-      setNewName(""); 
-    }
+    await updateUser(id, { name: newName }).then(setUser);
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+    setNewName("");
   };
 
   const handleAddEmail = async (user) => {
-    const res = await fetch(`http://localhost:3001/users/${id}`, {
-      method: "PATCH",  
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: newEmail }),
-    });
-    if (res.ok) {
-      const updatedUser = { ...user, email: newEmail };
-      setUser(updatedUser);
-      localStorage.setItem("user", JSON.stringify(updatedUser)); 
-      setNewEmail(""); 
-    }
+    await updateUser(id, { email: newEmail }).then(setUser);
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+    setNewEmail("");
   };
 
-  const handleAddPhone = async (user) =>{
-    const res = await fetch(`http://localhost:3001/users/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone: newPhone }),
-    });
-
-    if (res.ok) {
-      const updatedUser = { ...user, phone: newPhone };
-      setUser(updatedUser);
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-      setNewPhone(""); 
-    }
-  }
-  const handleAddAddress = async (user) =>{
-    const res = await fetch(`http://localhost:3001/users/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ address: {
+  const handleAddPhone = async (user) => {
+    await updateUser(id, { phone: newPhone }).then(setUser);
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+    setNewPhone("");
+  };
+  
+  const handleAddAddress = async (user) => {
+    const updatedUser = await updateUser(id, {
+      address: {
         ...user.address,
         street: newStreet,
-        city: newCity
-      }, }),
+        city: newCity,
+      },
     });
-
-    if (res.ok) {
-      const updatedUser = {
-        ...user,
-        address: {
-          ...user.address,   
-          street: newStreet, 
-          city: newCity
-        }};
-      setUser(updatedUser); 
-      localStorage.setItem("user", JSON.stringify(updatedUser)); 
-      setNewStreet(""); 
-      setNewCity("")
-    }
-  }
-  const handleAddCompany = async (user) =>{
-    const res = await fetch(`http://localhost:3001/users/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ company: {
+    setUser(updatedUser);
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+    setNewStreet("");
+    setNewCity("");
+  };
+  
+  const handleAddCompany = async (user) => {
+    const updatedUser = await updateUser(id, {
+      company: {
         ...user.company,
         name: newCompany,
-      },}),
+      },
     });
-
-    if (res.ok) {
-      const updatedUser = {
-        ...user,
-        company: {
-          ...user.company,       
-          name: newCompany     
-        }};
-      setUser(updatedUser); 
-      localStorage.setItem("user", JSON.stringify(updatedUser)); 
-      setNewCompany(""); 
-    }
-  }
+    setUser(updatedUser);
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+    setNewCompany("");
+  };
+  
   
   return (
 <div className="info-wrapper">
