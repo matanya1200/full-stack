@@ -1,6 +1,7 @@
-import { use, useState } from "react";
-import {useParams} from "react-router-dom"
+import { use, useState, useEffect } from "react";
+import {useParams, useNavigate} from "react-router-dom"
 import { updateUser} from "../API/userService";
+
 import "../CSS/Info.css";
 
 function Info() {
@@ -14,6 +15,12 @@ function Info() {
   const [newCity, setNewCity] = useState("");
   const [newCompany, setNewCompany] = useState("");
   const neetMore = false;
+  const navigate = useNavigate();
+
+  
+  useEffect(() => {
+    navigate(`/home/users/${id}/info`);
+  },[newName])
 
   const handleAddName = async (user) => {
     await updateUser(id, { name: newName }).then(setUser);
