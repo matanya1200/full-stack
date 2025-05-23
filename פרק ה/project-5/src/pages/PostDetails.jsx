@@ -7,7 +7,7 @@ import {
   updateComment,
   deleteComment
 } from "../API/postsService";
-import "../CSS/posts.css";
+import "../CSS/posts.css"; 
 
 function PostDetails() {
   const { id, postId } = useParams();
