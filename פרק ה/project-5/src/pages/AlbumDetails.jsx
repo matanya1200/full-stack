@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getPhotos, addPhotoServer, updatePhotoServer, deletePhotoServer } from "../API/AlbumsService";
 import "../CSS/albums.css";
 
 function AlbumDetails() {
-  const { albumId } = useParams();
+  const { id, albumId } = useParams();
   const [photos, setPhotos] = useState([]);
   const [visiblePhotos, setVisiblePhotos] = useState(5);
   const [newPhotoUrl, setNewPhotoUrl] = useState("");
   const [newPhotoName, setNewPhotoName] = useState("");
   const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getPhotos(albumId).then(setPhotos);
@@ -89,6 +90,8 @@ function AlbumDetails() {
           <img src={selectedPhoto.url} alt={selectedPhoto.title} className="photo-full" />
         </div>
       )}
+
+      <button className="albums-btn load-more" onClick={()=>navigate(`/home/users/${id}/albums`)}>חזרה</button>
     </div>
   );
 }
