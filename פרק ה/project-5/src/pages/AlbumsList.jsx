@@ -47,21 +47,23 @@ function AlbumsList() {
     <div className="albums-wrapper">
       <h3 className="albums-title">רשימת האלבומים</h3>
 
-      <input
-        className="albums-search"
-        placeholder="חיפוש לפי כותרת או ID"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-
-      <div className="albums-add">
+      <div className="albums-toolbar">
         <input
-          className="albums-input"
-          placeholder="כותרת אלבום חדש"
-          value={newAlbumTitle}
-          onChange={(e) => setNewAlbumTitle(e.target.value)}
+          className="albums-search"
+          placeholder="חיפוש לפי כותרת או ID"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
-        <button className="albums-btn" onClick={addAlbum}>הוסף אלבום</button>
+
+        <div className="albums-add">
+          <input
+            className="albums-input"
+            placeholder="כותרת אלבום חדש"
+            value={newAlbumTitle}
+            onChange={(e) => setNewAlbumTitle(e.target.value)}
+          />
+          <button className="albums-btn" onClick={addAlbum}>הוסף אלבום</button>
+        </div>
       </div>
 
       <ul className="albums-list">
