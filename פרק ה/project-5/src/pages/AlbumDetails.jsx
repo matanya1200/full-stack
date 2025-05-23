@@ -91,7 +91,7 @@ function AlbumDetails() {
         </div>
       )}
 
-      <button className="albums-btn load-more" onClick={()=>navigate(`/home/users/${id}/albums`)}>חזרה</button>
+      <button className="albums-back" onClick={()=>navigate(`/home/users/${id}/albums`)}>חזרה לאלבומים</button>
     </div>
   );
 }
