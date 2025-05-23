@@ -43,7 +43,7 @@ function AlbumDetails() {
 
   return (
     <div className="photos-wrapper">
-      <h4>תמונות באלבום #{albumId}</h4>
+      <h4 className="titel-photos" >תמונות באלבום #{albumId}</h4>
 
       <div className="photos-add">
         <input

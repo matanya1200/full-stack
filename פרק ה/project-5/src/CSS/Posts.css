@@ -43,6 +43,8 @@
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.2s ease;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
   }
   
   .posts-btn:hover {
