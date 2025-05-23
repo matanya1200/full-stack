@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   fetchPosts,
   fetchComments,
@@ -10,11 +10,12 @@ import {
 import "../CSS/posts.css";
 
 function PostDetails() {
-  const { postId } = useParams();
+  const { id, postId } = useParams();
   const user = JSON.parse(localStorage.getItem("user"));
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchPosts().then(data => {
@@ -86,6 +87,8 @@ function PostDetails() {
           onChange={(e) => setNewComment(e.target.value)}
         />
         <button className="posts-btn" onClick={addComment}>הוסף תגובה</button>
+
+        <button className="albums-btn load-more" onClick={()=>navigate(`/home/users/${id}/posts`)}>חזרה</button>
       </div>
     </div>
   );
