@@ -11,8 +11,8 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const res = await fetch(`http://localhost:3001/users?username=${username}`);
-    const data = await res.json();
+    
+    const data = await getUserByUsername(username);
 
     if (data.length && data[0].website === password) {
       localStorage.setItem("user", JSON.stringify(data[0]));

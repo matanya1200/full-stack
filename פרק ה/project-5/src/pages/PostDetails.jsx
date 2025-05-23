@@ -88,7 +88,7 @@ function PostDetails() {
         />
         <button className="posts-btn" onClick={addComment}>הוסף תגובה</button>
 
-        <button className="albums-btn load-more" onClick={()=>navigate(`/home/users/${id}/posts`)}>חזרה</button>
+        <button className="postss-back" onClick={()=>navigate(`/home/users/${id}/posts`)}>חזרה לפוסטים</button>
       </div>
     </div>
   );
