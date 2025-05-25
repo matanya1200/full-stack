@@ -3,8 +3,9 @@ const BASE_URL = "http://localhost:3001";
 // Albums
 export const getAlbums = async (userId) => {
   const res = await fetch(`${BASE_URL}/albums?userId=${userId}`);
-  return res.json();
-};
+  let data = await res.json();
+  data = data.filter(albums => albums.userId === Number(userId) || albums.userId === userId);
+  return data;};
 
 export const addAlbumServer = async (userId, title) => {
   const res = await fetch(`${BASE_URL}/albums`, {
@@ -30,7 +31,9 @@ export const deleteAlbumServer = async (id) => {
 // Photos
 export const getPhotos = async (albumId) => {
   const res = await fetch(`${BASE_URL}/photos?albumId=${albumId}`);
-  return res.json();
+  let data = await res.json();
+  data = data.filter(photo => photo.albumId === Number(albumId) || photo.albumId === albumId);
+  return data;
 };
 
 export const addPhotoServer = async (albumId, title, url) => {

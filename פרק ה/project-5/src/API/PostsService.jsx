@@ -28,7 +28,9 @@ export const deletePostServer = async (id) => {
 
 export const fetchComments = async (postId) => {
   const res = await fetch(`${BASE_URL}/comments?postId=${postId}`);
-  return res.json();
+  let data = await res.json();
+  data = data.filter(comments => comments.postId === Number(postId) || comments.postId === postId );
+  return data;
 };
 
 export const createComment = async (postId, name, email, body) => {
