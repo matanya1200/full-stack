@@ -2,7 +2,9 @@ const BASE_URL = "http://localhost:3001";
 
 export const getTodos = async (userId) => {
   const res = await fetch(`${BASE_URL}/todos?userId=${userId}`);
-  return res.json();
+  let data = await res.json();
+  data = data.filter(todos => todos.userId === Number(userId) || todos.userId === userId);
+  return data;
 };
 
 export const addTodoServer = async (userId, title) => {
