@@ -3,6 +3,7 @@ import {useParams, useNavigate} from "react-router-dom"
 import { updateUser} from "../API/userService";
 
 import "../CSS/Info.css";
+import { toast } from 'react-toastify';
 
 function Info() {
   const { id } = useParams();
@@ -24,18 +25,21 @@ function Info() {
 
   const handleAddName = async (user) => {
     await updateUser(id, { name: newName }).then(setUser);
+    toast.success("השם נוסף בהצלחה!");
     localStorage.setItem("user", JSON.stringify(updatedUser));
     setNewName("");
   };
 
   const handleAddEmail = async (user) => {
     await updateUser(id, { email: newEmail }).then(setUser);
+    toast.success("המייל נוסף בהצלחה!");
     localStorage.setItem("user", JSON.stringify(updatedUser));
     setNewEmail("");
   };
 
   const handleAddPhone = async (user) => {
     await updateUser(id, { phone: newPhone }).then(setUser);
+    toast.success("הטלפון נוסף בהצלחה!");
     localStorage.setItem("user", JSON.stringify(updatedUser));
     setNewPhone("");
   };
@@ -48,6 +52,7 @@ function Info() {
         city: newCity,
       },
     });
+    toast.success("הכתובת נוספה בהצלחה!");
     setUser(updatedUser);
     localStorage.setItem("user", JSON.stringify(updatedUser));
     setNewStreet("");
@@ -61,6 +66,7 @@ function Info() {
         name: newCompany,
       },
     });
+    toast.success("החברה נוספה בהצלחה!");
     setUser(updatedUser);
     localStorage.setItem("user", JSON.stringify(updatedUser));
     setNewCompany("");

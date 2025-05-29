@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import {useParams} from "react-router-dom"
 import {getTodos, addTodoServer, updateTodo, deleteTodoServer, updateTodoTitel} from "../API/todosService";
 import "../CSS/todos.css";
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 function Todos() {
   const { id } = useParams();
@@ -53,9 +55,22 @@ function Todos() {
 
   // Update title
   const updateTitle = async (id, title) => {
-    const newTitle = prompt("הכנס כותרת חדשה:", title);
+    const { value: newTitle } = await Swal.fire({
+      title: 'כותרת חדשה למשימה',
+      input: 'text',
+      inputLabel: 'אנא כתוב כותרת חדשה',
+      inputValue: title,
+      showCancelButton: true,
+      confirmButtonText: 'עדכן',
+      cancelButtonText: 'ביטול',
+    });
     if (newTitle && newTitle !== title) {
       await updateTodoTitel(id, newTitle);
+      if (!newTitle) {
+        toast.error("שגיאה בעדכון הכותרת");
+        return;
+      }
+      toast.success("הכותרת עודכנה בהצלחה!");
       setTodos(todos.map(t => t.id === id ? { ...t, title: newTitle } : t));
     }
   };
@@ -63,6 +78,11 @@ function Todos() {
   // Delete todo
   const deleteTodo = async (id) => {
     await deleteTodoServer(id);
+    if (!id) {
+      toast.error("שגיאה במחיקת המשימה");
+      return;
+    }
+    toast.success("המשימה נמחקה בהצלחה!");
     setTodos(todos.filter(t => t.id !== id));
   };
 
@@ -70,6 +90,11 @@ function Todos() {
   const addTodo = async () => {
     if (!newTitle.trim()) return;
     const data = await addTodoServer(user.id, newTitle);
+    if (!data) {
+      toast.error("שגיאה בהוספת המשימה");
+      return;
+    }
+    toast.success("המשימה הוספה בהצלחה!");
     setTodos([...todos, data]);
     setNewTitle("");
   };

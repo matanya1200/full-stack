@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUserByUsername, createUser} from "../API/userService";
 import "../CSS/Register.css";
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 function Register() {
   const [username, setUsername] = useState("");
@@ -41,6 +43,7 @@ function Register() {
 
     const savedUser = await createUser(newUser);
     localStorage.setItem("user", JSON.stringify(savedUser));
+    toast.success("החשבון נוצר בהצלחה!");
     navigate(`/home/users/${savedUser.id}/info`);
   };
 

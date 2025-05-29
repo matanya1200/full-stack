@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getPhotos, addPhotoServer, updatePhotoServer, deletePhotoServer } from "../API/AlbumsService";
 import "../CSS/albums.css";
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 function AlbumDetails() {
   const { id, albumId } = useParams();
@@ -23,6 +25,11 @@ function AlbumDetails() {
   const addPhoto = async () => {
     if (!newPhotoUrl) return;
     const data = await addPhotoServer(albumId, newPhotoName, newPhotoUrl);
+    if (!data) {
+      toast.error("שגיאה בהוספת התמונה");
+      return;
+    }
+    toast.success("התמונה נוספה בהצלחה!");
     setPhotos([...photos, data]);
     setNewPhotoUrl("");
     setNewPhotoName("");
@@ -30,14 +37,41 @@ function AlbumDetails() {
 
   const deletePhoto = async (id) => {
     await deletePhotoServer(id);
+    if (!id) {
+      toast.error("שגיאה במחיקת התמונה");
+      return;
+    }
+    toast.success("התמונה נמחקה בהצלחה!");
     setPhotos(photos.filter(p => p.id !== id));
   };
 
   const updatePhoto = async (id, oldUrl, oldTitle) => {
-    const url = prompt("כתובת חדשה לתמונה:", oldUrl);
-    const title = prompt("שם חדש לתמונה:", oldTitle);
+    const { value: url } = await Swal.fire({
+      title: 'כתובת חדשה לתמונה',
+      input: 'text',
+      inputLabel:'כתוב כתובת חדשה לתמונה',
+      inputValue: oldUrl,
+      showCancelButton: true,
+      confirmButtonText: 'עדכן',
+      cancelButtonText: 'ביטול',
+    });
+    const { value: title } = await Swal.fire({
+      title: 'שם חדש לתמונה',
+      input: 'text',
+      inputLabel: 'כתוב שם חדש לתמונה',
+      inputValue: oldTitle,
+      showCancelButton: true,
+      confirmButtonText: 'עדכן',
+      cancelButtonText: 'ביטול',
+    });
     if (url && url !== oldUrl) {
       await updatePhotoServer(id, { url, title });
+      if (!id) {
+        toast.error("שגיאה בעדכון התמונה");
+        return;
+      }
+      toast.success("התמונה עודכנה בהצלחה!");
+      // Update the photo in the state
       setPhotos(photos.map(p => (p.id === id ? { ...p, url, title } : p)));
     }
   };

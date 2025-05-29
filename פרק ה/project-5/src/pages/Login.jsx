@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUserByUsername} from "../API/userService";
 import "../CSS/login.css";
+import { toast } from 'react-toastify';
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -17,6 +18,7 @@ function Login() {
     if (data.length && data[0].website === password) {
       localStorage.setItem("user", JSON.stringify(data[0]));
       navigate(`/home/users/${data[0].id}/info`);
+      toast.success("התחברת בהצלחה!");
     } else {
       setError("שם משתמש או סיסמה שגויים.");
     }

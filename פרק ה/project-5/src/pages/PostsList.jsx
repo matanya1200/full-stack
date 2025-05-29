@@ -7,6 +7,9 @@ import {
   deletePostServer
 } from "../API/postsService";
 import "../CSS/posts.css";
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
+
 
 function PostsList() {
   const { id } = useParams();
@@ -30,6 +33,11 @@ function PostsList() {
   const addPost = async () => {
     if (!newTitle || !newBody) return;
     const newPost = await createPost(id, newTitle, newBody);
+    if (!newPost) {
+      toast.error("שגיאה בהוספת הפוסט");
+      return;
+    }
+    toast.success("הפוסט נוסף בהצלחה!");
     setPosts([...posts, newPost]);
     setNewTitle("");
     setNewBody("");
@@ -37,17 +45,44 @@ function PostsList() {
 
   const deletePost = async (postId) => {
     await deletePostServer(postId);
+    if (!postId) {
+      toast.error("שגיאה במחיקת הפוסט");
+      return;
+    }
     setPosts(posts.filter(p => p.id !== postId));
+    toast.success("הפוסט נמחק בהצלחה!");
   };
 
-  const updatePost = async (postId, oldTitle, oldBody) => {
-    const title = prompt("כותרת חדשה:", oldTitle);
-    const body = prompt("תוכן חדש:", oldBody);
-    if (title && body) {
-      await updatePostServer(postId, title, body);
-      setPosts(posts.map(p => (p.id === postId ? { ...p, title, body } : p)));
+  const updatePost = async (id, oldTitle, oldBody) => {
+    const { value: title } = await Swal.fire({
+      title: 'כותרת חדשה',
+      input: 'text',
+      inputLabel: 'כתוב כותרת חדשה',
+      inputValue: oldTitle,
+      showCancelButton: true,
+      confirmButtonText: 'עדכן',
+      cancelButtonText: 'ביטול',
+    });
+      const { value: body } = await Swal.fire({
+      title: 'תוכן חדש',
+      input: 'text',
+      inputLabel: 'כתוב תוכן חדש',
+      inputValue: oldBody,
+      showCancelButton: true,
+      confirmButtonText: 'עדכן',
+      cancelButtonText: 'ביטול',
+    });
+  if (title && body) {
+    try {
+      await updatePostServer(id, title, body);
+      setPosts(posts.map(p => (p.id === id ? { ...p, title, body } : p)));
+      toast.success("הפוסט עודכן בהצלחה!");
+    } catch (err) {
+      toast.error("שגיאה בעדכון הפוסט");
     }
-  };
+  }
+};
+
 
   const selectPost = (post) => {
     navigate(`/home/users/${user.id}/posts/${post.id}`);
