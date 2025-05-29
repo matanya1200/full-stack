@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getAlbums, addAlbumServer, updateAlbumServer, deleteAlbumServer } from "../API/AlbumsService";
 import "../CSS/albums.css";
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 function AlbumsList() {
   const { id } = useParams();
@@ -26,19 +28,42 @@ function AlbumsList() {
   const addAlbum = async () => {
     if (!newAlbumTitle) return;
     const data = await addAlbumServer(user.id, newAlbumTitle);
+    if (!data) {
+      toast.error("שגיאה בהוספת האלבום");
+      return;
+    }   
+    toast.success("האלבום נוסף בהצלחה!");
     setAlbums([...albums, data]);
     setNewAlbumTitle("");
   };
 
   const deleteAlbum = async (albumId) => {
     await deleteAlbumServer(albumId);
+    if (!albumId) {
+      toast.error("שגיאה במחיקת האלבום");
+      return;
+    }
+    toast.success("האלבום נמחק בהצלחה!");
     setAlbums(albums.filter(a => a.id !== albumId));
   };
 
   const updateAlbum = async (albumId, oldTitle) => {
-    const title = prompt("כותרת חדשה לאלבום:", oldTitle);
+    const { value: title } = await Swal.fire({
+      title: 'כותרת חדשה',
+      input: 'text',
+      inputLabel: 'כתוב כותרת חדשה',
+      inputValue: oldTitle,
+      showCancelButton: true,
+      confirmButtonText: 'עדכן',
+      cancelButtonText: 'ביטול',
+    });
     if (title && title !== oldTitle) {
       await updateAlbumServer(albumId, { title });
+      if (!albumId) {
+        toast.error("שגיאה בעדכון האלבום");
+        return;
+      }
+      toast.success("האלבום עודכן בהצלחה!");
       setAlbums(albums.map(a => (a.id === albumId ? { ...a, title } : a)));
     }
   };
