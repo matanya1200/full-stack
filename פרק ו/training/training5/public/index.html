@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <title>מערכת ניהול תלמידים</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light p-4">
+  <div class="container">
+    <h1 class="text-center mb-4">👨‍🎓 מערכת תלמידים</h1>
+
+    <form id="student-form" class="d-flex gap-2 mb-4">
+      <input type="text" id="student-name" class="form-control" placeholder="שם תלמיד חדש" required>
+      <button type="submit" class="btn btn-success">➕ הוסף</button>
+    </form>
+
+    <table class="table table-bordered text-center bg-white">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>שם</th>
+          <th>פעולות</th>
+        </tr>
+      </thead>
+      <tbody id="student-table-body">
+        <!-- התלמידים ייטענו כאן -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    const api = 'http://localhost:3000/students';
+
+    // טען את רשימת התלמידים
+    async function loadStudents() {
+      const res = await fetch(api);
+      const students = await res.json();
+
+      const tbody = document.getElementById('student-table-body');
+      tbody.innerHTML = '';
+
+      students.forEach(student => {
+        const row = document.createElement('tr');
+
+        row.innerHTML = `
+          <td>${student.id}</td>
+          <td>
+            <input type="text" value="${student.name}" class="form-control text-center" onchange="updateStudent(${student.id}, this.value)">
+          </td>
+          <td>
+            <button class="btn btn-danger btn-sm" onclick="deleteStudent(${student.id})">🗑 מחק</button>
+          </td>
+        `;
+
+        tbody.appendChild(row);
+      });
+    }
+
+    // הוספת תלמיד
+    document.getElementById('student-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('student-name').value.trim();
+      if (!name) return;
+
+      await fetch(api, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name })
+      });
+
+      document.getElementById('student-name').value = '';
+      loadStudents();
+    });
+
+    // מחיקת תלמיד
+    async function deleteStudent(id) {
+      if (!confirm('האם אתה בטוח שברצונך למחוק את התלמיד?')) return;
+
+      await fetch(`${api}/${id}`, { method: 'DELETE' });
+      loadStudents();
+    }
+
+    // עדכון שם תלמיד
+    async function updateStudent(id, name) {
+      await fetch(`${api}/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name })
+      });
+    }
+
+    // טען בהתחלה
+    loadStudents();
+  </script>
+</body>
+</html>

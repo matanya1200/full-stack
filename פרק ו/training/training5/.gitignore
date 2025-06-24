@@ -1,0 +1,35 @@
+# תלויות npm
+node_modules/
+
+# קבצי לוג
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+logs/
+
+# תוצרי build (אם יש)
+dist/
+build/
+
+# קבצי סביבה (משתנים רגישים, כמו סיסמאות DB)
+.env
+.env.local
+.env.*.local
+
+# IDEים וקבצים זמניים
+.vscode/
+.idea/
+.DS_Store
+*.swp
+tmp/
+temp/
+*.tmp
+
+# דוחות בדיקות (אם תשתמש בעתיד)
+coverage/
+.nyc_output/
+
+# TypeScript (אם תוסיף בהמשך)
+*.tsbuildinfo
