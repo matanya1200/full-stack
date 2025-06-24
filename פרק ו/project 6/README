@@ -1,0 +1,4 @@
+cd C:\Users\matan\OneDrive\Desktop\לימודים\שנה ד\full stack\פרק ו\project 6\project-root
+node server
+cd C:\Users\matan\OneDrive\Desktop\לימודים\שנה ד\full stack\פרק ו\project 6\client
+npm run dev
