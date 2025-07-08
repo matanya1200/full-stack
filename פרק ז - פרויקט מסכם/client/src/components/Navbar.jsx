@@ -1,0 +1,156 @@
+import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+
+function Navbar() {
+  const user = JSON.parse(localStorage.getItem('user'));
+  const navigate = useNavigate();
+  const [isCollapsed, setIsCollapsed] = useState(true);
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    navigate('/login');
+  };
+
+  const toggleNavbar = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+
+  return (
+    <nav className="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+      <div className="container">
+        <Link className="navbar-brand fw-bold" to="/">
+          <i className="bi bi-shop"></i> 🛍️ חנות רשת
+        </Link>
+        
+        <button
+          className="navbar-toggler"
+          type="button"
+          onClick={toggleNavbar}
+          aria-controls="navbarNav"
+          aria-expanded={!isCollapsed}
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        
+        <div className={`collapse navbar-collapse ${!isCollapsed ? 'show' : ''}`} id="navbarNav">
+          <ul className="navbar-nav me-auto">
+            {/* משתמש רגיל */}
+            <li className="nav-item">
+              <Link className="nav-link" to="/">
+                <i className="bi bi-house-door"></i> בית
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/user">
+                <i className="bi bi-person"></i> הפרופיל שלי
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/cart">
+                <i className="bi bi-cart"></i> העגלה שלי
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/payment">
+                <i className="bi bi-credit-card"></i> תשלום
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/log">
+                <i className="bi bi-clock-history"></i> היסטוריה
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/orders">
+                <i className="bi bi-box-seam"></i> הזמנות
+              </Link>
+            </li>
+            
+            {/* עובדים ומנהלים */}
+            {(user?.role === 'admin' || user?.role === 'worker' || user?.role === 'storekeeper') && (
+              <>
+                <li className="nav-item dropdown">
+                  <a className="nav-link dropdown-toggle" href="#" id="stockDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i className="bi bi-box"></i> מלאי
+                  </a>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <Link className="dropdown-item" to="/pendingRestock">
+                        <i className="bi bi-hourglass-split"></i> הזמנות מוצרים
+                      </Link>
+                    </li>
+                    {(user?.role === 'admin' || user?.role === 'storekeeper') && (
+                      <li>
+                        <Link className="dropdown-item" to="/Restock">
+                          <i className="bi bi-list-check"></i> כל ההזמנות
+                        </Link>
+                      </li>
+                    )}
+                  </ul>
+                </li>
+              </>
+            )}
+            
+            {/* מנהל בלבד */}
+            {user?.role === 'admin' && (
+              <li className="nav-item dropdown">
+                <a className="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i className="bi bi-gear"></i> ניהול
+                </a>
+                <ul className="dropdown-menu">
+                  <li>
+                    <Link className="dropdown-item" to="/users">
+                      <i className="bi bi-people"></i> ניהול משתמשים
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/department">
+                      <i className="bi bi-building"></i> מחלקות
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/carts">
+                      <i className="bi bi-cart3"></i> כל העגלות
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/allLogs">
+                      <i className="bi bi-journal-text"></i> כל הלוגים
+                    </Link>
+                  </li>
+                </ul>
+              </li>
+            )}
+          </ul>
+          
+          {/* User Info & Logout */}
+          <ul className="navbar-nav">
+            <li className="nav-item dropdown">
+              <a className="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i className="bi bi-person-circle"></i> {user?.name}
+                <span className="badge bg-light text-dark ms-1">{user?.role}</span>
+              </a>
+              <ul className="dropdown-menu dropdown-menu-end">
+                <li>
+                  <Link className="dropdown-item" to="/user">
+                    <i className="bi bi-person"></i> פרופיל
+                  </Link>
+                </li>
+                <li><hr className="dropdown-divider" /></li>
+                <li>
+                  <button className="dropdown-item text-danger" onClick={logout}>
+                    <i className="bi bi-box-arrow-right"></i> התנתקות
+                  </button>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+export default Navbar;

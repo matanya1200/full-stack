@@ -1,0 +1,19 @@
+הספריות עבור השרת
+
+npm install express mysql2 dotenv cors bcrypt jsonwebtoken
+
+| ספריה          | תפקיד                               
+| -------------- | ------------------------------------ 
+| `express`      | שרת HTTP                             
+| `mysql2`       | תקשורת עם MySQL                      
+| `dotenv`       | משתני סביבה (סיסמאות וכו)          
+| `cors`         | ניהול גישה בין דומיינים (לצד לקוח) 
+| `bcrypt`       | הצפנת סיסמאות                      
+| `jsonwebtoken` | יצירה ואימות של טוקן JWT           
+
+יצרונו קובץ .env עם ההגדרות של ה db
+
+cd C:\Users\matan\OneDrive\Desktop\לימודים\שנה ד\full stack\פרק ז - פרויקט מסכם\server
+node server
+cd C:\Users\matan\OneDrive\Desktop\לימודים\שנה ד\full stack\פרק ז - פרויקט מסכם\client
+npm run dev

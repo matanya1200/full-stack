@@ -1,0 +1,36 @@
+# תלויות
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# תוצרי build (למשל אם יש תהליך קומפילציה)
+dist/
+build/
+
+# קבצי סביבה
+.env
+.env.local
+.env.*.local
+
+# קבצי לוג
+logs/
+*.log
+
+# IDEים וקונפיגורציות מקומיות
+.vscode/
+.idea/
+.DS_Store
+*.swp
+
+# coverage ודוחות בדיקות
+coverage/
+.nyc_output/
+
+# קבצים זמניים
+tmp/
+temp/
+*.tmp
+
+
