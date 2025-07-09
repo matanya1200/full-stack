@@ -9,7 +9,7 @@ const { authorizeRoles } = require('../middlewares/roleMiddleware');
 router.use(verifyToken);
 
 // מוצרים פתוחים לכולם 
-router.get('/', productsController.getAllProductsWithoutPage);
+router.get('/all', productsController.getAllProductsWithoutPage);
 router.get('/', productsController.getAllProducts);
 router.get('/search', productsController.searchProducts);
 router.get('/department/:id', productsController.getByDepartment);

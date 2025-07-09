@@ -38,16 +38,6 @@ function Navbar() {
           <ul className="navbar-nav me-auto">
             {/* משתמש רגיל */}
             <li className="nav-item">
-              <Link className="nav-link" to="/">
-                <i className="bi bi-house-door"></i> בית
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/user">
-                <i className="bi bi-person"></i> הפרופיל שלי
-              </Link>
-            </li>
-            <li className="nav-item">
               <Link className="nav-link" to="/cart">
                 <i className="bi bi-cart"></i> העגלה שלי
               </Link>
@@ -57,17 +47,34 @@ function Navbar() {
                 <i className="bi bi-credit-card"></i> תשלום
               </Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/log">
-                <i className="bi bi-clock-history"></i> היסטוריה
-              </Link>
-            </li>
+            {user?.role !== 'admin'&&
             <li className="nav-item">
               <Link className="nav-link" to="/orders">
-                <i className="bi bi-box-seam"></i> הזמנות
+                <i className="bi bi-box-seam"></i> הזמנות שלי
               </Link>
             </li>
-            
+            }
+            {user?.role === 'admin'&&
+              <>
+                <li className="nav-item dropdown">
+                  <a className="nav-link dropdown-toggle" href="#" id="stockDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i className="bi bi-box"></i> הזמנות
+                  </a>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <Link className="dropdown-item" to="/orders">
+                        <i className="bi bi-hourglass-split"></i> הזמנות שלי
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/allOrders">
+                        <i className="bi bi-hourglass-split"></i> הזמנות של כולם
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
+              </>
+            }
             {/* עובדים ומנהלים */}
             {(user?.role === 'admin' || user?.role === 'worker' || user?.role === 'storekeeper') && (
               <>
@@ -78,13 +85,13 @@ function Navbar() {
                   <ul className="dropdown-menu">
                     <li>
                       <Link className="dropdown-item" to="/pendingRestock">
-                        <i className="bi bi-hourglass-split"></i> הזמנות מוצרים
+                        <i className="bi bi-hourglass-split"></i> הזמנות מוצרים לחנות
                       </Link>
                     </li>
                     {(user?.role === 'admin' || user?.role === 'storekeeper') && (
                       <li>
                         <Link className="dropdown-item" to="/Restock">
-                          <i className="bi bi-list-check"></i> כל ההזמנות
+                          <i className="bi bi-list-check"></i> כל ההזמנות מלאי 
                         </Link>
                       </li>
                     )}
@@ -129,13 +136,20 @@ function Navbar() {
           <ul className="navbar-nav">
             <li className="nav-item dropdown">
               <a className="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i className="bi bi-person-circle"></i> {user?.name}
                 <span className="badge bg-light text-dark ms-1">{user?.role}</span>
               </a>
               <ul className="dropdown-menu dropdown-menu-end">
+                <li className="dropdown-item">
+                  <i className="bi bi-person-circle"></i> {user?.name}
+                </li>
                 <li>
                   <Link className="dropdown-item" to="/user">
                     <i className="bi bi-person"></i> פרופיל
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="/log">
+                    <i className="bi bi-clock-history"></i> היסטוריה
                   </Link>
                 </li>
                 <li><hr className="dropdown-divider" /></li>
