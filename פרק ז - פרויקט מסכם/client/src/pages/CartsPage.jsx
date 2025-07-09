@@ -66,7 +66,7 @@ function CartsPage() {
                 {cartItems.map((item, index) => (
                   <tr key={index}>
                     <td>{item.id || index + 1}</td>
-                    <td>{item.user_id}</td>
+                    <td>{item.user_id || userIdFilter}</td>
                     <td>{item.product_id}</td>
                     <td>{item.quantity}</td>
                   </tr>
