@@ -58,7 +58,8 @@ function CartsPage() {
                 <tr>
                   <th>#</th>
                   <th>מזהה משתמש</th>
-                  <th>מזהה מוצר</th>
+                  <th>שם משתמש</th>
+                  <th>שם מוצר</th>
                   <th>כמות</th>
                 </tr>
               </thead>
@@ -67,7 +68,8 @@ function CartsPage() {
                   <tr key={index}>
                     <td>{item.id || index + 1}</td>
                     <td>{item.user_id || userIdFilter}</td>
-                    <td>{item.product_id}</td>
+                    <td>{item.user_name || userIdFilter}</td>
+                    <td>{item.product_name}</td>
                     <td>{item.quantity}</td>
                   </tr>
                 ))}
