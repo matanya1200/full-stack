@@ -41,7 +41,7 @@ function allOrdersPage() {
               <div className="card-header bg-primary text-white">
                 <h2 className="mb-0">
                   <i className="bi bi-box-seam me-2"></i>
-                  ההזמנות שלי
+                  כל ההזמנות
                 </h2>
               </div>
               <div className="card-body">

@@ -65,6 +65,7 @@ function EditUserPage() {
             onChange={(e) => setRole(e.target.value)}
             disabled={user.role === 'admin'}
           >
+            <option value="admin">מנהל</option>
             <option value="customer">לקוח</option>
             <option value="worker">עובד</option>
             <option value="storekeeper">מחסנאי</option>
@@ -92,6 +93,7 @@ function EditUserPage() {
         <button
           className="btn btn-primary me-2"
           onClick={handleRoleUpdate}
+          disabled={user.role === 'admin'}
         >
           <i className="bi bi-save"></i> עדכון תפקיד
         </button>
