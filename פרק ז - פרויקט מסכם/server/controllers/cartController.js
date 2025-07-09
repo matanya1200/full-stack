@@ -29,8 +29,9 @@ exports.getCartByUser = async (req, res) => {
 
   try {
     const [items] = await db.query(`
-      SELECT c.id, c.product_id, p.name AS product_name, c.quantity, p.price * ? AS price, (c.quantity * (p.price * ?)) AS total
+      SELECT c.id, u.name AS user_name, c.product_id, p.name AS product_name, c.quantity, p.price * ? AS price, (c.quantity * (p.price * ?)) AS total
       FROM CartItems c
+      JOIN Users u ON c.user_id = u.id
       JOIN Products p ON c.product_id = p.id
       WHERE c.user_id = ?
     `, [discount, discount, userId]);
