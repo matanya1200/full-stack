@@ -99,12 +99,11 @@ function UserPage() {
                             <i className="bi bi-envelope me-2"></i>
                             אימייל
                           </label>
-                          <input 
+                          <label 
                             type="email" 
                             className="form-control" 
-                            value={user.email} 
                             readOnly 
-                          />
+                          >{user.email} </label>
                           <div className="form-text">לא ניתן לשנות את כתובת האימייל</div>
                         </div>
                         
