@@ -101,6 +101,18 @@ exports.buy = async (req, res) => {
     [addressResult] = await connection.query('SELECT address FROM Users WHERE id = ?', [userId]);
     const address = addressResult[0]?.address || '';
 
+    // 3. בדיקה אם יש אמצעי תשלום
+    const [payments] = await connection.query('SELECT * FROM Payment WHERE user_id = ?', [userId]);
+    let paymentMethod;
+    if (payments.length === 0) {
+      return res.status(400).json({
+        message: 'No payment method found',
+        details: 'Please add a payment method before making a purchase.'
+      });
+      } else {
+      paymentMethod = payments[0];
+    }
+
     // 1. קבלת פריטי סל הקניות
     const [cartItems] = await connection.query(
       `SELECT ci.*, p.price, p.quantity AS stock, p.min_quantity, p.name 
@@ -119,18 +131,6 @@ exports.buy = async (req, res) => {
       const discountedPrice = item.price * discount;
       return sum + discountedPrice * item.quantity;
     }, 0);
-
-    // 3. בדיקה אם יש אמצעי תשלום
-    const [payments] = await connection.query('SELECT * FROM Payment WHERE user_id = ?', [userId]);
-    let paymentMethod;
-    if (payments.length === 0) {
-      return res.status(400).json({
-        message: 'No payment method found',
-        details: 'Please add a payment method before making a purchase.'
-      });
-      } else {
-      paymentMethod = payments[0];
-    }
 
     // 4. בדיקת יתרה
     if (paymentMethod.balance < totalPrice) {
