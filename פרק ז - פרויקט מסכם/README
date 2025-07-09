@@ -11,7 +11,7 @@ npm install express mysql2 dotenv cors bcrypt jsonwebtoken
 | `bcrypt`       | הצפנת סיסמאות                      
 | `jsonwebtoken` | יצירה ואימות של טוקן JWT           
 
-יצרונו קובץ .env עם ההגדרות של ה db
+יצרנו קובץ .env עם ההגדרות של ה db
 
 cd C:\Users\matan\OneDrive\Desktop\לימודים\שנה ד\full stack\פרק ז - פרויקט מסכם\server
 node server
