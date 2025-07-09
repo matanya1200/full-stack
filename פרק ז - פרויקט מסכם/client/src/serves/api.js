@@ -33,7 +33,7 @@ const api = {
 
   // 📦 Products
   getAllProducts: (page = 1) => createAxios().get(`/products?page=${page}`),
-  getAllProductsWithoutPage: () => createAxios().get(`/products`),
+  getAllProductsWithoutPage: () => createAxios().get(`/products/all`),
   getProductsByDepartment: (departmentId, page = 1) => createAxios().get(`/products/department/${departmentId}?page=${page}`),
   searchProducts: (search, page = 1) => createAxios().get(`/products/search?search=${search}&page=${page}`),
   getProduct: (id) => createAxios().get(`/products/${id}`),

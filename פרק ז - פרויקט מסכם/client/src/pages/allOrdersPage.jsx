@@ -3,7 +3,7 @@ import api from '../serves/api';
 import Navbar from '../components/Navbar';
 import { useNavigate } from 'react-router-dom';
 
-function OrdersPage() {
+function allOrdersPage() {
   const user = JSON.parse(localStorage.getItem('user'));
   const [orders, setOrders] = useState([]);
   const [error, setError] = useState('');
@@ -11,7 +11,7 @@ function OrdersPage() {
 
   const loadOrders = async () => {
     try {
-      let res = await api.getOrdersByUser(user.id)
+      let res = await api.getAllOrders();
       setOrders(res.data);
     } catch (err) {
       setError('שגיאה בטעינת הזמנות');
@@ -21,10 +21,6 @@ function OrdersPage() {
   useEffect(() => {
     loadOrders();
   }, []);
-
-  const handleRowClick = (orderId) => {
-    navigate(`/orderItems/${orderId}`);
-  };
 
   const getStatusBadge = (status) => {
     const statusMap = {
@@ -63,7 +59,7 @@ function OrdersPage() {
                   </div>
                 ) : (
                   <div className="table-responsive">
-                    <table className="table table-hover">
+                    <table className="table">
                       <thead className="table-dark">
                         <tr>
                           <th scope="col">
@@ -94,9 +90,6 @@ function OrdersPage() {
                         {orders.map(order => (
                           <tr 
                             key={order.id} 
-                            onClick={() => handleRowClick(order.id)} 
-                            className="cursor-pointer"
-                            style={{ cursor: 'pointer' }}
                           >
                             <td>
                               <span className="badge bg-light text-dark">
@@ -139,4 +132,4 @@ function OrdersPage() {
   );
 }
 
-export default OrdersPage;
+export default allOrdersPage;

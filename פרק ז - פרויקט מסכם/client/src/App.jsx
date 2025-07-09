@@ -8,6 +8,7 @@ import AddRatingPage from './pages/AddRatingPage';
 import CartPage from './pages/CartPage';
 import PaymentPage from './pages/PaymentPage';
 import OrdersPage from './pages/OrdersPage';
+import AllOrdersPage from './pages/allOrdersPage';
 import OrderItemsPage from './pages/OrderItemsPage';
 import UserLogPage from './pages/UserLogPage';
 import UserPage from './pages/UserPage';
@@ -51,6 +52,7 @@ function App() {
         <Route path="/cart" element={<CartPage />} />
         <Route path="/payment" element={<PaymentPage />} />
         <Route path="/orders" element={<OrdersPage />} />
+        <Route path="/allOrders" element={<AllOrdersPage />} />
         <Route path="/orderItems/:order_id" element={<OrderItemsPage />} />
         <Route path="/log" element={<UserLogPage />} />
         <Route path="/user" element={<UserPage />} />
