@@ -101,7 +101,7 @@ exports.buy = async (req, res) => {
     [addressResult] = await connection.query('SELECT address FROM Users WHERE id = ?', [userId]);
     const address = addressResult[0]?.address || '';
 
-    // 3. בדיקה אם יש אמצעי תשלום
+    // 1. בדיקה אם יש אמצעי תשלום
     const [payments] = await connection.query('SELECT * FROM Payment WHERE user_id = ?', [userId]);
     let paymentMethod;
     if (payments.length === 0) {
@@ -113,7 +113,7 @@ exports.buy = async (req, res) => {
       paymentMethod = payments[0];
     }
 
-    // 1. קבלת פריטי סל הקניות
+    // 2. קבלת פריטי סל הקניות
     const [cartItems] = await connection.query(
       `SELECT ci.*, p.price, p.quantity AS stock, p.min_quantity, p.name 
        FROM CartItems ci
@@ -126,7 +126,7 @@ exports.buy = async (req, res) => {
       return res.status(400).json({ message: 'Cart is empty' });
     }
 
-    // 2. סכימת מחיר כולל
+    // 3. סכימת מחיר כולל
     const totalPrice = cartItems.reduce((sum, item) => {
       const discountedPrice = item.price * discount;
       return sum + discountedPrice * item.quantity;
