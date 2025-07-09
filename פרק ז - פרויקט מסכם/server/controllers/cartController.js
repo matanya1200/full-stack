@@ -170,7 +170,7 @@ exports.getCartItem = async (req,res) => {
   try{
     const[items] = await db.query('SELECT * FROM cartitems WHERE user_id = ? AND product_id = ?', [userId, productId]);
     if (items.length === 0) {
-      return res.status(404).json({ message: 'you dont have this item in your cart' });
+      return res.status(404).json({ message: 'you don\'t have this item in your cart' });
     }
     res.json(items);
   } catch (err) {
