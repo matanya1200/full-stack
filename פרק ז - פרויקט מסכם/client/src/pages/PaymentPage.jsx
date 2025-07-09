@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import api from '../serves/api';
 import Navbar from '../components/Navbar';
@@ -118,12 +119,11 @@ function PaymentPage() {
                             <label className="form-label">4 ספרות אחרונות</label>
                             <div className="input-group">
                               <span className="input-group-text">****</span>
-                              <input 
+                              <label 
                                 type="text" 
                                 className="form-control" 
-                                value={payment?.card_last4} 
                                 readOnly 
-                              />
+                              >{payment?.card_last4}</label>
                             </div>
                           </div>
                           <div className="mb-3">
