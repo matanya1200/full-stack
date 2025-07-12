@@ -88,7 +88,7 @@ function CartPage() {
               <tbody>
                 {items.map((item) => (
                   <tr key={item.product_id}>
-                    <td>{item.name}</td>
+                    <td>{item.product_name}</td>
                     <td>₪{item.price}</td>
                     <td>{item.quantity}</td>
                     <td>₪{(item.price * item.quantity).toFixed(2)}</td>
