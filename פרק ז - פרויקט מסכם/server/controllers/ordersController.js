@@ -153,6 +153,54 @@ exports.buy = async (req, res) => {
     const orderId = orderResult.insertId;
 
     // 7. העברת כל הפריטים ל־OrderItems
+    const orderItemsValues = cartItems.map(item => [
+      orderId,
+      item.product_id,
+      item.quantity,
+      item.price * discount
+    ]);
+
+    await connection.query(
+      `INSERT INTO OrderItems (order_id, product_id, quantity, price)
+       VALUES ?`, // note the single placeholder for bulk insert
+      [orderItemsValues]
+    );
+
+    // 8. הפחתת מלאי מהמוצר
+    // Build a map of product_id → quantityToSubtract
+    const qtyMap = cartItems.reduce((m, item) => {
+      m[item.product_id] = item.quantity;
+      return m;
+    }, {});
+
+    const cases = Object.entries(qtyMap)
+      .map(([id, qty]) => `WHEN id = ${id} THEN quantity - ${qty}`)
+      .join(' ');
+
+    const ids = Object.keys(qtyMap).join(',');
+
+    await connection.query(
+      `UPDATE Products
+         SET quantity = CASE ${cases} END
+       WHERE id IN (${ids})`
+    );
+
+    // 9. בדיקת חידוש מלאי
+    await connection.query(
+      `INSERT INTO RestockRequests (product_id, quantity, requested_by, status)
+        SELECT
+          ci.product_id,
+          p.min_quantity * 2 AS quantity,
+          1 AS requested_by,
+          'pending' AS status
+        FROM CartItems ci
+        JOIN Products p ON ci.product_id = p.id
+        WHERE ci.user_id = ?
+          AND (p.quantity - ci.quantity) <= p.min_quantity;`,
+      [userId]
+    );
+
+    /*// 7. העברת כל הפריטים ל־OrderItems
     for (const item of cartItems) {
       await connection.query(
         `INSERT INTO OrderItems (order_id, product_id, quantity, price)
@@ -175,7 +223,7 @@ exports.buy = async (req, res) => {
           [item.product_id, item.min_quantity * 2] // כמות לחידוש לדוגמה
         );
       }
-    }
+    }*/
 
     // 10. ניקוי סל הקניות
     await connection.query('DELETE FROM CartItems WHERE user_id = ?', [userId]);
