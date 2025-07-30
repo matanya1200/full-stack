@@ -132,7 +132,7 @@ function MainPage() {
                 <div className="card h-100 shadow-sm">
                   <div className="card-img-top d-flex justify-content-center align-items-center" style={{ height: '200px', backgroundColor: '#f8f9fa' }}>
                     <img 
-                      src={product.image_url} 
+                      src={product.image} 
                       alt={product.name} 
                       className="img-fluid"
                       style={{ maxHeight: '180px', maxWidth: '100%', objectFit: 'contain' }}

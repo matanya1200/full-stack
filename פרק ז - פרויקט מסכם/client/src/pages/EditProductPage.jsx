@@ -14,7 +14,7 @@ function EditProductPage() {
     description: '',
     price: '',
     min_quantity: '',
-    image_url: ''
+    image: ''
   });
 
   const [error, setError] = useState('');
@@ -29,7 +29,7 @@ function EditProductPage() {
         description: res.data.description,
         price: res.data.discounted_price,
         min_quantity: res.data.min_quantity,
-        image_url: res.data.image_url
+        image: res.data.image
       });
     } catch {
       setError('❌ שגיאה בטעינת המוצר');
@@ -123,12 +123,12 @@ function EditProductPage() {
                 </div>
 
                 <div className="mb-3">
-                  <label className="form-label">כתובת תמונה:</label>
+                  <label className="form-label">תמונה:</label>
                   <input
-                    type="text"
+                    type="file"
                     className="form-control"
-                    name="image_url"
-                    value={form.image_url}
+                    name="image"
+                    accept="image/*"
                     onChange={handleChange}
                   />
                 </div>

@@ -23,6 +23,7 @@ import DepartmentsPage from './pages/DepartmentsPage';
 import AddProductPage from './pages/AddProductPage';
 import CartsPage from './pages/CartsPage';
 import AllLogsPage from './pages/AllLogsPage';
+import Notification from './components/Notification';
 
 import socketService from './services/socketServices/socketService';
 
@@ -54,6 +55,8 @@ function App() {
   //const user = JSON.parse(localStorage.getItem('user'));
 
   return (
+    <>
+      <Notification />
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
@@ -80,6 +83,7 @@ function App() {
         <Route path="/carts" element={<CartsPage />} />
         <Route path="/allLogs" element={<AllLogsPage />} />
       </Routes>
+    </>
   );
 }
 

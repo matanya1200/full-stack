@@ -36,6 +36,7 @@ class SocketService {
             const relevantPaths = ['/cart', '/carts']; // Add all cart-related routes
             if (relevantPaths.includes(window.location.pathname)) {
                 console.log("cart updated - refreshing");
+                sessionStorage.setItem('notification', 'עגלה עודכנה!');
                 window.location.reload();
             }
         });
@@ -46,6 +47,7 @@ class SocketService {
             const relevantPaths = ['/product', '/'];
             if (relevantPaths.includes(window.location.pathname)) {
                 console.log("product updated - refreshing");
+                sessionStorage.setItem('notification', 'מוצר עודכן!');
                 window.location.reload();
             }
         });
@@ -54,6 +56,7 @@ class SocketService {
             const relevantPaths = ['/department'];
             if (relevantPaths.includes(window.location.pathname)) {
                 console.log("department updated - refreshing");
+                sessionStorage.setItem('notification', 'מחלקה עודכנה!');
                 window.location.reload();
             }
         });
@@ -62,6 +65,7 @@ class SocketService {
             const relevantPaths = ['/user', '/users'];
             if (relevantPaths.includes(window.location.pathname)) {
                 console.log("user updated - refreshing");
+                sessionStorage.setItem('notification', 'משתמש עודכן!');
                 window.location.reload();
             }
         });
@@ -70,6 +74,7 @@ class SocketService {
             const relevantPaths = ['/rank', '/products']; // check paths
             if (relevantPaths.includes(window.location.pathname)) {
                 console.log("rating updated - refreshing");
+                sessionStorage.setItem('notification', 'דירוג עודכן!');
                 window.location.reload();
             }
         });
@@ -78,6 +83,7 @@ class SocketService {
             const relevantPaths = ['/Restock', '/pendingRestock'];
             if (relevantPaths.includes(window.location.pathname)) {
                 console.log("restock updated - refreshing");
+                sessionStorage.setItem('notification', 'בקשת מלאי עודכנה!');
                 window.location.reload();
             }
         });
@@ -86,6 +92,7 @@ class SocketService {
             const relevantPaths = ['/payment'];
             if (relevantPaths.includes(window.location.pathname)) {
                 console.log("payment updated - refreshing");
+                sessionStorage.setItem('notification', 'שיטת תשלום עודכנה!');
                 window.location.reload();
             }
         });
