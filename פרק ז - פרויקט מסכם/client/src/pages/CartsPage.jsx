@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import api from '../serves/api';
+import api from '../services/api';
 import Navbar from '../components/Navbar';
 
 function CartsPage() {

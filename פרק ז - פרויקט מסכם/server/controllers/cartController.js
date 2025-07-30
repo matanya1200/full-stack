@@ -1,6 +1,8 @@
 // controllers/cartController.js
 const db = require('../db');
 const { getUserDiscount } = require('../utils/discountUtils');
+const transactionManager = require('../utils/transactionManager');
+const socketManager = require('../socketManager');
 
 // ✔️ admin – קבלת כל העגלות
 exports.getAllCarts = async (req, res) => {
@@ -51,43 +53,43 @@ exports.addToCart = async (req, res) => {
   }
 
   try {
-    // שליפת פרטי המוצר
-    const [productRows] = await db.query('SELECT * FROM Products WHERE id = ?', [product_id]);
-    const product = productRows[0];
+    await transactionManager.withTransaction(async (conn) => {
+      // Lock product row for update
+      const [productRows] = await conn.query('SELECT * FROM Products WHERE id = ? FOR UPDATE', [product_id]);
+      const product = productRows[0];
+      if (!product) {
+        // error 404
+        throw new Error('Product not found');
+      }
 
-    if (!product) {
-      return res.status(404).json({ message: 'Product not found' });
-    }
-
-    // בדיקה אם הפריט כבר קיים בסל
-    const [existingRows] = await db.query(
-      'SELECT * FROM CartItems WHERE user_id = ? AND product_id = ?',
-      [userId, product_id]
-    );
-    const existing = existingRows[0];
-
-    const totalRequested = quantity + (existing?.quantity || 0);
-
-    if (product.quantity < totalRequested) {
-      return res.status(422).json({
-        message: `Requested quantity (${totalRequested}) exceeds available stock (${product.quantity})`
-      });
-    }
-
-    if (existing) {
-      // אם קיים – עדכון
-      await db.query(
-        'UPDATE CartItems SET quantity = quantity + ? WHERE user_id = ? AND product_id = ?',
-        [quantity, userId, product_id]
+      // Check if item already in cart
+      const [existingRows] = await conn.query(
+        'SELECT * FROM CartItems WHERE user_id = ? AND product_id = ?',
+        [userId, product_id]
       );
-    } else {
-      // אחרת – הוספה חדשה
-      await db.query(
-        'INSERT INTO CartItems (user_id, product_id, quantity) VALUES (?, ?, ?)',
-        [userId, product_id, quantity]
-      );
-    }
+      const existing = existingRows[0];
+      const totalRequested = quantity + (existing?.quantity || 0);
+      if (product.quantity < totalRequested) {
+        // error 422
+        throw new Error(`Requested quantity (${totalRequested}) exceeds available stock (${product.quantity})`);
+      }
 
+      if (existing) {
+        await conn.query(
+          'UPDATE CartItems SET quantity = quantity + ? WHERE user_id = ? AND product_id = ?',
+          [quantity, userId, product_id]
+        );
+      } else {
+        await conn.query(
+          'INSERT INTO CartItems (user_id, product_id, quantity) VALUES (?, ?, ?)',
+          [userId, product_id, quantity]
+        );
+      }
+    });
+
+    // Notify all user devices/tabs
+    //socketManager.notifyUser(userId, 'cartUpdated', { product_id, quantity });
+    socketManager.notifyUser(userId, 'cartUpdated');
     res.status(201).json({ message: 'Product added to cart' });
   } catch (err) {
     res.status(500).json({ message: 'Failed to add to cart', error: err.message });
@@ -131,11 +133,15 @@ exports.updateCartProduct = async (req, res) => {
       return res.status(404).json({ message: 'Product not found in cart' });
     }
 
-    await db.query(
-      'UPDATE CartItems SET quantity = ? WHERE user_id = ? AND product_id = ?',
-      [quantity, userId, product_id]
-    );
-
+    await transactionManager.withTransaction(async (conn) => {
+      await conn.query(
+        'UPDATE CartItems SET quantity = ? WHERE user_id = ? AND product_id = ?',
+        [quantity, userId, product_id]
+      );
+    });
+    
+    //socketManager.notifyUser(userId, 'cartUpdated', { product_id, quantity });
+    socketManager.notifyUser(userId, 'cartUpdated');
     res.status(200).json({ message: 'Cart item updated successfully' });
   } catch (err) {
     res.status(500).json({ message: 'Failed to update cart item', error: err.message });
@@ -158,7 +164,12 @@ exports.deleteCartItem = async (req, res) => {
       return res.status(403).json({ message: 'You can only delete your own cart items' });
     }
 
-    await db.query('DELETE FROM CartItems WHERE id = ?', [id]);
+    await transactionManager.withTransaction(async (conn) => {
+      await conn.query('DELETE FROM CartItems WHERE id = ?', [id]);
+    });
+    
+    //socketManager.notifyUser(userId, 'cartUpdated', { deleted: id });
+    socketManager.notifyUser(userId, 'cartUpdated');
     res.json({ message: 'Cart item deleted' });
   } catch (err) {
     res.status(500).json({ message: 'Failed to delete cart item', error: err.message });

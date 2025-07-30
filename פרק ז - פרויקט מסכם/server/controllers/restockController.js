@@ -1,4 +1,5 @@
 const db = require('../db');
+const socketManager = require('../socketManager');
 
 exports.getAllRestocks = async (req, res) => {
   try {
@@ -87,6 +88,7 @@ exports.addRestock = async (req, res) => {
       [product_id, quantity, userId]
     );
 
+    socketManager.notifyUser(1, 'restockUpdated'); // inform admin
     res.status(201).json({ message: 'Restock request created' });
 
   } catch (err) {
@@ -114,6 +116,7 @@ exports.updateRestock = async (req, res) => {
       [quantity || rows[0].quantity, status || rows[0].status, id]
     );
 
+    socketManager.notifyUser(1, 'restockUpdated'); // inform admin
     res.json({ message: 'Restock updated' });
   } catch (err) {
     res.status(500).json({ message: 'Failed to update restock', error: err.message });
@@ -147,6 +150,7 @@ exports.deleteRestock = async (req, res) => {
     }
 
     await db.query('DELETE FROM RestockRequests WHERE id = ?', [id]);
+    socketManager.notifyUser(1, 'restockUpdated'); // inform admin
     res.json({ message: 'Restock processed and deleted' });
 
   } catch (err) {

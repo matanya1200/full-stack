@@ -1,4 +1,5 @@
 const db = require('../db');
+const socketManager = require('../socketManager');
 
 // ✔️ POST /rank – הוספת תגובה ודירוג
 exports.addRank = async (req, res) => {
@@ -37,6 +38,7 @@ exports.addRank = async (req, res) => {
       [product_id, userId, comment || '', rating]
     );
 
+    socketManager.broadcast('ratingUpdate', { product_id });
     res.status(201).json({ message: 'Rating submitted' });
   } catch (err) {
     res.status(500).json({ message: 'Failed to submit rating', error: err.message });
@@ -155,6 +157,7 @@ exports.updateRank = async (req, res) => {
     values
     );
 
+    socketManager.broadcast('ratingUpdate');
     res.json({ message: 'Rating updated' });
   } catch (err) {
     res.status(500).json({ message: 'Failed to update rating', error: err.message });
@@ -173,6 +176,7 @@ exports.deleteRank = async (req, res) => {
     }
 
     await db.query('DELETE FROM Ranking WHERE id = ?', [rankId]);
+    socketManager.broadcast('ratingUpdate');
     res.json({ message: 'Rating deleted' });
   } catch (err) {
     res.status(500).json({ message: 'Failed to delete rating', error: err.message });

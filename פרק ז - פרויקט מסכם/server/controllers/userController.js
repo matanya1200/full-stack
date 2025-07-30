@@ -1,6 +1,8 @@
 // controllers/userController.js
 const db = require('../db');
 const { logActivity } = require('../utils/logger');
+const socketManager = require('../socketManager');
+
 
 // ✔️ קבלת כל המשתמשים – למנהל
 exports.getAllUsers = async (req, res) => {
@@ -63,6 +65,8 @@ exports.updateUser = async (req, res) => {
     values.push(id);
 
     await db.query(`UPDATE Users SET ${fields.join(', ')} WHERE id = ?`, values);
+    
+    socketManager.notifyUser(id, 'userUpdated');
     res.json({ message: 'User updated successfully' });
     await logActivity(req.user.id, 'Updated profile');
   } catch (err) {
@@ -131,6 +135,8 @@ exports.deleteUser = async (req, res) => {
 
   try {
     await db.query('DELETE FROM Users WHERE id = ?', [id]);
+
+    socketManager.notifyUser(id, 'userUpdated');
     res.json({ message: 'User deleted' });
     await logActivity(req.user.id, 'Deleted own account');
   } catch (err) {

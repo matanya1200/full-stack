@@ -1,4 +1,5 @@
 const db = require('../db');
+const socketManager = require('../socketManager');
 
 // ✔️ קבלת אמצעי התשלום של המשתמש
 exports.getPayment = async (req, res) => {
@@ -41,6 +42,7 @@ exports.createPayment = async (req, res) => {
       [userId, card_last4, card_expiry, balance]
     );
 
+    socketManager.notifyUser(userId, 'paymentUpdated');
     res.status(201).json({ message: 'Payment method created' });
   } catch (err) {
     res.status(500).json({ message: 'Failed to create payment method', error: err.message });
@@ -81,6 +83,7 @@ exports.updatePayment = async (req, res) => {
       values
     );
 
+    socketManager.notifyUser(userId, 'paymentUpdated');
     res.json({ message: 'Payment method updated' });
   } catch (err) {
     res.status(500).json({ message: 'Failed to update payment method', error: err.message });
@@ -97,6 +100,7 @@ exports.deletePayment = async (req, res) => {
 
   try {
     const [result] = await db.query('DELETE FROM Payment WHERE user_id = ?', [userId]);
+    socketManager.notifyUser(userId, 'paymentUpdated');
     res.json({ message: 'Payment method deleted' });
   } catch (err) {
     res.status(500).json({ message: 'Failed to delete payment method', error: err.message });

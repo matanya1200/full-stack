@@ -1,6 +1,7 @@
 // controllers/productsController.js
 const db = require('../db');
 const { getUserDiscount } = require('../utils/discountUtils');
+const socketManager = require('../socketManager');
 
 // ✔️ קבלת כל המוצרים עם עימוד
 exports.getAllProducts = async (req, res) => {
@@ -116,6 +117,8 @@ exports.createProduct = async (req, res) => {
        VALUES (?, ?, ?, ?, ?, ?, ?)`,
       [name, description, price, quantity, min_quantity, department_id, image_url]
     );
+    
+    socketManager.broadcast('productUpdated');
     res.status(201).json({ message: 'Product created' });
   } catch (err) {
     res.status(500).json({ message: 'Failed to create product', error: err.message });
@@ -166,6 +169,7 @@ exports.updateProduct = async (req, res) => {
       ]
     );
 
+    socketManager.broadcast('productUpdated');
     res.json({ message: 'Product updated' });
 
   } catch (err) {
@@ -189,6 +193,7 @@ exports.deleteProduct = async (req, res) => {
     }
 
     await db.query('DELETE FROM Products WHERE id = ?', [id]);
+    socketManager.broadcast('productUpdated');
     res.json({ message: 'Product deleted' });
   } catch (err) {
     res.status(500).json({ message: 'Failed to delete product', error: err.message });
