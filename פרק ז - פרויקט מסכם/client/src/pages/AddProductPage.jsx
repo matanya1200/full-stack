@@ -10,8 +10,6 @@ function AddProductPage() {
   const [price, setPrice] = useState('');
   const [minQty, setMinQty] = useState('');
   const [departmentId, setDepartmentId] = useState('');
-  //const [image, setImage] = useState('');
-  const [imageMethod, setImageMethod] = useState("file"); // 'file' or 'link'
   const [imageBase64, setImageBase64] = useState("");     // for file uploads
   const [imageUrl, setImageUrl] = useState("");           // for URL input
   const [departments, setDepartments] = useState([]);
@@ -23,19 +21,6 @@ function AddProductPage() {
   useEffect(() => {
     api.getDepartments().then((res) => setDepartments(res.data));
   }, []);
-
-  const handleFileChange = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      console.log(reader.result, reader.result.length);
-      
-      setImage(reader.result); // reader.result is already a base64 string prefixed with "data:image/..."
-    };
-    reader.readAsDataURL(file); // Converts to base64
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();

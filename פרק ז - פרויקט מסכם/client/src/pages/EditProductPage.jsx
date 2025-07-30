@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import api from '../services/api';
 import Navbar from '../components/Navbar';
+import ImageInputSelector from '../components/ImageInputSelector';
 
 function EditProductPage() {
   const { product_id } = useParams();
@@ -9,6 +10,8 @@ function EditProductPage() {
   const navigate = useNavigate();
 
   const [product, setProduct] = useState(null);
+  const [imageBase64, setImageBase64] = useState("");     // for file uploads
+  const [imageUrl, setImageUrl] = useState("");           // for URL input
   const [form, setForm] = useState({
     name: '',
     description: '',
@@ -51,7 +54,7 @@ function EditProductPage() {
 
   const handleUpdate = async () => {
     try {
-      await api.updateProduct(productId, form);
+      await api.updateProduct(productId, { ...form, image: imageUrl || imageBase64});
       setSuccess('✅ המוצר עודכן בהצלחה');
       setError('');
     } catch (err) {
@@ -122,16 +125,12 @@ function EditProductPage() {
                   />
                 </div>
 
-                <div className="mb-3">
-                  <label className="form-label">תמונה:</label>
-                  <input
-                    type="file"
-                    className="form-control"
-                    name="image"
-                    accept="image/*"
-                    onChange={handleChange}
-                  />
-                </div>
+                <ImageInputSelector
+                  imageBase64={imageBase64}
+                  setImageBase64={setImageBase64}
+                  imageUrl={imageUrl}
+                  setImageUrl={setImageUrl}
+                />
 
                 <div className="d-grid">
                   <button type="button" onClick={handleUpdate} className="btn btn-primary">
