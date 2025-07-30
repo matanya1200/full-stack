@@ -1,5 +1,6 @@
 // controllers/departmentsController.js
 const db = require('../db');
+const socketManager = require('../socketManager');
 
 // ✔️ הוספת מחלקה
 exports.createDepartment = async (req, res) => {
@@ -16,6 +17,7 @@ exports.createDepartment = async (req, res) => {
     }
 
     await db.query('INSERT INTO Departments (name) VALUES (?)', [name]);
+    socketManager.broadcast('departmentUpdate');
     res.status(201).json({ message: 'Department created' });
   } catch (err) {
     res.status(500).json({ message: 'Failed to create department', error: err.message });
@@ -47,6 +49,7 @@ exports.deleteDepartment = async (req, res) => {
       return res.status(404).json({ message: 'Department not found' });
     }
 
+    socketManager.broadcast('departmentUpdate');
     res.json({ message: 'Department deleted and workers updated' });
 
   } catch (err) {

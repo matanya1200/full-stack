@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import MainPage from './pages/MainPage';
@@ -24,10 +24,13 @@ import AddProductPage from './pages/AddProductPage';
 import CartsPage from './pages/CartsPage';
 import AllLogsPage from './pages/AllLogsPage';
 
+import socketService from './services/socketServices/socketService';
+
 
 function App() {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
+  const socketRef = useRef(null);
   
   useEffect(() => {
     const savedUser = JSON.parse(localStorage.getItem('user'));
@@ -36,6 +39,14 @@ function App() {
     }
     setLoading(false)
   }, [])
+
+  useEffect(() => {
+    if (user) {
+    socketService.initialize(user.id);
+    } else {
+    socketService.disconnect();
+    }
+  }, [user])
   
   if (loading) {
     return <div className="text-center mt-5">טוען...</div> // או Spinner אם אתה רוצה

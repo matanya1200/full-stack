@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../serves/api';
+import api from '../services/api';
 import Navbar from '../components/Navbar';
 
 function PendingRestockPage() {
