@@ -9,7 +9,7 @@ function AddProductPage() {
   const [price, setPrice] = useState('');
   const [minQty, setMinQty] = useState('');
   const [departmentId, setDepartmentId] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const [image, setImage] = useState('');
   const [departments, setDepartments] = useState([]);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
@@ -19,6 +19,19 @@ function AddProductPage() {
   useEffect(() => {
     api.getDepartments().then((res) => setDepartments(res.data));
   }, []);
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      console.log(reader.result, reader.result.length);
+      
+      setImage(reader.result); // reader.result is already a base64 string prefixed with "data:image/..."
+    };
+    reader.readAsDataURL(file); // Converts to base64
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,7 +51,7 @@ function AddProductPage() {
         quantity: 0,
         min_quantity: parseInt(minQty),
         department_id: parseInt(departmentId),
-        image_url: imageUrl,
+        image: image,
       });
 
       setMessage('✅ המוצר נוסף בהצלחה');
@@ -118,12 +131,12 @@ function AddProductPage() {
             </div>
 
             <div className="mb-3">
-              <label className="form-label">קישור לתמונה</label>
+              <label className="form-label">תמונה</label>
               <input
-                type="text"
+                type="file"
                 className="form-control"
-                value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
+                accept="image/*"
+                onChange={handleImageChange}
               />
             </div>
 

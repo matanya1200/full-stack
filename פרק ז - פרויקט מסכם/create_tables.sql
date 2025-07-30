@@ -34,7 +34,7 @@ CREATE TABLE Products (
     quantity INT NOT NULL,
     min_quantity INT NOT NULL,
     department_id INT NOT NULL,
-    image_url TEXT,
+    image LONGTEXT,
     FOREIGN KEY (department_id) REFERENCES Departments(id) ON DELETE CASCADE
 );
 

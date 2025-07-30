@@ -43,7 +43,7 @@ INSERT INTO Users (name, email, password_hash, role, department_id, address) VAL
 
 -- הוספת מוצרים (100 מוצרים)
 -- מחלקת אלקטרוניקה
-INSERT INTO Products (name, description, price, quantity, min_quantity, department_id, image_url) VALUES
+INSERT INTO Products (name, description, price, quantity, min_quantity, department_id, image) VALUES
 ('סמארטפון iPhone 15', 'טלפון חכם מתקדם עם מצלמה 48MP', 3599.99, 25, 5, 1, 'https://i0.wp.com/greenmobile.co.il/wp-content/uploads/2023/11/iphone_15_pro_natural_titanium_pdp_image_position-1__wwen.jpg?fit=1000%2C1000&ssl=1'),
 ('סמארטפון Samsung Galaxy S24', 'טלפון אנדרואיד עם מסך 6.2 אינץ', 3199.99, 20, 5, 1, 'https://www.ivory.co.il/files/catalog/org/1706102216C16Ip.webp'),
 ('מחשב נייד Dell XPS 13', 'מחשב נייד 13 אינץ עם מעבד Intel i7', 4999.99, 15, 3, 1, 'https://www.misradia.co.il/cdn/shop/files/original-38453.jpg?v=1700736461&width=700'),

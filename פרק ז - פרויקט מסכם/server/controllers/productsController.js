@@ -13,7 +13,7 @@ exports.getAllProducts = async (req, res) => {
 
   try {
     const [products] = await db.query(
-      `SELECT id, name, description, quantity, min_quantity, department_id, image_url,
+      `SELECT id, name, description, quantity, min_quantity, department_id, image,
               price * ? AS discounted_price
        FROM Products
        LIMIT ? OFFSET ?`,
@@ -34,7 +34,7 @@ exports.getAllProductsWithoutPage = async (req, res) => {
 
   try {
     const [products] = await db.query(
-      `SELECT id, name, description, quantity, min_quantity, department_id, image_url,
+      `SELECT id, name, description, quantity, min_quantity, department_id, image,
               price * ? AS discounted_price
        FROM Products`,
       [discount]
@@ -56,7 +56,7 @@ exports.getByDepartment = async (req, res) => {
 
   try {
     const [products] = await db.query(
-      `SELECT id, name, description, quantity, min_quantity, department_id, image_url,
+      `SELECT id, name, description, quantity, min_quantity, department_id, image,
               price * ? AS discounted_price 
        FROM Products WHERE department_id = ? LIMIT ? OFFSET ?`,
       [discount, departmentId, limit, offset]
@@ -79,7 +79,7 @@ exports.searchProducts = async (req, res) => {
 
   try {
     const [products] = await db.query(
-      `SELECT id, name, description, quantity, min_quantity, department_id, image_url,
+      `SELECT id, name, description, quantity, min_quantity, department_id, image,
               price * ? AS discounted_price
        FROM Products WHERE name LIKE ? LIMIT ? OFFSET ?`,
       [discount, `%${search}%`, limit, offset]
@@ -95,7 +95,7 @@ exports.getProductById = async (req, res) => {
   const id = parseInt(req.params.id);
   const discount = getUserDiscount(req.user.role);
   try {
-    const [products] = await db.query(`SELECT id, name, description, quantity, min_quantity, department_id, image_url,
+    const [products] = await db.query(`SELECT id, name, description, quantity, min_quantity, department_id, image,
                price * ? AS discounted_price
                FROM Products WHERE id = ?`, [discount, id]);
     if (products.length === 0) {
@@ -109,13 +109,17 @@ exports.getProductById = async (req, res) => {
 
 // ✔️ יצירת מוצר (מנהל בלבד)
 exports.createProduct = async (req, res) => {
-  const { name, description, price, quantity, min_quantity, department_id, image_url } = req.body;
+  const { name, description, price, quantity, min_quantity, department_id, image } = req.body;
+
+  if (!image.startsWith('data:image/')) {
+    return res.status(400).json({ message: 'Invalid image format' });
+  }
 
   try {
     await db.query(
-      `INSERT INTO Products (name, description, price, quantity, min_quantity, department_id, image_url)
+      `INSERT INTO Products (name, description, price, quantity, min_quantity, department_id, image)
        VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [name, description, price, quantity, min_quantity, department_id, image_url]
+      [name, description, price, quantity, min_quantity, department_id, image]
     );
     
     socketManager.broadcast('productUpdated');
@@ -127,7 +131,7 @@ exports.createProduct = async (req, res) => {
 
 exports.updateProduct = async (req, res) => {
   const id = parseInt(req.params.id);
-  const { name, description, price, min_quantity, image_url } = req.body;
+  const { name, description, price, min_quantity, image } = req.body;
 
   try {
     const [products] = await db.query('SELECT * FROM Products WHERE id = ?', [id]);
@@ -152,19 +156,19 @@ exports.updateProduct = async (req, res) => {
       description: description !== undefined ? description : product.description,
       price: price !== undefined ? price : product.price,
       min_quantity: min_quantity !== undefined ? min_quantity : product.min_quantity,
-      image_url: image_url !== undefined ? image_url : product.image_url,
+      image: image !== undefined ? image : product.image,
     };
 
     await db.query(
       `UPDATE Products 
-       SET name = ?, description = ?, price = ?, min_quantity = ?, image_url = ? 
+       SET name = ?, description = ?, price = ?, min_quantity = ?, image = ? 
        WHERE id = ?`,
       [
         updatedFields.name,
         updatedFields.description,
         updatedFields.price,
         updatedFields.min_quantity,
-        updatedFields.image_url,
+        updatedFields.image,
         id
       ]
     );

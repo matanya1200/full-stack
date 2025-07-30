@@ -108,7 +108,7 @@ function ProductPage() {
             <div className="card">
               <div className="card-body text-center">
                 <img 
-                  src={product.image_url} 
+                  src={product.image} 
                   alt={product.name} 
                   className="img-fluid rounded"
                   style={{ maxHeight: '400px', objectFit: 'contain' }}
