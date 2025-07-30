@@ -41,6 +41,14 @@ class SocketService {
             }
         });
 
+        this.socket.on('orderUpdated', (_) => {
+            const relevantPaths = ['/orders'];
+            if (relevantPaths.includes(window.location.pathname)) {
+                console.log("order updated - refreshing");
+                window.location.reload();
+            }
+        });
+
         this.socket.on('productUpdated', (_) => {
             console.log(window.location.pathname);
             

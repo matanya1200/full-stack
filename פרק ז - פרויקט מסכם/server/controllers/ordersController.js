@@ -2,6 +2,8 @@ const db = require('../db');
 const { logActivity } = require('../utils/logger');
 const { getUserDiscount } = require('../utils/discountUtils');
 
+const socketManager = require('../socketManager');
+
 // ✔️ כל ההזמנות (admin)
 exports.getAllOrders = async (req, res) => {
   try {
@@ -247,6 +249,12 @@ exports.buy = async (req, res) => {
 
     await connection.commit();
     connection.release();
+
+    if (socketManager?.notifyUser) {
+      socketManager.notifyUser(userId, 'cartUpdated');
+      socketManager.notifyUser(userId, 'orderUpdated');
+      socketManager.notifyUser(userId, 'paymentUpdated');
+    }
 
     res.status(201).json({
       message: 'Order placed successfully',
