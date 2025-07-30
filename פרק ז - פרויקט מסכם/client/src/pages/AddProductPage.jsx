@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import Navbar from '../components/Navbar';
+import ImageInputSelector from '../components/ImageInputSelector';
 
 function AddProductPage() {
   const [name, setName] = useState('');
@@ -9,7 +10,10 @@ function AddProductPage() {
   const [price, setPrice] = useState('');
   const [minQty, setMinQty] = useState('');
   const [departmentId, setDepartmentId] = useState('');
-  const [image, setImage] = useState('');
+  //const [image, setImage] = useState('');
+  const [imageMethod, setImageMethod] = useState("file"); // 'file' or 'link'
+  const [imageBase64, setImageBase64] = useState("");     // for file uploads
+  const [imageUrl, setImageUrl] = useState("");           // for URL input
   const [departments, setDepartments] = useState([]);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
@@ -20,7 +24,7 @@ function AddProductPage() {
     api.getDepartments().then((res) => setDepartments(res.data));
   }, []);
 
-  const handleImageChange = async (e) => {
+  const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
@@ -43,6 +47,8 @@ function AddProductPage() {
       return;
     }
 
+    const finalImage = imageBase64 || imageUrl;
+
     try {
       await api.createProduct({
         name,
@@ -51,7 +57,7 @@ function AddProductPage() {
         quantity: 0,
         min_quantity: parseInt(minQty),
         department_id: parseInt(departmentId),
-        image: image,
+        image: finalImage,
       });
 
       setMessage('✅ המוצר נוסף בהצלחה');
@@ -130,15 +136,12 @@ function AddProductPage() {
               </select>
             </div>
 
-            <div className="mb-3">
-              <label className="form-label">תמונה</label>
-              <input
-                type="file"
-                className="form-control"
-                accept="image/*"
-                onChange={handleImageChange}
-              />
-            </div>
+            <ImageInputSelector
+              imageBase64={imageBase64}
+              setImageBase64={setImageBase64}
+              imageUrl={imageUrl}
+              setImageUrl={setImageUrl}
+            />
 
             <button type="submit" className="btn btn-success">
               <i className="bi bi-plus-circle"></i> הוסף מוצר
