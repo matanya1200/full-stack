@@ -89,9 +89,9 @@ function CartPage() {
                 {items.map((item) => (
                   <tr key={item.product_id}>
                     <td>{item.product_name}</td>
-                    <td>₪{item.price}</td>
+                    <td>₪ {item.price}</td>
                     <td>{item.quantity}</td>
-                    <td>₪{(item.price * item.quantity).toFixed(2)}</td>
+                    <td>₪ {(item.price * item.quantity).toFixed(2)}</td>
                     <td>
                       <div className="btn-group">
                         <button
@@ -117,7 +117,7 @@ function CartPage() {
 
             <div className="text-end mt-4">
               <h4 className="text-success">
-                סה"כ לתשלום: ₪{total.toFixed(2)}
+                סה"כ לתשלום: ₪ {total.toFixed(2)}
               </h4>
               <button
                 className="btn btn-success btn-lg mt-2"

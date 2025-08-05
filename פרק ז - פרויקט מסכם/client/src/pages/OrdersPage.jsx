@@ -116,7 +116,7 @@ function OrdersPage() {
                             </td>
                             <td>
                               <span className="fw-bold text-success">
-                                ₪{order.total_price}
+                                ₪ {order.total_price}
                               </span>
                             </td>
                             <td>
