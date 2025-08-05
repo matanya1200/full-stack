@@ -24,6 +24,8 @@ import AddProductPage from './pages/AddProductPage';
 import CartsPage from './pages/CartsPage';
 import AllLogsPage from './pages/AllLogsPage';
 import Notification from './components/Notification';
+import ChatIcon from "./components/ChatIcon";
+import ChatWidget from "./components/ChatWidget";
 
 import socketService from './services/socketServices/socketService';
 
@@ -31,6 +33,7 @@ import socketService from './services/socketServices/socketService';
 function App() {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [chatOpen, setChatOpen] = useState(false);
   const socketRef = useRef(null);
   
   useEffect(() => {
@@ -83,6 +86,8 @@ function App() {
         <Route path="/carts" element={<CartsPage />} />
         <Route path="/allLogs" element={<AllLogsPage />} />
       </Routes>
+      <ChatIcon onClick={() => setChatOpen(true)} />
+      <ChatWidget open={chatOpen} onClose={() => setChatOpen(false)} />
     </>
   );
 }

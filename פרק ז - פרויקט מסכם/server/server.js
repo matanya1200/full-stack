@@ -22,6 +22,7 @@ app.use('/orders', require('./routes/ordersRoutes'));
 app.use('/payment', require('./routes/paymentRoutes'));
 app.use('/ranking', require('./routes/rankingRoutes'));
 app.use('/restock', require('./routes/restockRoutes'));
+app.use("/api/ai-chat", require('./routes/aiChatRoutes'));
 
 const { autoUpdateOrdersToArrived ,autoProcessRestocks } = require('./utils/maintenance');
 autoUpdateOrdersToArrived();//כאשר השרת עולה בודקים עם עברו 3 ימים מאז שהחבילה נשלחה
