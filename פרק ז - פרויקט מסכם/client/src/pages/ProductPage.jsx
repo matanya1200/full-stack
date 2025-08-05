@@ -127,7 +127,7 @@ function ProductPage() {
                 <div className="row mb-3">
                   <div className="col-6">
                     <h4 className="text-success">
-                      <i className="bi bi-currency-dollar"></i> ₪{product.discounted_price}
+                      ₪ {product.discounted_price}
                     </h4>
                   </div>
                   <div className="col-6">
