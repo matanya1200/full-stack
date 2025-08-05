@@ -5,10 +5,8 @@ const router = express.Router();
 router.post("/", async (req, res) => {
   try {
     const { messages } = req.body;
-    console.log("processed body");
     
     const reply = await getGeminiReply(messages);
-    console.log("called function");
     
     res.json({ reply });
   } catch (err) {    

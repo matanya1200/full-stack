@@ -25,7 +25,6 @@ async function getGeminiReply(messages) {
     }))
   ];
 
-  console.log(history);
   const convo = ai.chats.create({
     model: "gemini-2.5-flash",
     history
@@ -34,7 +33,6 @@ async function getGeminiReply(messages) {
   try {
     
     const result = await convo.sendMessage({message: messages[messages.length - 1].text});
-    console.log("received response");
     return result.text;
   } catch (err) {
     console.error("Gemini sendMessage error:", err);
