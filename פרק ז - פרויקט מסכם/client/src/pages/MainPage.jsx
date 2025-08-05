@@ -144,8 +144,7 @@ function MainPage() {
                     <div className="mt-auto">
                       <div className="d-flex justify-content-between align-items-center mb-2">
                         <span className="h5 text-success mb-0">
-                          <i className="bi bi-currency-dollar"></i>
-                          ₪{product.discounted_price}
+                          ₪ {product.discounted_price}
                         </span>
                         {product.quantity > 0 ? (
                           <span className="badge bg-success">זמין</span>

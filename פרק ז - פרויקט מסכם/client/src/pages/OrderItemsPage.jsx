@@ -54,8 +54,8 @@ function OrderItemsPage() {
                   <tr key={i}>
                     <td>{item.product_name}</td>
                     <td>{item.quantity}</td>
-                    <td>₪{item.price.toFixed(2)}</td>
-                    <td>₪{(item.price * item.quantity).toFixed(2)}</td>
+                    <td>₪ {item.price.toFixed(2)}</td>
+                    <td>₪ {(item.price * item.quantity).toFixed(2)}</td>
                   </tr>
                 ))}
               </tbody>
