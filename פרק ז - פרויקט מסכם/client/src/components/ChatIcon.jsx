@@ -21,8 +21,26 @@ export default function ChatIcon({ onClick }) {
       onClick={onClick}
       aria-label="Open chat"
     >
-      <svg width="32" height="32" fill="#fff" viewBox="0 0 24 24">
-        <path d="M12 3C7.03 3 3 6.58 3 11c0 2.39 1.19 4.53 3.17 6.13L5 21l4.13-1.17C10.47 20.61 11.23 21 12 21c4.97 0 9-3.58 9-8s-4.03-8-9-8zm0 16c-.62 0-1.23-.09-1.81-.26l-.36-.11-.36.11-2.44.69.69-2.44.11-.36-.11-.36C5.09 15.23 4 13.21 4 11c0-3.31 3.58-6 8-6s8 2.69 8 6-3.58 6-8 6z"/>
+      <svg width="32" height="32" viewBox="0 0 1024 1024" className="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000" stroke="#000000" strokeWidth="30.72">
+
+        <g id="SVGRepo_bgCarrier" strokeWidth="0"/>
+
+        <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"/>
+
+        <g id="SVGRepo_iconCarrier">
+
+        <path d="M896 192H128c-35.3 0-64 28.7-64 64v512c0 35.3 28.7 64 64 64h576.6l191.6 127.7L896 832c35.3 0 64-28.7 64-64V256c0-35.3-28.7-64-64-64z" fill="#3D5AFE"/>
+
+        <path d="M640 512c0-125.4-51.5-238.7-134.5-320H128c-35.3 0-64 28.7-64 64v512c0 35.3 28.7 64 64 64h377.5c83-81.3 134.5-194.6 134.5-320z" fill="#536DFE"/>
+
+        <path d="M256 512m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z" fill="#FFFF8D"/>
+
+        <path d="M512 512m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z" fill="#FFFF00"/>
+
+        <path d="M768 512m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z" fill="#FFEA00"/>
+
+        </g>
+
       </svg>
     </div>
   );
