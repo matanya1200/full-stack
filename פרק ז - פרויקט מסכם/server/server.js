@@ -24,9 +24,10 @@ app.use('/ranking', require('./routes/rankingRoutes'));
 app.use('/restock', require('./routes/restockRoutes'));
 app.use("/api/ai-chat", require('./routes/aiChatRoutes'));
 
-const { autoUpdateOrdersToArrived ,autoProcessRestocks } = require('./utils/maintenance');
+const { autoUpdateOrdersToArrived, autoProcessRestocks, autoUpdateProductsForChat } = require('./utils/maintenance');
 autoUpdateOrdersToArrived();//כאשר השרת עולה בודקים עם עברו 3 ימים מאז שהחבילה נשלחה
 setInterval(autoProcessRestocks, 24 * 60 * 60 * 1000);//פעם ביום מתבצעת בדיקה האם עברו 5 ימים מאז שבוצע הזמנה
+setInterval(autoUpdateProductsForChat, 24 * 60 * 60 * 1000);
 
 // Root
 app.get('/', (req, res) => {

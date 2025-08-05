@@ -1,3 +1,5 @@
+const fs = require("fs");
+const path = require("path");
 const db = require('../db');
 
 const autoProcessRestocks = async () => {
@@ -73,7 +75,32 @@ const autoUpdateOrdersToArrived = async () => {
   }
 };
 
+const autoUpdateProductsForChat = async () => {
+  try {
+    const [products] = await db.query("SELECT * FROM Products");
+    if (!products.length) {
+      console.log("ℹ️ No products found in DB.");
+      return;
+    }
+
+    // CSV header
+    const header = "name,description,price,quantity,min_quantity,department_id,image";
+    // Convert products to CSV rows
+    const rows = products.map(p =>
+      `"${p.name}","${p.description}",${p.price},${p.quantity},${p.min_quantity},${p.department_id},"${p.image}"`
+    );
+    const csvContent = [header, ...rows].join("\r\n");
+
+    const csvPath = path.join(__dirname, "../../insert_products.csv");
+    fs.writeFileSync(csvPath, csvContent, "utf8");
+    console.log(`✅ Products CSV updated for AI chat (${products.length} products)`);
+  } catch (err) {
+    console.error("❌ Failed to update products CSV for AI chat:", err.message);
+  }
+}
+
 module.exports = {
   autoUpdateOrdersToArrived,
-  autoProcessRestocks
+  autoProcessRestocks,
+  autoUpdateProductsForChat
 };
