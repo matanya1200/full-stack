@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import aiChatService from "../services/aiChatService";
+import DOMPurify from 'dompurify';
 
 export default function ChatWidget({ open, onClose }) {
   const [messages, setMessages] = useState([]);
@@ -13,6 +14,37 @@ export default function ChatWidget({ open, onClose }) {
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  const formatText = (input) => {
+    // Handle multiline code blocks: ```lang\ncode\n```
+    input = input.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, lang, code) => {
+        lang = lang || '';
+        code = code.replace(/</g, '&lt;').replace(/>/g, '&gt;'); // Escape HTML
+        return `<pre><code class="language-${lang}">${code}</code></pre>`;
+    });
+
+    // Escape < > to avoid breaking HTML (except inside code blocks)
+    input = input.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+    // Inline code: `code`
+    input = input.replace(/`([^`\n]+?)`/g, '<code>$1</code>');
+
+    // Bold: **bold**
+    input = input.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+    // Italic: *italic* (but not inside bold)
+    input = input.replace(/(^|[^*])\*([^*\n]+?)\*/g, '$1<em>$2</em>');
+
+    // Replace newlines with <br>, unless inside <pre>
+    input = input.replace(/(?<!<\/pre>)\n/g, '<br>');
+
+    return input;
+  }
+
+  const safeHtmlFromString = (input) => {
+    const rawHtml = formatText(input);
+    return DOMPurify.sanitize(rawHtml);
+  }
 
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -58,8 +90,8 @@ export default function ChatWidget({ open, onClose }) {
                 color: msg.role === "user" ? "#fff" : "#333",
                 maxWidth: "80%",
               }}
+              dangerouslySetInnerHTML={{ __html: safeHtmlFromString(msg.text) }}
             >
-              {msg.text}
             </span>
           </div>
         ))}
