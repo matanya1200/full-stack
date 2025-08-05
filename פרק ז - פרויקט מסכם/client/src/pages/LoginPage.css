@@ -1,0 +1,29 @@
+/* LoginPage custom styles extracted from JSX */
+
+.login-bg {
+  min-height: 100vh;
+  background: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-card {
+  box-shadow: 0 2px 16px rgba(0,0,0,0.12);
+  border: none;
+}
+
+.login-header {
+  background: #1976d2;
+  color: #fff;
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.login-title {
+  margin-bottom: 0;
+}
+
+.login-form {
+  padding: 2rem;
+}

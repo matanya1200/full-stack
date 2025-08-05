@@ -17,3 +17,8 @@ cd C:\Users\matan\OneDrive\Desktop\לימודים\שנה ד\full stack\פרק ז
 node server
 cd C:\Users\matan\OneDrive\Desktop\לימודים\שנה ד\full stack\פרק ז - פרויקט מסכם\client
 npm run dev
+
+cd "C:\Users\DvirA\OneDrive\מסמכים\בית ספר תשפה\Full-Stack\Chapter 7\פרק ז - פרויקט מסכם\פרק ז - פרויקט מסכם\server"
+node server
+cd "C:\Users\DvirA\OneDrive\מסמכים\בית ספר תשפה\Full-Stack\Chapter 7\פרק ז - פרויקט מסכם\פרק ז - פרויקט מסכם\client"
+npm run dev

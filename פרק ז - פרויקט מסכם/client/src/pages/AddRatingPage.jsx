@@ -1,7 +1,9 @@
+
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import Navbar from '../components/Navbar';
+import './AddRatingPage.css';
 
 function AddRatingPage() {
   const { product_id } = useParams();
@@ -30,8 +32,8 @@ function AddRatingPage() {
     <>
       <Navbar />
       <div className="container mt-5">
-        <div className="card mx-auto shadow" style={{ maxWidth: '600px' }}>
-          <div className="card-header bg-primary text-white">
+        <div className="card add-rating-card">
+          <div className="card-header add-rating-header">
             <h4 className="mb-0"><i className="bi bi-star-fill"></i> הוספת דירוג</h4>
           </div>
           <div className="card-body">

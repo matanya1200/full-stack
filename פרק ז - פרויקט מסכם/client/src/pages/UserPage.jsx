@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../services/api';
 import Navbar from '../components/Navbar';
+import './UserPage.css';
 
 function UserPage() {
   const localUser = JSON.parse(localStorage.getItem('user'));
@@ -63,7 +64,7 @@ function UserPage() {
             <div className="card shadow-sm">
               <div className="card-header bg-primary text-white">
                 <h2 className="mb-0">
-                  <i className="bi bi-person-circle me-2"></i>
+                  <i className="bi bi-person-circle me-2 ms-2"></i>
                   פרטי המשתמש
                 </h2>
               </div>
@@ -85,8 +86,7 @@ function UserPage() {
                 {user ? (
                   <div className="row">
                     <div className="col-md-4 text-center mb-4">
-                      <div className="bg-light rounded-circle d-inline-flex align-items-center justify-content-center" 
-                           style={{ width: '120px', height: '120px' }}>
+                      <div className="bg-light wh-120 rounded-circle d-inline-flex align-items-center justify-content-center">
                         <i className="bi bi-person-fill display-3 text-muted"></i>
                       </div>
                       <h5 className="mt-3">{user.name}</h5>
@@ -96,7 +96,7 @@ function UserPage() {
                       <form>
                         <div className="mb-3">
                           <label className="form-label">
-                            <i className="bi bi-envelope me-2"></i>
+                            <i className="bi bi-envelope me-2 ms-1"></i>
                             אימייל
                           </label>
                           <label 

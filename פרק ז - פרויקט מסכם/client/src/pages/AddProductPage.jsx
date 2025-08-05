@@ -1,8 +1,10 @@
+
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import Navbar from '../components/Navbar';
 import ImageInputSelector from '../components/ImageInputSelector';
+import './AddProductPage.css';
 
 function AddProductPage() {
   const [name, setName] = useState('');
@@ -55,9 +57,9 @@ function AddProductPage() {
   return (
     <>
       <Navbar />
-      <div className="container mt-4">
-        <div className="card shadow-sm p-4">
-          <h2 className="mb-4 text-primary">
+      <div className="add-product-container">
+        <div className="card add-product-card">
+          <h2 className="add-product-title">
             <i className="bi bi-box-seam"></i> הוספת מוצר חדש
           </h2>
 

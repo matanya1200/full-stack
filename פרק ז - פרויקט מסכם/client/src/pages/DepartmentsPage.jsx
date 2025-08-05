@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../services/api';
 import Navbar from '../components/Navbar';
+import './DepartmentsPage.css';
 
 function DepartmentsPage() {
   const [departments, setDepartments] = useState([]);
@@ -39,14 +40,14 @@ function DepartmentsPage() {
     <>
       <Navbar />
       <div className="container mt-4">
-        <div className="d-flex justify-content-between align-items-center mb-3">
-          <h2 className="text-primary">
-            <i className="bi bi-building"></i> מחלקות
-          </h2>
-          <button className="btn btn-success" onClick={handleAdd}>
-            <i className="bi bi-plus-circle"></i> הוסף מחלקה
-          </button>
-        </div>
+            <div className="departments-header">
+              <h2 className="departments-title">
+                <i className="bi bi-building"></i> מחלקות
+              </h2>
+              <button className="btn btn-success" onClick={handleAdd}>
+                <i className="bi bi-plus-circle"></i> הוסף מחלקה
+              </button>
+            </div>
 
         {error && <div className="alert alert-danger">{error}</div>}
         {message && <div className="alert alert-success">{message}</div>}

@@ -59,7 +59,9 @@ function PendingRestockPage() {
                   <th>כמות</th>
                   <th>תאריך</th>
                   <th>סטטוס</th>
+                  {user.role === 'storekeeper' && (
                   <th>פעולות</th>
+                  )}
                 </tr>
               </thead>
               <tbody>
@@ -72,24 +74,22 @@ function PendingRestockPage() {
                     <td>
                       <span className="badge bg-warning text-dark">{r.status}</span>
                     </td>
-                    <td>
-                      {user.role === 'storekeeper' && (
-                        <>
-                          <button
-                            className="btn btn-outline-primary btn-sm me-2"
-                            onClick={() => navigate('/editRestock', { state: { restockId: r.id } })}
-                          >
-                            ✏️ עריכה
-                          </button>
-                          <button
-                            className="btn btn-outline-danger btn-sm"
-                            onClick={() => handleDelete(r.id)}
-                          >
-                            🗑️ מחיקה
-                          </button>
-                        </>
-                      )}
-                    </td>
+                    {user.role === 'storekeeper' && (
+                      <td>
+                        <button
+                          className="btn btn-outline-primary btn-sm me-2"
+                          onClick={() => navigate('/editRestock', { state: { restockId: r.id } })}
+                        >
+                          ✏️ עריכה
+                        </button>
+                        <button
+                          className="btn btn-outline-danger btn-sm"
+                          onClick={() => handleDelete(r.id)}
+                        >
+                          🗑️ מחיקה
+                        </button>
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>

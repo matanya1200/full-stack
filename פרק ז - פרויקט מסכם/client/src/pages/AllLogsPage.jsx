@@ -1,6 +1,8 @@
+
 import { useEffect, useState } from 'react';
 import api from '../services/api';
 import Navbar from '../components/Navbar';
+import './AllLogsPage.css';
 
 function AllLogsPage() {
   const [logs, setLogs] = useState([]);
@@ -27,7 +29,7 @@ function AllLogsPage() {
     <>
       <Navbar />
       <div className="container mt-4">
-        <h2 className="text-primary mb-4">
+        <h2 className="all-logs-title">
           <i className="bi bi-journal-text"></i> לוגים של כל המשתמשים
         </h2>
 
@@ -49,7 +51,7 @@ function AllLogsPage() {
             <i className="bi bi-info-circle"></i> לא נמצאו לוגים
           </div>
         ) : (
-          <div className="table-responsive">
+          <div className="table-responsive all-logs-table">
             <table className="table table-bordered table-hover align-middle">
               <thead className="table-light">
                 <tr>

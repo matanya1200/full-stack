@@ -1,0 +1,11 @@
+/* EditProductPage custom styles extracted from JSX */
+
+.edit-product-title {
+  color: #1976d2;
+  margin-bottom: 1.5rem;
+}
+
+.edit-product-card {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 2rem;
+}

@@ -1,0 +1,29 @@
+/* RegisterPage custom styles extracted from JSX */
+
+.register-bg {
+  min-height: 100vh;
+  background: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.register-card {
+  box-shadow: 0 2px 16px rgba(0,0,0,0.12);
+  border: none;
+}
+
+.register-header {
+  background: #43a047;
+  color: #fff;
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.register-title {
+  margin-bottom: 0;
+}
+
+.register-form {
+  padding: 2rem;
+}

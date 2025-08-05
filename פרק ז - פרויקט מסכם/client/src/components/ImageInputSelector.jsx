@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './ImageInputSelector.css';
 
 function ImageInputSelector({ imageBase64, setImageBase64, imageUrl, setImageUrl }) {
   const [imageMethod, setImageMethod] = useState("file");
@@ -25,7 +26,7 @@ function ImageInputSelector({ imageBase64, setImageBase64, imageUrl, setImageUrl
   const finalImage = imageMethod === "file" ? imageBase64 : imageUrl;
 
   return (
-    <div className="mb-3">
+    <div className="image-input-selector mb-3">
       <label className="form-label">תמונה</label>
 
       {/* Toggle Buttons */}
@@ -71,8 +72,7 @@ function ImageInputSelector({ imageBase64, setImageBase64, imageUrl, setImageUrl
           <img
             src={finalImage}
             alt="preview"
-            className="img-thumbnail"
-            style={{ maxHeight: "200px" }}
+            className="img-thumbnail max-height-200"
           />
         </div>
       )}

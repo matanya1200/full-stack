@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import api from '../services/api';
 import Navbar from '../components/Navbar';
+import './EditUserPage.css';
 
 function EditUserPage() {
   const location = useLocation();
@@ -40,7 +41,7 @@ function EditUserPage() {
     <>
       <Navbar />
       <div className="container mt-4">
-        <h2 className="text-primary"><i className="bi bi-person-gear"></i> עריכת משתמש</h2>
+        <h2 className="edit-user-title"><i className="bi bi-person-gear"></i> עריכת משתמש</h2>
         <hr />
 
         {message && (

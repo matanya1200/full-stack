@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../services/api';
 import Navbar from '../components/Navbar';
+import './UserLogPage.css';
 
 function UserLogPage() {
   const user = JSON.parse(localStorage.getItem('user'));
@@ -21,7 +22,7 @@ function UserLogPage() {
   }, []);
 
   const getActivityIcon = (activity) => {
-    if (activity.includes('רכישה')) return 'bi-cart-check';
+    if (activity.includes('Order placed')) return 'bi-cart-check';
     if (activity.includes('הזמנה')) return 'bi-box';
     if (activity.includes('תשלום')) return 'bi-credit-card';
     if (activity.includes('עדכון')) return 'bi-pencil-square';
@@ -75,8 +76,7 @@ function UserLogPage() {
                           <div className="card-body">
                             <div className="row align-items-center">
                               <div className="col-auto">
-                                <div className="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" 
-                                     style={{ width: '40px', height: '40px' }}>
+                                <div className="bg-primary wh-40 text-white rounded-circle d-flex align-items-center justify-content-center">
                                   <i className={`bi ${getActivityIcon(log.activity)}`}></i>
                                 </div>
                               </div>
