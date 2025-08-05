@@ -1,46 +1,23 @@
 import React from "react";
+import './ChatIcon.css';
 
 export default function ChatIcon({ onClick }) {
   return (
     <div
-      style={{
-        position: "fixed",
-        bottom: "32px",
-        right: "32px",
-        zIndex: 1000,
-        cursor: "pointer",
-        background: "#1976d2",
-        borderRadius: "50%",
-        width: "56px",
-        height: "56px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-      }}
+      className="chat-icon"
       onClick={onClick}
       aria-label="Open chat"
     >
       <svg width="32" height="32" viewBox="0 0 1024 1024" className="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000" stroke="#000000" strokeWidth="30.72">
-
         <g id="SVGRepo_bgCarrier" strokeWidth="0"/>
-
         <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"/>
-
         <g id="SVGRepo_iconCarrier">
-
         <path d="M896 192H128c-35.3 0-64 28.7-64 64v512c0 35.3 28.7 64 64 64h576.6l191.6 127.7L896 832c35.3 0 64-28.7 64-64V256c0-35.3-28.7-64-64-64z" fill="#3D5AFE"/>
-
         <path d="M640 512c0-125.4-51.5-238.7-134.5-320H128c-35.3 0-64 28.7-64 64v512c0 35.3 28.7 64 64 64h377.5c83-81.3 134.5-194.6 134.5-320z" fill="#536DFE"/>
-
         <path d="M256 512m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z" fill="#FFFF8D"/>
-
         <path d="M512 512m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z" fill="#FFFF00"/>
-
         <path d="M768 512m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z" fill="#FFEA00"/>
-
         </g>
-
       </svg>
     </div>
   );

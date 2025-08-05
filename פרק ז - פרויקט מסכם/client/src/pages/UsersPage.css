@@ -1,0 +1,10 @@
+/* UsersPage custom styles extracted from JSX */
+
+.users-title {
+  color: #1976d2;
+  margin-bottom: 1.5rem;
+}
+
+.users-table-row {
+  cursor: pointer;
+}

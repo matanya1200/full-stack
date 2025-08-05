@@ -1,6 +1,8 @@
+
 import { useState, useRef, useEffect } from "react";
 import aiChatService from "../services/aiChatService";
 import DOMPurify from 'dompurify';
+import './ChatWidget.css';
 
 export default function ChatWidget({ open, onClose }) {
   const [messages, setMessages] = useState([]);
@@ -54,38 +56,16 @@ export default function ChatWidget({ open, onClose }) {
   if (!open) return null;
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        bottom: "32px",
-        right: "100px",
-        width: "350px",
-        height: "450px",
-        background: "#fff",
-        borderRadius: "16px",
-        boxShadow: "0 2px 16px rgba(0,0,0,0.2)",
-        zIndex: 1001,
-        display: "flex",
-        flexDirection: "column",
-        overflow: "hidden",
-      }}
-    >
-      <div style={{ padding: "12px", background: "#1976d2", color: "#fff", fontWeight: "bold", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+    <div className="chat-widget">
+      <div className="chat-widget-header">
         AI Chat
-        <button onClick={onClose} style={{ background: "none", border: "none", color: "#fff", fontSize: "20px", cursor: "pointer" }}>&times;</button>
+        <button className="chat-widget-close" onClick={onClose}>&times;</button>
       </div>
-      <div style={{ flex: 1, padding: "12px", overflowY: "auto", background: "#f5f5f5" }}>
+      <div className="chat-widget-messages">
         {messages.map((msg, i) => (
-          <div key={i} style={{ marginBottom: "10px", textAlign: msg.role === "user" ? "right" : "left" }}>
+          <div key={i} className={`chat-widget-message ${msg.role}`}>
             <span
-              style={{
-                display: "inline-block",
-                padding: "8px 12px",
-                borderRadius: "12px",
-                background: msg.role === "user" ? "#1976d2" : "#e0e0e0",
-                color: msg.role === "user" ? "#fff" : "#333",
-                maxWidth: "80%",
-              }}
+              className={`chat-widget-bubble ${msg.role}`}
               dangerouslySetInnerHTML={{ __html: safeHtmlFromString(msg.text) }}
             >
             </span>
@@ -93,18 +73,18 @@ export default function ChatWidget({ open, onClose }) {
         ))}
         <div ref={chatEndRef} />
       </div>
-      <div style={{ padding: "12px", borderTop: "1px solid #eee", display: "flex" }}>
+      <div className="chat-widget-input-row">
         <input
           type="text"
           value={input}
           onChange={e => setInput(e.target.value)}
           onKeyDown={e => e.key === "Enter" && sendMessage()}
-          style={{ flex: 1, borderRadius: "8px", border: "1px solid #ccc", padding: "8px" }}
+          className="chat-widget-input"
           placeholder="Ask about products..."
         />
         <button
           onClick={sendMessage}
-          style={{ marginLeft: "8px", background: "#1976d2", color: "#fff", border: "none", borderRadius: "8px", padding: "8px 16px", cursor: "pointer" }}
+          className="chat-widget-send"
         >
           Send
         </button>

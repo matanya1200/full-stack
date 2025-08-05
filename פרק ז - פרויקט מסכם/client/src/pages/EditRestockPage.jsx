@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import Navbar from '../components/Navbar';
+import './EditRestockPage.css';
 
 function EditRestockPage() {
   const location = useLocation();
@@ -51,7 +52,7 @@ function EditRestockPage() {
     <>
       <Navbar />
       <div className="container mt-4">
-        <h2 className="text-primary mb-4">
+        <h2 className="edit-restock-title">
           <i className="bi bi-pencil-square"></i> עריכת הזמנת מלאי
         </h2>
 

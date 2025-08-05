@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../services/api';
 import Navbar from '../components/Navbar';
+import './CartsPage.css';
 
 function CartsPage() {
   const [groupedCarts, setGroupedCarts] = useState({});
@@ -55,7 +56,7 @@ function CartsPage() {
           <i className="bi bi-cart4"></i> עגלות משתמשים
         </h2>
 
-        <div className="mb-4">
+        <h2 className="carts-title">
           <label className="form-label">סינון לפי מזהה משתמש:</label>
           <input
             type="number"
@@ -64,7 +65,7 @@ function CartsPage() {
             onChange={(e) => setUserIdFilter(e.target.value)}
             placeholder="User ID"
           />
-        </div>
+        </h2>
 
         {error && <div className="alert alert-danger">{error}</div>}
 
@@ -73,7 +74,7 @@ function CartsPage() {
             <i className="bi bi-info-circle"></i> לא נמצאו עגלות
           </div>
         ) : (
-          <div className="accordion" id="cartAccordion">
+          <div className="accordion mb-5" id="cartAccordion">
             {Object.entries(groupedCarts).map(([userId, { user_name, items }]) => (
               <div className="accordion-item" key={userId}>
                 <h2 className="accordion-header">
@@ -82,7 +83,7 @@ function CartsPage() {
                     type="button"
                     onClick={() => toggleExpand(userId)}
                   >
-                    🧑 משתמש #{userId} – {user_name}
+                    🧑 משתמש #{userIdFilter || userId} - {user_name}
                   </button>
                 </h2>
                 <div className={`accordion-collapse collapse ${expandedUser === userId ? 'show' : ''}`}>

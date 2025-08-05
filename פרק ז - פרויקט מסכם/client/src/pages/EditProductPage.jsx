@@ -1,8 +1,10 @@
+
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import api from '../services/api';
 import Navbar from '../components/Navbar';
 import ImageInputSelector from '../components/ImageInputSelector';
+import './EditProductPage.css';
 
 function EditProductPage() {
   const { product_id } = useParams();
@@ -66,11 +68,11 @@ function EditProductPage() {
   return (
     <>
       <Navbar />
-      <div className="container mt-5">
-        <div className="card shadow mx-auto" style={{ maxWidth: '600px' }}>
-          <div className="card-header bg-warning text-dark">
-            <h4 className="mb-0"><i className="bi bi-pencil-square"></i> עריכת מוצר</h4>
-          </div>
+      <div className="container mt-4">
+        <div className="card edit-product-card">
+          <h2 className="edit-product-title mb-0">
+            <i className="bi bi-pencil-square"></i> עריכת מוצר
+          </h2>
           <div className="card-body">
             {error && <div className="alert alert-danger">{error}</div>}
             {success && <div className="alert alert-success">{success}</div>}

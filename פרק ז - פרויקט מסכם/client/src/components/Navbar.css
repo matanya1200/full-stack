@@ -1,0 +1,26 @@
+/* Navbar styles extracted from JSX */
+
+.navbar {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+  font-weight: bold;
+}
+
+.navbar-toggler {
+  border: none;
+  background: transparent;
+}
+
+.navbar-nav .nav-link {
+  font-weight: 500;
+}
+
+.navbar-nav .nav-item {
+  margin-right: 8px;
+}
+
+.navbar-nav .dropdown-menu {
+  min-width: 180px;
+}

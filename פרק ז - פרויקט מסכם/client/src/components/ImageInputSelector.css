@@ -1,0 +1,17 @@
+/* ImageInputSelector styles extracted from JSX */
+
+.image-input-selector {
+  margin-bottom: 1rem;
+}
+
+.image-input-selector .form-label {
+  margin-left: 30px;
+}
+
+.image-input-selector .btn-group {
+  margin-bottom: 0.5rem;
+}
+
+.image-input-selector .form-control {
+  margin-bottom: 0.5rem;
+}

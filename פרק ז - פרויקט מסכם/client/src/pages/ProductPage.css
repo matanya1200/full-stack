@@ -1,0 +1,11 @@
+/* ProductPage custom styles extracted from JSX */
+
+.product-image {
+  max-height: 400px;
+  min-height: 300px;
+  object-fit: contain;
+}
+
+.mw-200 {
+  max-width: 200px;
+}

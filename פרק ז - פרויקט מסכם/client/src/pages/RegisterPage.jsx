@@ -1,6 +1,8 @@
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import './RegisterPage.css';
 
 function RegisterPage() {
   const navigate = useNavigate();
@@ -38,12 +40,12 @@ function RegisterPage() {
   };
 
   return (
-    <div className="container-fluid vh-100 d-flex align-items-center justify-content-center bg-light">
+    <div className="register-bg">
       <div className="row w-100">
         <div className="col-md-6 col-lg-5 mx-auto">
-          <div className="card shadow-lg border-0">
-            <div className="card-header bg-success text-white text-center py-4">
-              <h2 className="card-title mb-0">
+          <div className="card register-card">
+            <div className="card-header register-header">
+              <h2 className="card-title register-title mb-0">
                 <i className="bi bi-person-plus display-4"></i>
                 <div className="mt-2">🛍️ חנות רשת</div>
               </h2>

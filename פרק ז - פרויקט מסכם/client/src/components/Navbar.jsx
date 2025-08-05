@@ -1,5 +1,7 @@
+
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import './Navbar.css';
 
 function Navbar() {
   const user = JSON.parse(localStorage.getItem('user'));

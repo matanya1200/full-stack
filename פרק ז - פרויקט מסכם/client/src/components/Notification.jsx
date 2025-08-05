@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import './Notification.css';
 
 export default function Notification() {
   const [message, setMessage] = useState(null);
@@ -16,17 +17,7 @@ export default function Notification() {
   if (!message) return null;
 
   return (
-    <div style={{
-      position: 'fixed',
-      bottom: 24,
-      left: 24,
-      background: '#333',
-      color: '#fff',
-      padding: '12px 24px',
-      borderRadius: '8px',
-      zIndex: 9999,
-      boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
-    }}>
+    <div className="notification">
       {message}
     </div>
   );

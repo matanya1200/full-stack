@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import Navbar from '../components/Navbar';
+import './ProductPage.css'
 
 function ProductPage() {
   const { id } = useParams();
@@ -110,8 +111,7 @@ function ProductPage() {
                 <img 
                   src={product.image} 
                   alt={product.name} 
-                  className="img-fluid rounded"
-                  style={{ maxHeight: '400px', objectFit: 'contain' }}
+                  className="img-fluid rounded product-image"
                 />
               </div>
             </div>
@@ -158,7 +158,7 @@ function ProductPage() {
                 {/* Quantity Selection */}
                 <div className="mb-3">
                   <label className="form-label">כמות:</label>
-                  <div className="input-group" style={{ maxWidth: '200px' }}>
+                  <div className="input-group mw-200">
                     <input
                       type="number"
                       className="form-control"
