@@ -7,10 +7,6 @@ export default function ChatWidget({ open, onClose }) {
   const [input, setInput] = useState("");
   const chatEndRef = useRef(null);
 
-  /*useEffect(() => {
-    if (open) setMessages([]);
-  }, [open]);*/
-
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
