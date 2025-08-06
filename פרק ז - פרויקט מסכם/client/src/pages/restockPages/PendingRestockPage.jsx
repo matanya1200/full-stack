@@ -77,7 +77,7 @@ function PendingRestockPage() {
                     {user.role === 'storekeeper' && (
                       <td>
                         <button
-                          className="btn btn-outline-primary btn-sm me-2"
+                          className="btn btn-outline-primary btn-sm me-2 ms-2"
                           onClick={() => navigate('/editRestock', { state: { restockId: r.id } })}
                         >
                           ✏️ עריכה

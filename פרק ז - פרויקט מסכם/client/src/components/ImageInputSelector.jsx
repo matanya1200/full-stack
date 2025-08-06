@@ -30,7 +30,7 @@ function ImageInputSelector({ imageBase64, setImageBase64, imageUrl, setImageUrl
       <label className="form-label">תמונה</label>
 
       {/* Toggle Buttons */}
-      <div className="btn-group mb-2" role="group">
+      <div className="btn-group mb-2 flex-direction-row-reverse" role="group">
         <button
           type="button"
           className={`btn btn-outline-primary ${imageMethod === "file" ? "active" : ""}`}

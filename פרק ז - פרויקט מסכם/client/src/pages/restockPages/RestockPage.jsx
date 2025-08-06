@@ -60,7 +60,7 @@ function RestockPage() {
 
         {/* סינון לפי סטטוס */}
         <div className="mb-3">
-          <label className="form-label">סינון לפי סטטוס:</label>
+          <label className="form-label ms-2">סינון לפי סטטוס:</label>
           <select
             className="form-select w-auto d-inline-block ms-2"
             value={statusFilter}

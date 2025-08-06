@@ -2,3 +2,15 @@
   color: #1976d2;
   margin-bottom: 1.5rem;
 }
+
+.flex-direction-row-reverse {
+  flex-direction: row-reverse;
+}
+
+.dropdown-menu {
+  text-align: right;
+}
+
+.dropdown-toggle::after, .accordion-button::after {
+  margin-right: 2px;
+}

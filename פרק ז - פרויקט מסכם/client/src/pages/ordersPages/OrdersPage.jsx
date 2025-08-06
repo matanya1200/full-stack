@@ -44,14 +44,14 @@ function OrdersPage() {
             <div className="card shadow-sm">
               <div className="card-header bg-primary text-white">
                 <h2 className="mb-0">
-                  <i className="bi bi-box-seam me-2"></i>
+                  <i className="bi bi-box-seam me-2 ms-2"></i>
                   ההזמנות שלי
                 </h2>
               </div>
               <div className="card-body">
                 {error && (
                   <div className="alert alert-danger" role="alert">
-                    <i className="bi bi-exclamation-triangle me-2"></i>
+                    <i className="bi bi-exclamation-triangle me-2 ms-2"></i>
                     {error}
                   </div>
                 )}
@@ -67,25 +67,25 @@ function OrdersPage() {
                       <thead className="table-dark">
                         <tr>
                           <th scope="col">
-                            <i className="bi bi-hash me-1"></i>
+                            <i className="bi bi-hash me-1 ms-2"></i>
                             מספר הזמנה
                           </th>
                           {user.role === 'admin' && (
                             <th scope="col">
-                              <i className="bi bi-person me-1"></i>
+                              <i className="bi bi-person me-1 ms-2"></i>
                               מזהה משתמש
                             </th>
                           )}
                           <th scope="col">
-                            <i className="bi bi-calendar me-1"></i>
+                            <i className="bi bi-calendar me-1 ms-2"></i>
                             תאריך
                           </th>
                           <th scope="col">
-                            <i className="bi bi-currency-shekel me-1"></i>
+                            <i className="bi bi-currency-shekel me-1 ms-2"></i>
                             סכום כולל
                           </th>
                           <th scope="col">
-                            <i className="bi bi-info-circle me-1"></i>
+                            <i className="bi bi-info-circle me-1 ms-2"></i>
                             סטטוס
                           </th>
                         </tr>
@@ -111,7 +111,6 @@ function OrdersPage() {
                               </td>
                             )}
                             <td>
-                              <i className="bi bi-calendar3 me-1"></i>
                               {new Date(order.created_at).toLocaleDateString('he-IL')}
                             </td>
                             <td>
