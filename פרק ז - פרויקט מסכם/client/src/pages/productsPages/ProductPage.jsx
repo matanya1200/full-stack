@@ -158,7 +158,7 @@ function ProductPage() {
                 {/* Quantity Selection */}
                 <div className="mb-3">
                   <label className="form-label">כמות:</label>
-                  <div className="input-group mw-200">
+                  <div className="input-group flex-direction-row-reverse mw-200">
                     <input
                       type="number"
                       className="form-control"

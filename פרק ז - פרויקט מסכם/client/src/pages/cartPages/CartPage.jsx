@@ -93,7 +93,7 @@ function CartPage() {
                     <td>{item.quantity}</td>
                     <td>₪ {(item.price * item.quantity).toFixed(2)}</td>
                     <td>
-                      <div className="btn-group">
+                      <div className="btn-group flex-direction-row-reverse">
                         <button
                           className="btn btn-sm btn-outline-primary"
                           onClick={() => handleUpdateQuantity(item.product_id, item.quantity)}

@@ -82,7 +82,7 @@ function PaymentPage() {
             <div className="card shadow-sm">
               <div className="card-header bg-success text-white">
                 <h2 className="mb-0">
-                  <i className="bi bi-credit-card me-2"></i>
+                  <i className="bi bi-credit-card me-2 ms-2"></i>
                   אמצעי תשלום
                 </h2>
               </div>
@@ -112,12 +112,12 @@ function PaymentPage() {
                       <div className="card bg-light">
                         <div className="card-body">
                           <h5 className="card-title">
-                            <i className="bi bi-credit-card me-2"></i>
+                            <i className="bi bi-credit-card me-2 ms-2"></i>
                             פרטי כרטיס
                           </h5>
                           <div className="mb-3">
                             <label className="form-label">4 ספרות אחרונות</label>
-                            <div className="input-group">
+                            <div className="input-group flex-direction-row-reverse">
                               <span className="input-group-text">****</span>
                               <label 
                                 type="text" 
@@ -142,12 +142,12 @@ function PaymentPage() {
                       <div className="card bg-light">
                         <div className="card-body">
                           <h5 className="card-title">
-                            <i className="bi bi-wallet me-2"></i>
+                            <i className="bi bi-wallet me-2 ms-2"></i>
                             יתרה
                           </h5>
                           <div className="mb-3">
                             <label className="form-label">יתרה נוכחית</label>
-                            <div className="input-group">
+                            <div className="input-group flex-direction-row-reverse">
                               <span className="input-group-text">₪</span>
                               <input
                                 type="number"
@@ -169,7 +169,7 @@ function PaymentPage() {
                       className="btn btn-success" 
                       onClick={handleUpdate}
                     >
-                      <i className="bi bi-check-circle me-2"></i>
+                      <i className="bi bi-check-circle ms-2"></i>
                       עדכן
                     </button>
                   )}
@@ -177,7 +177,7 @@ function PaymentPage() {
                     className="btn btn-danger" 
                     onClick={handleDelete}
                   >
-                    <i className="bi bi-trash me-2"></i>
+                    <i className="bi bi-trash ms-2"></i>
                     מחיקת אמצעי תשלום
                   </button>
                 </div>

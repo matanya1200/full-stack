@@ -22,7 +22,7 @@ function Navbar() {
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
       <div className="container">
         <Link className="navbar-brand fw-bold" to="/">
-          <i className="bi bi-shop"></i> 🛍️ חנות רשת
+          🛍️ חנות רשת
         </Link>
         
         <button

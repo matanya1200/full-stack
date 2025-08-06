@@ -96,7 +96,7 @@ function UserPage() {
                       <form>
                         <div className="mb-3">
                           <label className="form-label">
-                            <i className="bi bi-envelope me-2 ms-1"></i>
+                            <i className="bi bi-envelope me-2 ms-2"></i>
                             אימייל
                           </label>
                           <label 
@@ -109,7 +109,7 @@ function UserPage() {
                         
                         <div className="mb-3">
                           <label className="form-label">
-                            <i className="bi bi-person me-2"></i>
+                            <i className="bi bi-person me-2 ms-2"></i>
                             שם מלא
                           </label>
                           <input 
@@ -123,7 +123,7 @@ function UserPage() {
                         
                         <div className="mb-4">
                           <label className="form-label">
-                            <i className="bi bi-geo-alt me-2"></i>
+                            <i className="bi bi-geo-alt me-2 ms-2"></i>
                             כתובת
                           </label>
                           <textarea 
@@ -141,7 +141,7 @@ function UserPage() {
                             className="btn btn-success" 
                             onClick={handleUpdate}
                           >
-                            <i className="bi bi-check-circle me-2"></i>
+                            <i className="bi bi-check-circle ms-2"></i>
                             שמור שינויים
                           </button>
                           <button 
@@ -149,7 +149,7 @@ function UserPage() {
                             className="btn btn-danger" 
                             onClick={handleDelete}
                           >
-                            <i className="bi bi-trash me-2"></i>
+                            <i className="bi bi-trash ms-2"></i>
                             מחיקת משתמש
                           </button>
                         </div>

@@ -25,7 +25,7 @@
   align-items: center;
 }
 
-.chat-widget-close {
+.chat-widget-option {
   background: none;
   border: none;
   color: #fff;
@@ -84,7 +84,6 @@
 }
 
 .chat-widget-send {
-  margin-left: 8px;
   background: #1976d2;
   color: #fff;
   border: none;

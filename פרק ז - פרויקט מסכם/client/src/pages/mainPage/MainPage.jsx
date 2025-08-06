@@ -111,7 +111,7 @@ function MainPage() {
         {/* Search and Filter Section */}
         <div className="row mb-4">
           <div className="col-md-6">
-            <div className="input-group">
+            <div className="input-group flex-direction-row-reverse">
               <span className="input-group-text">
                 <i className="bi bi-search"></i>
               </span>
@@ -199,7 +199,18 @@ function MainPage() {
         <div className="row mt-4">
           <div className="col-12 d-flex justify-content-center">
             <nav aria-label="Page navigation">
-              <ul className="pagination">
+              <ul className="pagination flex-direction-row-reverse">
+                <li className="page-item">
+                  <button 
+                    className="page-link"
+                    onClick={() => setPage(page + 1)}
+                  >
+                    הבא <i className="bi bi-chevron-left"></i>
+                  </button>
+                </li>
+                <li className="page-item active">
+                  <span className="page-link">עמוד {page}</span>
+                </li>
                 <li className={`page-item ${page <= 1 ? 'disabled' : ''}`}>
                   <button 
                     className="page-link"
@@ -207,17 +218,6 @@ function MainPage() {
                     disabled={page <= 1}
                   >
                     <i className="bi bi-chevron-right"></i> הקודם
-                  </button>
-                </li>
-                <li className="page-item active">
-                  <span className="page-link">עמוד {page}</span>
-                </li>
-                <li className="page-item">
-                  <button 
-                    className="page-link"
-                    onClick={() => setPage(page + 1)}
-                  >
-                    הבא <i className="bi bi-chevron-left"></i>
                   </button>
                 </li>
               </ul>

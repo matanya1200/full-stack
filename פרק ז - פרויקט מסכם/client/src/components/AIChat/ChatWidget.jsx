@@ -63,13 +63,13 @@ export default function ChatWidget({ open, onClose }) {
       <div className="chat-widget-header">
         AI Chat
         <button
-          className="chat-widget-close"
+          className="chat-widget-option"
           onClick={handleClearChat}
           title="Clean chat"
         >
           🗑️
         </button>
-        <button className="chat-widget-close" onClick={onClose}>&times;</button>
+        <button className="chat-widget-option" onClick={onClose}>&times;</button>
       </div>
       <div className="chat-widget-messages">
         {messages.map((msg, i) => (
@@ -94,7 +94,7 @@ export default function ChatWidget({ open, onClose }) {
         />
         <button
           onClick={sendMessage}
-          className="chat-widget-send"
+          className="chat-widget-send me-2 ms-0"
         >
           שלח
         </button>

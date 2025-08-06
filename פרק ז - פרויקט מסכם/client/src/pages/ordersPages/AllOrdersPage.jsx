@@ -40,14 +40,14 @@ function allOrdersPage() {
             <div className="card shadow-sm">
               <div className="card-header bg-primary text-white">
                 <h2 className="mb-0">
-                  <i className="bi bi-box-seam me-2 has-symbol"></i>
+                  <i className="bi bi-box-seam me-2 ms-2"></i>
                   כל ההזמנות
                 </h2>
               </div>
               <div className="card-body">
                 {error && (
                   <div className="alert alert-danger" role="alert">
-                    <i className="bi bi-exclamation-triangle me-2"></i>
+                    <i className="bi bi-exclamation-triangle me-2 ms-2"></i>
                     {error}
                   </div>
                 )}
@@ -104,7 +104,6 @@ function allOrdersPage() {
                               </td>
                             )}
                             <td>
-                              <i className="bi bi-calendar3 me-1 has-symbol"></i>
                               {new Date(order.created_at).toLocaleDateString('he-IL')}
                             </td>
                             <td>
