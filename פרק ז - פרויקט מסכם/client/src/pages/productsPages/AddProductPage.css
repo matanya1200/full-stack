@@ -1,0 +1,12 @@
+/* AddProductPage custom styles extracted from JSX */
+
+.add-product-container {
+  margin-top: 2rem;
+  width: 80%;
+  margin-right: 10%;
+}
+
+.add-product-card {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 2rem;
+}
