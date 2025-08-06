@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import api from '../../services/api';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
+import './MainPage.css';
 
 function MainPage() {
   const [products, setProducts] = useState([]);
@@ -11,12 +12,15 @@ function MainPage() {
   const [page, setPage] = useState(1);
 
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const user = JSON.parse(localStorage.getItem('user'));
 
   const loadProducts = async () => {
     try {
       let res;
-      if (search) {
+      if (search && selectedDept) {
+        res = await api.searchProductsInDepartment(search, selectedDept, page);
+      } else if (search) {
         res = await api.searchProducts(search, page);
       } else if (selectedDept) {
         res = await api.getProductsByDepartment(selectedDept, page);
@@ -38,13 +42,29 @@ function MainPage() {
     }
   };
 
+  // Sync state from URL on mount and when URL changes
+  useEffect(() => {
+    const pageParam = parseInt(searchParams.get('page')) || 1;
+    const deptParam = searchParams.get('department') || '';
+    const searchParam = searchParams.get('search') || '';
+    setPage(pageParam);
+    setSelectedDept(deptParam);
+    setSearch(searchParam);
+  }, [searchParams]);
+
+  // Update URL when state changes (but not on first mount)
+  useEffect(() => {
+    const params = {};
+    if (page > 1) params.page = page;
+    if (selectedDept) params.department = selectedDept;
+    if (search) params.search = search;
+    setSearchParams(params, { replace: true });
+    loadProducts();
+  }, [page, selectedDept, search]);
+
   useEffect(() => {
     loadDepartments();
   }, []);
-
-  useEffect(() => {
-    loadProducts();
-  }, [search, selectedDept, page]);
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
@@ -130,12 +150,11 @@ function MainPage() {
             products.map((product) => (
               <div key={product.id} className="col-lg-3 col-md-4 col-sm-6 mb-4">
                 <div className="card h-100 shadow-sm">
-                  <div className="card-img-top d-flex justify-content-center align-items-center" style={{ height: '200px', backgroundColor: '#f8f9fa' }}>
+                  <div className="card-img-top d-flex justify-content-center align-items-center">
                     <img 
                       src={product.image} 
                       alt={product.name} 
                       className="img-fluid"
-                      style={{ maxHeight: '180px', maxWidth: '100%', objectFit: 'contain' }}
                     />
                   </div>
                   <div className="card-body d-flex flex-column">

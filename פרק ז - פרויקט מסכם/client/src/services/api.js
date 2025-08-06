@@ -36,6 +36,7 @@ const api = {
   getAllProductsWithoutPage: () => createAxios().get(`/products/all`),
   getProductsByDepartment: (departmentId, page = 1) => createAxios().get(`/products/department/${departmentId}?page=${page}`),
   searchProducts: (search, page = 1) => createAxios().get(`/products/search?search=${search}&page=${page}`),
+  searchProductsInDepartment: (search, departmentId, page = 1) => createAxios().get(`/products/searchDepartment?search=${search}&department=${departmentId}&page=${page}`),
   getProduct: (id) => createAxios().get(`/products/${id}`),
   createProduct: (data) => createAxios().post('/products', data),
   updateProduct: (id, data) => createAxios().put(`/products/${id}`, data),

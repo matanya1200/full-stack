@@ -12,6 +12,7 @@ router.use(verifyToken);
 router.get('/all', productsController.getAllProductsWithoutPage);
 router.get('/', productsController.getAllProducts);
 router.get('/search', productsController.searchProducts);
+router.get('/searchDepartment', productsController.searchProductsInDepartment);
 router.get('/department/:id', productsController.getByDepartment);
 router.get('/:id', productsController.getProductById);
 

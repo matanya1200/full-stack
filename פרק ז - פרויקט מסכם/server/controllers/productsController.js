@@ -90,6 +90,29 @@ exports.searchProducts = async (req, res) => {
   }
 };
 
+// ✔️ חיפוש במחלקה עם סינון לפי שם
+exports.searchProductsInDepartment = async (req, res) => {
+  const search = req.query.search;
+  const departmentId = parseInt(req.query.department);
+  const page = parseInt(req.query.page) || 1;
+  const limit = 20;
+  const offset = (page - 1) * limit;
+
+  const discount = getUserDiscount(req.user.role);
+
+  try {
+    const [products] = await db.query(
+      `SELECT id, name, description, quantity, min_quantity, department_id, image,
+              price * ? AS discounted_price
+       FROM Products WHERE department_id = ? AND name LIKE ? LIMIT ? OFFSET ?`,
+      [discount, departmentId, `%${search}%`, limit, offset]
+    );
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ message: 'Search in department failed', error: err.message });
+  }
+};
+
 // ✔️ קבלת מוצר לפי id
 exports.getProductById = async (req, res) => {
   const id = parseInt(req.params.id);
