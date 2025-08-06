@@ -11,7 +11,7 @@ export default function ChatWidget({ open, onClose }) {
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, open]);
 
   const formatText = (input) => {
     // Handle multiline code blocks: ```lang\ncode\n```
@@ -44,6 +44,9 @@ export default function ChatWidget({ open, onClose }) {
     return DOMPurify.sanitize(rawHtml);
   }
 
+  // Handler to clear chat messages
+  const handleClearChat = () => setMessages([]);
+
   const sendMessage = async () => {
     if (!input.trim()) return;
     const userMsg = { role: "user", text: input };
@@ -59,6 +62,13 @@ export default function ChatWidget({ open, onClose }) {
     <div className="chat-widget">
       <div className="chat-widget-header">
         AI Chat
+        <button
+          className="chat-widget-close"
+          onClick={handleClearChat}
+          title="Clean chat"
+        >
+          🗑️
+        </button>
         <button className="chat-widget-close" onClick={onClose}>&times;</button>
       </div>
       <div className="chat-widget-messages">
@@ -80,13 +90,13 @@ export default function ChatWidget({ open, onClose }) {
           onChange={e => setInput(e.target.value)}
           onKeyDown={e => e.key === "Enter" && sendMessage()}
           className="chat-widget-input"
-          placeholder="Ask about products..."
+          placeholder="שאל על מוצרים..."
         />
         <button
           onClick={sendMessage}
           className="chat-widget-send"
         >
-          Send
+          שלח
         </button>
       </div>
     </div>
