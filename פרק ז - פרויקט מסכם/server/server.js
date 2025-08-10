@@ -23,6 +23,7 @@ app.use('/payment', require('./routes/paymentRoutes'));
 app.use('/ranking', require('./routes/rankingRoutes'));
 app.use('/restock', require('./routes/restockRoutes'));
 app.use("/api/ai-chat", require('./routes/aiChatRoutes'));
+app.use("/api/rag-chat", require('./routes/ragChatRoutes'));
 
 const { autoUpdateOrdersToArrived, autoProcessRestocks, autoUpdateProductsForChat } = require('./utils/maintenance');
 autoUpdateOrdersToArrived();//כאשר השרת עולה בודקים עם עברו 3 ימים מאז שהחבילה נשלחה

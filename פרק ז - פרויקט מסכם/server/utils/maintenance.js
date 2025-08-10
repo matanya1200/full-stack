@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { exec } = require("child_process");
 const db = require('../db');
 
 const autoProcessRestocks = async () => {
@@ -83,17 +84,33 @@ const autoUpdateProductsForChat = async () => {
       return;
     }
 
+    const [departments] = await db.query("SELECT * FROM Departments");
+    if (!departments.length) {
+      console.log("ℹ️ No departments found in DB.");
+      return;
+    }
+
+    let idToDepartments = {};
+    departments.forEach(dep => {
+      idToDepartments[dep.id] = dep.name;
+    });
+
     // CSV header
-    const header = "name,description,price,quantity,min_quantity,department_id,image";
+    const header = "id,name,description,price,quantity,min_quantity,category,image";
     // Convert products to CSV rows
     const rows = products.map(p =>
-      `"${p.name}","${p.description}",${p.price},${p.quantity},${p.min_quantity},${p.department_id},"${p.image}"`
+      `${p.id},"${p.name}","${p.description}",${p.price},${p.quantity},${p.min_quantity},${idToDepartments[p.department_id]},"${p.image}"`
     );
     const csvContent = [header, ...rows].join("\r\n");
 
     const csvPath = path.join(__dirname, "../../insert_products.csv");
     fs.writeFileSync(csvPath, csvContent, "utf8");
     console.log(`✅ Products CSV updated for AI chat (${products.length} products)`);
+
+    exec("node ./ai/rag/ingest.js", (err, stdout, stderr) => {
+      if (err) console.error("RAG ingestion failed:", err);
+      else console.log("RAG ingestion complete:", stdout);
+    });
   } catch (err) {
     console.error("❌ Failed to update products CSV for AI chat:", err.message);
   }
