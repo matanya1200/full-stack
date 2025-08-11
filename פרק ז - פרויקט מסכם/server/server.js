@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const http = require('http');
 require('dotenv').config();
-const socketManager = require('./socketManager');
+const socketManager = require('./utils/socketManager');
 
 const app = express();
 
