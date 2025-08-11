@@ -2,7 +2,7 @@
 const db = require('../db');
 const { getUserDiscount } = require('../utils/discountUtils');
 const transactionManager = require('../utils/transactionManager');
-const socketManager = require('../socketManager');
+const socketManager = require('../utils/socketManager');
 const transactionHTTPError = require('../utils/transactionHTTPError');
 
 // ✔️ admin – קבלת כל העגלות

@@ -1,7 +1,7 @@
 // controllers/userController.js
 const db = require('../db');
 const { logActivity } = require('../utils/logger');
-const socketManager = require('../socketManager');
+const socketManager = require('../utils/socketManager');
 const transactionManager = require('../utils/transactionManager');
 const transactionHTTPError = require('../utils/transactionHTTPError');
 
