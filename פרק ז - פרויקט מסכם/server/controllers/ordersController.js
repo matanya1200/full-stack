@@ -1,7 +1,7 @@
 const db = require('../db');
 const { logActivity } = require('../utils/logger');
 const { getUserDiscount } = require('../utils/discountUtils');
-const socketManager = require('../socketManager');
+const socketManager = require('../utils/socketManager');
 const transactionManager = require('../utils/transactionManager');
 const transactionHTTPError = require('../utils/transactionHTTPError');
 
