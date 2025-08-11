@@ -10,7 +10,7 @@ class TransactionManager {
             return result;
         } catch (err) {
             await conn.rollback();
-            throw err;
+            // throw err;
         } finally {
             conn.release();
         }

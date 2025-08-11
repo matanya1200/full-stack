@@ -3,6 +3,7 @@ const db = require('../db');
 const { getUserDiscount } = require('../utils/discountUtils');
 const transactionManager = require('../utils/transactionManager');
 const socketManager = require('../socketManager');
+const transactionHTTPError = require('../utils/transactionHTTPError');
 
 // ✔️ admin – קבלת כל העגלות
 exports.getAllCarts = async (req, res) => {
@@ -52,14 +53,13 @@ exports.addToCart = async (req, res) => {
     return res.status(400).json({ message: 'Invalid product or quantity' });
   }
 
-  try {
-    await transactionManager.withTransaction(async (conn) => {
+  await transactionManager.withTransaction(async (conn) => {
+    try {
       // Lock product row for update
       const [productRows] = await conn.query('SELECT * FROM Products WHERE id = ? FOR UPDATE', [product_id]);
       const product = productRows[0];
       if (!product) {
-        // error 404
-        throw new Error('Product not found');
+        throw new transactionHTTPError(404, 'Product not found');
       }
 
       // Check if item already in cart
@@ -70,8 +70,7 @@ exports.addToCart = async (req, res) => {
       const existing = existingRows[0];
       const totalRequested = quantity + (existing?.quantity || 0);
       if (product.quantity < totalRequested) {
-        // error 422
-        throw new Error(`Requested quantity (${totalRequested}) exceeds available stock (${product.quantity})`);
+        throw new transactionHTTPError(422, `Requested quantity (${totalRequested}) exceeds available stock (${product.quantity})`);
       }
 
       if (existing) {
@@ -85,15 +84,19 @@ exports.addToCart = async (req, res) => {
           [userId, product_id, quantity]
         );
       }
-    });
-
-    // Notify all user devices/tabs
-    //socketManager.notifyUser(userId, 'cartUpdated', { product_id, quantity });
-    socketManager.notifyUser(userId, 'cartUpdated');
-    res.status(201).json({ message: 'Product added to cart' });
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to add to cart', error: err.message });
-  }
+      
+      // Notify all user devices/tabs
+      //socketManager.notifyUser(userId, 'cartUpdated', { product_id, quantity });
+      socketManager.notifyUser(userId, 'cartUpdated');
+      res.status(201).json({ message: 'Product added to cart' });
+    } catch (err) {
+      if (err instanceof transactionHTTPError) {
+        res.status(err.statusCode).json({ message: err.message });
+      } else {
+        res.status(500).json({ message: 'Failed to add to cart', error: err.message });
+      }
+    }
+  });
 };
 
 
@@ -110,42 +113,44 @@ exports.updateCartProduct = async (req, res) => {
     return res.status(400).json({ message: 'Quantity must be 0 or more' });
   }
 
-  try {
-    const [productRows] = await db.query('SELECT * FROM Products WHERE id = ?', [product_id]);
-    const product = productRows[0];
+  await transactionManager.withTransaction(async (conn) => {
+    try {
+      const [productRows] = await conn.query('SELECT * FROM Products WHERE id = ?', [product_id]);
+      const product = productRows[0];
 
-    if (!product) {
-      return res.status(404).json({ message: 'Product not found' });
-    }
+      if (!product) {
+        throw new transactionHTTPError(404, 'Product not found');
+      }
 
-    if (product.quantity < quantity) {
-      return res.status(422).json({
-        message: `Requested quantity (${quantity}) exceeds available stock (${product.quantity})`
-      });
-    }
+      if (product.quantity < quantity) {
+        throw new transactionHTTPError(422, `Requested quantity (${quantity}) exceeds available stock (${product.quantity})`);
+      }
 
-    const [items] = await db.query(
-      'SELECT * FROM cartItems WHERE user_id = ? AND product_id = ?',
-      [userId, product_id]
-    );
+      const [items] = await  conn.query(
+        'SELECT * FROM cartItems WHERE user_id = ? AND product_id = ?',
+        [userId, product_id]
+      );
 
-    if (items.length === 0) {
-      return res.status(404).json({ message: 'Product not found in cart' });
-    }
+      if (items.length === 0) {
+        throw new transactionHTTPError(404, 'Product not found in cart');
+      }
 
-    await transactionManager.withTransaction(async (conn) => {
       await conn.query(
         'UPDATE CartItems SET quantity = ? WHERE user_id = ? AND product_id = ?',
         [quantity, userId, product_id]
       );
-    });
-    
-    //socketManager.notifyUser(userId, 'cartUpdated', { product_id, quantity });
-    socketManager.notifyUser(userId, 'cartUpdated');
-    res.status(200).json({ message: 'Cart item updated successfully' });
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to update cart item', error: err.message });
-  }
+      
+      //socketManager.notifyUser(userId, 'cartUpdated', { product_id, quantity });
+      socketManager.notifyUser(userId, 'cartUpdated');
+      res.status(200).json({ message: 'Cart item updated successfully' });
+    } catch (err) {
+      if (err instanceof transactionHTTPError) {
+        res.status(err.statusCode).json({ message: err.message });
+      } else {
+        res.status(500).json({ message: 'Failed to update cart item', error: err.message });
+      }
+    }
+  });
 };
 
 
@@ -154,26 +159,30 @@ exports.deleteCartItem = async (req, res) => {
   const id = parseInt(req.params.id);
   const userId = req.user.id;
 
-  try {
-    const [items] = await db.query('SELECT * FROM CartItems WHERE id = ?', [id]);
-    if (items.length === 0) {
-      return res.status(404).json({ message: 'Cart item not found' });
-    }
+  await transactionManager.withTransaction(async (conn) => {
+    try {
+      const [items] = await conn.query('SELECT * FROM CartItems WHERE id = ?', [id]);
+      if (items.length === 0) {
+        throw new transactionHTTPError(404, 'Cart item not found');
+      }
 
-    if (items[0].user_id !== userId) {
-      return res.status(403).json({ message: 'You can only delete your own cart items' });
-    }
+      if (items[0].user_id !== userId) {
+        throw new transactionHTTPError(403, 'You can only delete your own cart items');
+      }
 
-    await transactionManager.withTransaction(async (conn) => {
       await conn.query('DELETE FROM CartItems WHERE id = ?', [id]);
-    });
-    
-    //socketManager.notifyUser(userId, 'cartUpdated', { deleted: id });
-    socketManager.notifyUser(userId, 'cartUpdated');
-    res.json({ message: 'Cart item deleted' });
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to delete cart item', error: err.message });
-  }
+      
+      //socketManager.notifyUser(userId, 'cartUpdated', { deleted: id });
+      socketManager.notifyUser(userId, 'cartUpdated');
+      res.json({ message: 'Cart item deleted' });
+    } catch (err) {
+      if (err instanceof transactionHTTPError) {
+        res.status(err.statusCode).json({ message: err.message });
+      } else {
+        res.status(500).json({ message: 'Failed to delete cart item', error: err.message });
+      }
+    }
+  });
 };
 
 exports.getCartItem = async (req,res) => {

@@ -2,7 +2,8 @@
 const db = require('../db');
 const { logActivity } = require('../utils/logger');
 const socketManager = require('../socketManager');
-
+const transactionManager = require('../utils/transactionManager');
+const transactionHTTPError = require('../utils/transactionHTTPError');
 
 // ✔️ קבלת כל המשתמשים – למנהל
 exports.getAllUsers = async (req, res) => {
@@ -44,86 +45,103 @@ exports.updateUser = async (req, res) => {
 
   const { name, address } = req.body;
 
-  try {
-    const fields = [];
-    const values = [];
+  await transactionManager.withTransaction(async (conn) => {
+    try {
+      const fields = [];
+      const values = [];
 
-    if (name !== undefined) {
-      fields.push('name = ?');
-      values.push(name);
+      if (name !== undefined) {
+        fields.push('name = ?');
+        values.push(name);
+      }
+      if (address !== undefined) {
+        fields.push('address = ?');
+        values.push(address);
+      }
+
+      if (fields.length === 0) {
+        throw new transactionHTTPError(400, 'Nothing to update');
+      }
+
+      fields.push('updated_at = NOW()');
+      values.push(id);
+
+      await conn.query(`UPDATE Users SET ${fields.join(', ')} WHERE id = ?`, values);
+
+      socketManager.notifyUser(id, 'userUpdated');
+      await logActivity(req.user.id, 'Updated profile', conn);
+      throw new transactionHTTPError(200, 'User updated successfully');
+    } catch (err) {
+      if (err instanceof transactionHTTPError) {
+        res.status(err.statusCode).json({ message: err.message });
+      } else {
+        res.status(500).json({ message: 'Update failed', error: err.message });
+      }
     }
-    if (address !== undefined) {
-      fields.push('address = ?');
-      values.push(address);
-    }
-
-    if (fields.length === 0) {
-      return res.status(400).json({ message: 'Nothing to update' });
-    }
-
-    fields.push('updated_at = NOW()');
-    values.push(id);
-
-    await db.query(`UPDATE Users SET ${fields.join(', ')} WHERE id = ?`, values);
-    
-    socketManager.notifyUser(id, 'userUpdated');
-    res.json({ message: 'User updated successfully' });
-    await logActivity(req.user.id, 'Updated profile');
-  } catch (err) {
-    res.status(500).json({ message: 'Update failed', error: err.message });
-  }
+  });
 };
 
 // ✔️ עדכון תפקיד ומחלקה – על ידי מנהל
 exports.updateUserRole = async (req, res) => {
   const id = parseInt(req.params.id);
 
-  const [users] = await db.query('SELECT role FROM Users WHERE id = ?', [id]);
-  if (users.length === 0) {
-    return res.status(404).json({ message: 'User not found' });
-  }
+  await transactionManager.withTransaction(async (conn) => {
+    try {
+      const [users] = await conn.query('SELECT role FROM Users WHERE id = ?', [id]);
+      if (users.length === 0) {
+        throw new transactionHTTPError(404, 'User not found');
+      }
 
-  const { role, department_id } = req.body;
+      const { role, department_id } = req.body;
 
-  if (req.user.id === id || users[0].role === "admin") {
-    return res.status(403).json({ message: 'Admin cannot change their own role or other admin' });
-  }
+      if (req.user.id === id || users[0].role === "admin") {
+        throw new transactionHTTPError(403, 'Admin cannot change their own role or other admin');
+      }
 
-  try {
-    if(role === "worker" && (department_id === null || department_id === undefined)){
-        return res.status(402).json({ message: 'missing department' });
+      if(role === "worker" && (department_id === null || department_id === undefined)){
+        throw new transactionHTTPError(402, 'missing department');
+      }
+      await conn.query('UPDATE Users SET role = ?, department_id = ? WHERE id = ?', [role, department_id || null, id]);
+      await logActivity(req.user.id, `Changed role of user ${id} to ${role}`, conn);
+      throw new transactionHTTPError(200, 'User role updated');
+    } catch (err) {
+      if (err instanceof transactionHTTPError) {
+        res.status(err.statusCode).json({ message: err.message });
+      } else {
+        res.status(500).json({ message: 'Role update failed', error: err.message });
+      }
     }
-    await db.query('UPDATE Users SET role = ?, department_id = ? WHERE id = ?', [role, department_id || null, id]);
-    res.json({ message: 'User role updated' });
-    await logActivity(req.user.id, `Changed role of user ${id} to ${role}`);
-  } catch (err) {
-    res.status(500).json({ message: 'Role update failed', error: err.message });
-  }
+  });
 };
 
 // ✔️ חסימת משתמש – ע"י מנהל
 exports.blockUser = async (req, res) => {
   const id = parseInt(req.params.id);
-
   const { block } = req.body;
 
-  const [users] = await db.query('SELECT role FROM Users WHERE id = ?', [id]);
-  if (users.length === 0) {
-    return res.status(404).json({ message: 'User not found' });
-  }
-  
-  if (req.user.id === id || users[0].role === "admin") {
-    return res.status(403).json({ message: 'Cannot block yourself or other admin' });
-  }
+  await transactionManager.withTransaction(async (conn) => {
+    try {
+      const [users] = await conn.query('SELECT role FROM Users WHERE id = ?', [id]);
+      if (users.length === 0) {
+        throw new transactionHTTPError(404, 'User not found');
+      }
 
-  try {
-    await db.query('UPDATE Users SET is_blocked = ? WHERE id = ?', [block, id]);
-    const statusText = block ? 'blocked' : 'unblocked';
-    res.json({ message: `User ${statusText} successfully` });
-    await logActivity(req.user.id, `${statusText} user ${id}`);
-  } catch (err) {
-    res.status(500).json({ message: 'Block failed', error: err.message });
-  }
+      if (req.user.id === id || users[0].role === "admin") {
+        throw new transactionHTTPError(403, 'Cannot block yourself or other admin');
+      }
+
+      await conn.query('UPDATE Users SET is_blocked = ? WHERE id = ?', [block, id]);
+      const statusText = block ? 'blocked' : 'unblocked';
+      await logActivity(req.user.id, `${statusText} user ${id}`, conn);
+      throw new transactionHTTPError(200, `User ${statusText} successfully`);
+    } catch (err) {
+      if (err instanceof transactionHTTPError) {
+        res.status(err.statusCode).json({ message: err.message });
+      } else {
+        res.status(500).json({ message: 'Block failed', error: err.message });
+      }
+    }
+  });
 };
 
 // ✔️ מחיקת משתמש – ע"י עצמו בלבד
@@ -133,13 +151,18 @@ exports.deleteUser = async (req, res) => {
     return res.status(403).json({ message: 'You can only delete your own account' });
   }
 
-  try {
-    await db.query('DELETE FROM Users WHERE id = ?', [id]);
-
-    socketManager.notifyUser(id, 'userUpdated');
-    res.json({ message: 'User deleted' });
-    await logActivity(req.user.id, 'Deleted own account');
-  } catch (err) {
-    res.status(500).json({ message: 'Delete failed', error: err.message });
-  }
+  await transactionManager.withTransaction(async (conn) => {
+    try {
+      await conn.query('DELETE FROM Users WHERE id = ?', [id]);
+      socketManager.notifyUser(id, 'userUpdated');
+      await logActivity(req.user.id, 'Deleted own account', conn);
+      throw new transactionHTTPError(200, 'User deleted');
+    } catch (err) {
+      if (err instanceof transactionHTTPError) {
+        res.status(err.statusCode).json({ message: err.message });
+      } else {
+        res.status(500).json({ message: 'Delete failed', error: err.message });
+      }
+    }
+  });
 };

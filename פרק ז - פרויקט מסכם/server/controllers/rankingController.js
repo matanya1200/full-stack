@@ -1,5 +1,7 @@
 const db = require('../db');
 const socketManager = require('../socketManager');
+const transactionManager = require('../utils/transactionManager');
+const transactionHTTPError = require('../utils/transactionHTTPError');
 
 // ✔️ POST /rank – הוספת תגובה ודירוג
 exports.addRank = async (req, res) => {
@@ -10,39 +12,45 @@ exports.addRank = async (req, res) => {
     return res.status(400).json({ message: 'Invalid product or rating' });
   }
 
-  try {
-    //בדיקה האם המשתמש קנה את המוצר?
-    const [purchases] = await db.query(
-      `SELECT oi.*
-       FROM OrderItems oi
-       JOIN Orders o ON oi.order_id = o.id
-       WHERE o.user_id = ? AND oi.product_id = ?`,
-      [userId, product_id]
-    );
+  await transactionManager.withTransaction(async (conn) => {
+    try {
+      //בדיקה האם המשתמש קנה את המוצר?
+      const [purchases] = await conn.query(
+        `SELECT oi.*
+         FROM OrderItems oi
+         JOIN Orders o ON oi.order_id = o.id
+         WHERE o.user_id = ? AND oi.product_id = ?`,
+        [userId, product_id]
+      );
 
-    if (purchases.length === 0) {
-      return res.status(403).json({ message: 'You can only rate products you have purchased' });
+      if (purchases.length === 0) {
+        throw new transactionHTTPError(403, 'You can only rate products you have purchased');
+      }
+
+      // בדיקה אם כבר דירג
+      const [existing] = await conn.query(
+        'SELECT * FROM Ranking WHERE user_id = ? AND product_id = ?',
+        [userId, product_id]
+      );
+      if (existing.length > 0) {
+        throw new transactionHTTPError(409, 'You already rated this product');
+      }
+
+      await conn.query(
+        'INSERT INTO Ranking (product_id, user_id, comment, rating) VALUES (?, ?, ?, ?)',
+        [product_id, userId, comment || '', rating]
+      );
+
+      socketManager.broadcast('ratingUpdate', { product_id });
+      throw new transactionHTTPError(201, 'Rating submitted');
+    } catch (err) {
+      if (err instanceof transactionHTTPError) {
+        res.status(err.statusCode).json({ message: err.message });
+      } else {
+        res.status(500).json({ message: 'Failed to submit rating', error: err.message });
+      }
     }
-
-    // בדיקה אם כבר דירג
-    const [existing] = await db.query(
-      'SELECT * FROM Ranking WHERE user_id = ? AND product_id = ?',
-      [userId, product_id]
-    );
-    if (existing.length > 0) {
-      return res.status(409).json({ message: 'You already rated this product' });
-    }
-
-    await db.query(
-      'INSERT INTO Ranking (product_id, user_id, comment, rating) VALUES (?, ?, ?, ?)',
-      [product_id, userId, comment || '', rating]
-    );
-
-    socketManager.broadcast('ratingUpdate', { product_id });
-    res.status(201).json({ message: 'Rating submitted' });
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to submit rating', error: err.message });
-  }
+  });
 };
 
 // ✔️ GET /rank – כל הדירוגים
@@ -127,41 +135,47 @@ exports.updateRank = async (req, res) => {
     return res.status(400).json({ message: 'Invalid rating' });
   }
 
-  try {
-    const [ranks] = await db.query('SELECT * FROM Ranking WHERE id = ?', [rankId]);
-    if (ranks.length === 0 || ranks[0].user_id !== userId) {
-      return res.status(403).json({ message: 'Cannot edit this rating' });
+  await transactionManager.withTransaction(async (conn) => {
+    try {
+      const [ranks] = await conn.query('SELECT * FROM Ranking WHERE id = ?', [rankId]);
+      if (ranks.length === 0 || ranks[0].user_id !== userId) {
+        throw new transactionHTTPError(403, 'Cannot edit this rating');
+      }
+
+      const fields = [];
+      const values = [];
+
+      if (comment !== undefined) {
+        fields.push('comment = ?');
+        values.push(comment);
+      }
+
+      if (rating != null) {
+        fields.push('rating = ?');
+        values.push(rating);
+      }
+
+      if (fields.length === 0) {
+        throw new transactionHTTPError(400, 'Nothing to update');
+      }
+
+      values.push(rankId);
+
+      await conn.query(
+        `UPDATE Ranking SET ${fields.join(', ')} WHERE id = ?`,
+        values
+      );
+
+      socketManager.broadcast('ratingUpdate');
+      throw new transactionHTTPError(200, 'Rating updated');
+    } catch (err) {
+      if (err instanceof transactionHTTPError) {
+        res.status(err.statusCode).json({ message: err.message });
+      } else {
+        res.status(500).json({ message: 'Failed to update rating', error: err.message });
+      }
     }
-
-    const fields = [];
-    const values = [];
-
-    if (comment !== undefined) {
-    fields.push('comment = ?');
-    values.push(comment);
-    }
-
-    if (rating != null) {
-    fields.push('rating = ?');
-    values.push(rating);
-    }
-
-    if (fields.length === 0) {
-    return res.status(400).json({ message: 'Nothing to update' });
-    }
-
-    values.push(rankId);
-
-    await db.query(
-    `UPDATE Ranking SET ${fields.join(', ')} WHERE id = ?`,
-    values
-    );
-
-    socketManager.broadcast('ratingUpdate');
-    res.json({ message: 'Rating updated' });
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to update rating', error: err.message });
-  }
+  });
 };
 
 // ✔️ DELETE /rank/:id – מחיקת דירוג
@@ -169,16 +183,22 @@ exports.deleteRank = async (req, res) => {
   const rankId = parseInt(req.params.id);
   const userId = req.user.id;
 
-  try {
-    const [ranks] = await db.query('SELECT * FROM Ranking WHERE id = ?', [rankId]);
-    if (ranks.length === 0 || ranks[0].user_id !== userId) {
-      return res.status(403).json({ message: 'Cannot delete this rating' });
-    }
+  await transactionManager.withTransaction(async (conn) => {
+    try {
+      const [ranks] = await conn.query('SELECT * FROM Ranking WHERE id = ?', [rankId]);
+      if (ranks.length === 0 || ranks[0].user_id !== userId) {
+        throw new transactionHTTPError(403, 'Cannot delete this rating');
+      }
 
-    await db.query('DELETE FROM Ranking WHERE id = ?', [rankId]);
-    socketManager.broadcast('ratingUpdate');
-    res.json({ message: 'Rating deleted' });
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to delete rating', error: err.message });
-  }
+      await conn.query('DELETE FROM Ranking WHERE id = ?', [rankId]);
+      socketManager.broadcast('ratingUpdate');
+      throw new transactionHTTPError(200, 'Rating deleted');
+    } catch (err) {
+      if (err instanceof transactionHTTPError) {
+        res.status(err.statusCode).json({ message: err.message });
+      } else {
+        res.status(500).json({ message: 'Failed to delete rating', error: err.message });
+      }
+    }
+  });
 };
