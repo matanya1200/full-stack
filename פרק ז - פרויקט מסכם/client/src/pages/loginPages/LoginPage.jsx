@@ -2,9 +2,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
+import socketService from '../../services/socketService';
 import './LoginPage.css';
 
-function LoginPage() {
+function LoginPage({ setUser }) {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -22,8 +23,12 @@ function LoginPage() {
 
       // שמירה ב־localStorage
       localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify({ id, name, role, email, department_id }));
-
+      const user = { id, name, role, email, department_id };
+      localStorage.setItem('user', JSON.stringify(user));
+      socketService.initialize(id);
+      console.log("auth successful, redirecting...");
+      
+      setUser(user);
       // מעבר לדף הבית
       navigate('/');
     } catch (err) {

@@ -23,6 +23,7 @@ import DepartmentsPage from './pages/departmentsPages/DepartmentsPage';
 import AddProductPage from './pages/productsPages/AddProductPage';
 import CartsPage from './pages/cartPages/CartsPage';
 import AllLogsPage from './pages/logsPages/AllLogsPage';
+import AdminDashboard from './pages/adminPages/AdminDashboard';
 import Notification from './components/Notification';
 import ChatIcon from "./components/AIChat/ChatIcon";
 import ChatWidget from "./components/AIChat/ChatWidget";
@@ -36,9 +37,12 @@ function App() {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [chatOpen, setChatOpen] = useState(false);
+    const [socket, setSocket] = useState(null);
   
   useEffect(() => {
     const savedUser = JSON.parse(localStorage.getItem('user'));
+    console.log("saved user: ", savedUser);
+    
     if (savedUser) {
       setUser(savedUser);
     }
@@ -47,9 +51,11 @@ function App() {
 
   useEffect(() => {
     if (user) {
-    socketService.initialize(user.id);
+      socketService.initialize(user.id);
+      setSocket(socketService.socket);
     } else {
-    socketService.disconnect();
+      socketService.disconnect();
+      setSocket(null);
     }
   }, [user])
   
@@ -61,7 +67,7 @@ function App() {
     <>
       <Notification />
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage setUser={setUser} />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/" element={user ? <MainPage /> : <Navigate to="/login" />} />
         <Route path="/product/:id" element={<ProductPage />} />
@@ -85,6 +91,7 @@ function App() {
         <Route path="/addProdact" element={<AddProductPage />} />
         <Route path="/carts" element={<CartsPage />} />
         <Route path="/allLogs" element={<AllLogsPage />} />
+        <Route path="/adminDashboard" element={<AdminDashboard socket={socket} />} />
       </Routes>
       <ChatIcon onClick={() => setChatOpen(true)} />
       <ChatWidget open={chatOpen} onClose={() => setChatOpen(false)} />

@@ -99,8 +99,9 @@ exports.buy = async (req, res) => {
 
   await transactionManager.withTransaction(async (conn) => {
     try {
-      [addressResult] = await conn.query('SELECT address FROM Users WHERE id = ?', [userId]);
-      const address = addressResult[0]?.address || '';
+      [userDetails] = await conn.query('SELECT address, name FROM Users WHERE id = ?', [userId]);
+      const address = userDetails[0]?.address || '';
+      const name = userDetails[0]?.name || `משתמש ${userId}`;
       
       // 1. בדיקה אם יש אמצעי תשלום
       const [payments] = await conn.query('SELECT * FROM Payment WHERE user_id = ?', [userId]);
@@ -116,7 +117,7 @@ exports.buy = async (req, res) => {
       
       // 2. קבלת פריטי סל הקניות
       const [cartItems] = await conn.query(
-      `SELECT ci.*, p.price, p.quantity AS stock, p.min_quantity, p.name 
+      `SELECT ci.*, p.name, p.price, p.quantity AS stock, p.min_quantity, p.name 
       FROM CartItems ci
       JOIN Products p ON ci.product_id = p.id
       WHERE ci.user_id = ?`,
@@ -223,6 +224,21 @@ exports.buy = async (req, res) => {
         socketManager.notifyUser(userId, 'cartUpdated');
         socketManager.notifyUser(userId, 'orderUpdated');
         socketManager.notifyUser(userId, 'paymentUpdated');
+        // Notify admins of new purchase
+        socketManager.emitPurchase({
+          orderId,
+          buyer: `${name}`,
+          total: totalPrice,
+          time: new Date().toISOString()
+        });
+        // Notify all users of stock change
+        for (const item of cartItems) {
+          const remainingQty = item.stock - item.quantity;
+          socketManager.emitStockUpdate({
+            productId: item.product_id,
+            newStock: remainingQty
+          });
+        }
       }
 
       throw new transactionHTTPError(201, 'Order placed successfully', {

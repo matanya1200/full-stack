@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const http = require('http');
 require('dotenv').config();
-const socketManager = require('./socketManager');
+const socketManager = require('./utils/socketManager');
 
 const app = express();
 
@@ -38,7 +38,7 @@ app.get('/', (req, res) => {
 
 // Start server
 const server = http.createServer(app);
-socketManager.initialize(server); // <-- Initialize sockets here
+socketManager.initialize(server);
 
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
