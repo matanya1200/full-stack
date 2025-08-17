@@ -1,6 +1,7 @@
 
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import socketService from '../services/socketService';
 import './Navbar.css';
 
 function Navbar() {
@@ -11,6 +12,7 @@ function Navbar() {
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    socketService.disconnect();
     navigate('/login');
   };
 
@@ -127,6 +129,11 @@ function Navbar() {
                   <li>
                     <Link className="dropdown-item" to="/allLogs">
                       <i className="bi bi-journal-text"></i> כל הלוגים
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/adminDashboard">
+                      <i className="bi bi-speedometer2"></i> מעקב מכירות
                     </Link>
                   </li>
                 </ul>

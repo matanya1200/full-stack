@@ -8,7 +8,9 @@ class SocketService {
 
     initialize(userId) {
         // Connect to the WebSocket server
-        this.socket = io('http://localhost:3000'); // Replace with your server URL
+        this.socket = io('http://localhost:3000');
+        console.log("socket: ", this.socket);
+        
 
         this.socket.on('connect', () => {
             this.isConnected = true;
@@ -101,6 +103,32 @@ class SocketService {
             if (relevantPaths.includes(window.location.pathname)) {
                 console.log("payment updated - refreshing");
                 sessionStorage.setItem('notification', 'שיטת תשלום עודכנה!');
+                window.location.reload();
+            }
+        });
+
+        this.socket.on('onlineUsers', (data) => {
+            console.log("Online users:", data.users);
+            sessionStorage.setItem('onlineUsers', JSON.stringify(data));
+        });
+
+        this.socket.on('purchaseFeedBulk', (feed) => {
+            console.log("Initial purchase feed:", feed);
+            sessionStorage.setItem('purchaseFeed', JSON.stringify(feed));
+        });
+
+        this.socket.on('purchaseFeed', (purchase) => {
+            console.log("New purchase:", purchase);
+            let feed = JSON.parse(sessionStorage.getItem('purchaseFeed') || "[]");
+            feed.unshift(purchase);
+            sessionStorage.setItem('purchaseFeed', JSON.stringify(feed));
+            // Optional: trigger a UI refresh if on admin dashboard
+        });
+
+        this.socket.on('stockUpdate', ({ productId, newStock }) => {
+            console.log(`Product ${productId} stock changed: ${newStock}`);
+            // If you're on a product page, update stock state or reload if needed
+            if (window.location.pathname.startsWith("/products")) {
                 window.location.reload();
             }
         });
