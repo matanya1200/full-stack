@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000/api/rag-chat";
+const API_URL = "http://localhost:3000/api/ai-chat";
 
 const sendMessage = async (messages) => {
   const res = await fetch(API_URL, {

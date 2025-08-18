@@ -2,16 +2,20 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import socketService from '../services/socketService';
+import { useAuth } from '../auth/AuthContext';
 import './Navbar.css';
 
 function Navbar() {
-  const user = JSON.parse(localStorage.getItem('user'));
+  //const user = JSON.parse(localStorage.getItem('user'));
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState(true);
+  const { isLoading, isAuthenticated, isAdmin, isStoreKeeper, isWorker, user, logout: authLogout } = useAuth();
 
   const logout = () => {
-    localStorage.removeItem('token');
+    authLogout();
     localStorage.removeItem('user');
+    console.log("deleted data from localStorage");
+    
     socketService.disconnect();
     navigate('/login');
   };
@@ -26,7 +30,7 @@ function Navbar() {
         <Link className="navbar-brand fw-bold" to="/">
           🛍️ חנות רשת
         </Link>
-        
+
         <button
           className="navbar-toggler"
           type="button"
@@ -37,28 +41,31 @@ function Navbar() {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        
+
         <div className={`collapse navbar-collapse ${!isCollapsed ? 'show' : ''}`} id="navbarNav">
           <ul className="navbar-nav me-auto">
-            {/* משתמש רגיל */}
-            <li className="nav-item">
-              <Link className="nav-link" to="/cart">
-                <i className="bi bi-cart"></i> העגלה שלי
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/payment">
-                <i className="bi bi-credit-card"></i> תשלום
-              </Link>
-            </li>
-            {user?.role !== 'admin'&&
-            <li className="nav-item">
-              <Link className="nav-link" to="/orders">
-                <i className="bi bi-box-seam"></i> הזמנות שלי
-              </Link>
-            </li>
-            }
-            {user?.role === 'admin'&&
+            {!isLoading && isAuthenticated && (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/cart">
+                    <i className="bi bi-cart"></i> העגלה שלי
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/payment">
+                    <i className="bi bi-credit-card"></i> תשלום
+                  </Link>
+                </li>
+                {!isAdmin &&
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/orders">
+                      <i className="bi bi-box-seam"></i> הזמנות שלי
+                    </Link>
+                  </li>
+                }
+              </>
+            )}
+            {!isLoading && isAdmin &&
               <>
                 <li className="nav-item dropdown">
                   <a className="nav-link dropdown-toggle" href="#" id="stockDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -80,7 +87,7 @@ function Navbar() {
               </>
             }
             {/* עובדים ומנהלים */}
-            {(user?.role === 'admin' || user?.role === 'worker' || user?.role === 'storekeeper') && (
+            {!isLoading && (isAdmin || isStoreKeeper || isWorker) && (
               <>
                 <li className="nav-item dropdown">
                   <a className="nav-link dropdown-toggle" href="#" id="stockDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -92,10 +99,10 @@ function Navbar() {
                         <i className="bi bi-hourglass-split"></i> הזמנות מוצרים לחנות
                       </Link>
                     </li>
-                    {(user?.role === 'admin' || user?.role === 'storekeeper') && (
+                    {(isAdmin || isStoreKeeper) && (
                       <li>
                         <Link className="dropdown-item" to="/Restock">
-                          <i className="bi bi-list-check"></i> כל ההזמנות מלאי 
+                          <i className="bi bi-list-check"></i> כל ההזמנות מלאי
                         </Link>
                       </li>
                     )}
@@ -103,9 +110,9 @@ function Navbar() {
                 </li>
               </>
             )}
-            
+
             {/* מנהל בלבד */}
-            {user?.role === 'admin' && (
+            {!isLoading && isAdmin && (
               <li className="nav-item dropdown">
                 <a className="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   <i className="bi bi-gear"></i> ניהול
@@ -140,36 +147,38 @@ function Navbar() {
               </li>
             )}
           </ul>
-          
+
           {/* User Info & Logout */}
-          <ul className="navbar-nav">
-            <li className="nav-item dropdown">
-              <a className="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <span className="badge bg-light text-dark ms-1">{user?.role}</span>
-              </a>
-              <ul className="dropdown-menu dropdown-menu-end">
-                <li className="dropdown-item">
-                  <i className="bi bi-person-circle"></i> {user?.name}
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/user">
-                    <i className="bi bi-person"></i> פרופיל
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/log">
-                    <i className="bi bi-clock-history"></i> היסטוריה
-                  </Link>
-                </li>
-                <li><hr className="dropdown-divider" /></li>
-                <li>
-                  <button className="dropdown-item text-danger" onClick={logout}>
-                    <i className="bi bi-box-arrow-right"></i> התנתקות
-                  </button>
-                </li>
-              </ul>
-            </li>
-          </ul>
+          {!isLoading && isAuthenticated && (
+            <ul className="navbar-nav">
+              <li className="nav-item dropdown">
+                <a className="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <span className="badge bg-light text-dark ms-1">{user?.role}</span>
+                </a>
+                <ul className="dropdown-menu dropdown-menu-end">
+                  <li className="dropdown-item">
+                    <i className="bi bi-person-circle"></i> {user?.name}
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/user">
+                      <i className="bi bi-person"></i> פרופיל
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/log">
+                      <i className="bi bi-clock-history"></i> היסטוריה
+                    </Link>
+                  </li>
+                  <li><hr className="dropdown-divider" /></li>
+                  <li>
+                    <button className="dropdown-item text-danger" onClick={logout}>
+                      <i className="bi bi-box-arrow-right"></i> התנתקות
+                    </button>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          )}
         </div>
       </div>
     </nav>

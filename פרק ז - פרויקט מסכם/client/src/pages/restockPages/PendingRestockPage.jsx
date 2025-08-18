@@ -12,7 +12,7 @@ function PendingRestockPage() {
   const loadPending = async () => {
     try {
       const res = await api.getPendingRestocks();
-      setRestocks(res.data);
+      setRestocks(res.data.data);
     } catch {
       setError('שגיאה בטעינת ההזמנות');
     }

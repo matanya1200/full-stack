@@ -12,7 +12,6 @@ import {
 } from "chart.js";
 import "chartjs-adapter-date-fns";
 import Navbar from "../../components/Navbar";
-import socketService from "../../services/socketService"; // ✅ use your service
 
 ChartJS.register(LineElement, PointElement, LinearScale, TimeScale, Tooltip, Legend, Filler);
 
@@ -24,18 +23,15 @@ export default function AdminDashboard({ socket }) {
 
   useEffect(() => {
     if (!socket) {
-      console.log("No socket yet, waiting...");
       setError("❌ שגיאה: אין חיבור לשרת או נתונים זמינים");
       return;
     }
 
     setError("");
-    console.log("AdminDashboard useEffect fired with socket: ", socketService.socket);
     // 🔴 Listen for events via socketService
     const appSocket = socket;
 
     const handleOnlineUsers = (data) => {
-      console.log("received users notify!");
       setOnlineUsers(data.users);
     }
 
@@ -53,7 +49,6 @@ export default function AdminDashboard({ socket }) {
     };
 
     const handlePurchaseFeedBulk = (feed) => {
-      console.log("received feed bulk: ", feed);
       setPurchaseFeed(feed);
       setSalesPoints(groupSalesByHour(feed));
       if ((!feed || feed.length === 0) && (!onlineUsers || onlineUsers === 0)) {
@@ -69,8 +64,6 @@ export default function AdminDashboard({ socket }) {
         return groupSalesByHour(updatedFeed);
       });
     };
-
-    console.log("loading listeners...");
 
     appSocket.on("onlineUsers", handleOnlineUsers);
     const onlineUsersInit = JSON.parse(sessionStorage.getItem('onlineUsers') || '{"users":0}');
