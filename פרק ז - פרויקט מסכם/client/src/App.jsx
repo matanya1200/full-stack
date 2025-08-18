@@ -51,10 +51,12 @@ function App() {
   }, [])
 
   useEffect(() => {
+    console.log("user connected to app: ", user, window.location.href);
     if (user) {
       
-      socketService.initialize(user.token);
+      //socketService.initialize(user.token);
       setSocket(socketService.socket);
+      console.log("socket connected: ", socket);
       
     } else {
       socketService.disconnect();
