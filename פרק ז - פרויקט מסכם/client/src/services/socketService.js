@@ -6,17 +6,18 @@ class SocketService {
         this.isConnected = false;
     }
 
-    initialize(userId) {
+    initialize(token) {
         // Connect to the WebSocket server
-        this.socket = io('http://localhost:3000');
-        console.log("socket: ", this.socket);
-        
+        this.socket = io('http://localhost:3000', {
+            transports: ['websocket'],
+            auth: { token },
+            withCredentials: true,
+        });
+        console.log("connected to server with token: ", token);
 
         this.socket.on('connect', () => {
+            console.log("successfully connected to server");
             this.isConnected = true;
-            if (userId) {
-                this.register(userId);
-            }
         });
 
         this.socket.on('disconnect', () => {
@@ -25,12 +26,6 @@ class SocketService {
 
         // Listen for various events
         this.setupEventListeners();
-    }
-
-    register(userId) {
-        if (this.isConnected && userId) {
-            this.socket.emit('register', userId);
-        }
     }
 
     setupEventListeners() {
@@ -108,17 +103,14 @@ class SocketService {
         });
 
         this.socket.on('onlineUsers', (data) => {
-            console.log("Online users:", data.users);
             sessionStorage.setItem('onlineUsers', JSON.stringify(data));
         });
 
         this.socket.on('purchaseFeedBulk', (feed) => {
-            console.log("Initial purchase feed:", feed);
             sessionStorage.setItem('purchaseFeed', JSON.stringify(feed));
         });
 
         this.socket.on('purchaseFeed', (purchase) => {
-            console.log("New purchase:", purchase);
             let feed = JSON.parse(sessionStorage.getItem('purchaseFeed') || "[]");
             feed.unshift(purchase);
             sessionStorage.setItem('purchaseFeed', JSON.stringify(feed));

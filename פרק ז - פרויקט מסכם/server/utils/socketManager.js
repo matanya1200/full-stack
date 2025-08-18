@@ -1,5 +1,6 @@
 const socketIO = require('socket.io');
 const db = require('../db');
+const { decodeToken } = require('../middlewares/authMiddleware');
 
 class SocketManager {
     constructor() {
@@ -12,8 +13,9 @@ class SocketManager {
     async initialize(server) {
         this.io = socketIO(server, {
             cors: {
-                origin: "*",
-                methods: ["GET", "POST"]
+                origin: "http://localhost:5173",
+                methods: ["GET", "POST"],
+                credentials: true,
             }
         });
 
@@ -40,38 +42,47 @@ class SocketManager {
             }
         }
 
+        this.io.use(async (socket, next) => {
+          try {
+            const token = socket.handshake.auth?.token || socket.handshake.headers?.authorization?.replace('Bearer ', '');
+            console.log("received from client token: ", token);
+            
+            const user = decodeToken(token); // your existing verify
+            socket.user = user;            // { id, email, role, name }
+            console.log("user connecting: ", user);
+            
+            next();
+          } catch {
+            next(new Error('Unauthorized'));
+          }
+        });
+
         this.io.on('connection', (socket) => {
-            socket.on('register', (userId) => {
-                if (!userId) return;
-                if (!this.userSockets.has(userId)) {
-                    this.userSockets.set(userId, new Set());
-                    // notify admin(s) when count changes
-                    console.log(`notifying admins of user id ${userId}`);
-                    this.notifyAdmins("onlineUsers", { users: this.userSockets.size });
-                }
-                this.userSockets.get(userId).add(socket);
-                socket.userId = userId;
-
-                // If this is an admin, send them initial snapshot
-                if (userId === 1) { // adjust for your admin ID
-                    socket.emit("purchaseFeedBulk", this.purchaseFeedBuffer);
-                    socket.emit("onlineUsers", { users: this.userSockets.size });
-                }
-            });
-
-            socket.on('disconnect', () => {
-                if (socket.userId) {
-                    const userSockets = this.userSockets.get(socket.userId);
-                    if (userSockets) {
-                        userSockets.delete(socket);
-                        if (userSockets.size === 0) {
-                            this.userSockets.delete(socket.userId);
-                            console.log(`notifying admins of user id ${socket.userId} disconnecting`);
-                            this.notifyAdmins("onlineUsers", { users: this.userSockets.size });
-                        }
-                    }
-                }
-            });
+          const { id, role } = socket.user;
+          console.log("client connected to server with id: ", id);
+          
+          // map by userId from token (not provided by client)
+          if (!this.userSockets.has(id)) {
+            this.userSockets.set(id, new Set());
+            this.notifyAdmins("onlineUsers", { users: this.userSockets.size });
+          }
+          this.userSockets.get(id).add(socket);
+      
+          if (role === 'admin') {
+            socket.emit('purchaseFeedBulk', this.purchaseFeedBuffer);
+            socket.emit('onlineUsers', { users: this.userSockets.size });
+          }
+      
+          socket.on('disconnect', () => {
+            const set = this.userSockets.get(id);
+            if (set) {
+              set.delete(socket);
+              if (set.size === 0) {
+                this.userSockets.delete(id);
+                this.notifyAdmins("onlineUsers", { users: this.userSockets.size });
+              }
+            }
+          });
         });
     }
 

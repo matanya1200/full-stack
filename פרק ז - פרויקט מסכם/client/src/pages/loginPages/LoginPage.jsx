@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import socketService from '../../services/socketService';
 import './LoginPage.css';
+import { useEffect } from 'react';
+import { useAuth } from '../../auth/AuthContext';
 
 function LoginPage({ setUser }) {
   const navigate = useNavigate();
@@ -11,6 +13,8 @@ function LoginPage({ setUser }) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const { login } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -22,13 +26,14 @@ function LoginPage({ setUser }) {
       const { token, name, role, id, department_id } = res.data;
 
       // שמירה ב־localStorage
-      localStorage.setItem('token', token);
+      await login(token);
       const user = { id, name, role, email, department_id };
       localStorage.setItem('user', JSON.stringify(user));
-      socketService.initialize(id);
-      console.log("auth successful, redirecting...");
+      socketService.initialize(token);
       
       setUser(user);
+      console.log("Auth succeeded. Redirecting to home... user: ", user);
+      
       // מעבר לדף הבית
       navigate('/');
     } catch (err) {

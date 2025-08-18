@@ -4,6 +4,8 @@ const BASE_URL = 'http://localhost:3000';
 
 const createAxios = () => {
   const token = localStorage.getItem('token');
+  console.log("auth token: ", token);
+  
   return axios.create({
     baseURL: BASE_URL,
     headers: {
@@ -15,6 +17,7 @@ const createAxios = () => {
 
 const api = {
   // 🔐 Auth
+  whoAmI: () => createAxios().get('/auth/me'),
   login: (data) => axios.post(`${BASE_URL}/auth/login`, data),
   register: (data) => axios.post(`${BASE_URL}/auth/register`, data),
 

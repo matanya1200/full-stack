@@ -1,19 +1,24 @@
+
 import { useEffect, useState } from 'react';
 import api from '../../services/api';
 import Navbar from '../../components/Navbar';
+import { useAuth } from '../../auth/AuthContext';
 import './UserPage.css';
 
+
 function UserPage() {
-  const localUser = JSON.parse(localStorage.getItem('user'));
+  const { user: contextUser, isAuthenticated } = useAuth();
   const [user, setUser] = useState(null);
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
+
   const loadUser = async () => {
+    if (!contextUser) return;
     try {
-      const res = await api.getUser(localUser.id);
+      const res = await api.getUser(contextUser.id);
       setUser(res.data);
       setName(res.data.name);
       setAddress(res.data.address);
@@ -22,16 +27,15 @@ function UserPage() {
     }
   };
 
+
   const handleUpdate = async () => {
+    if (!contextUser) return;
     try {
-      await api.updateUser(localUser.id, { name, address });
+      await api.updateUser(contextUser.id, { name, address });
       setSuccess('הפרטים עודכנו בהצלחה');
       setError('');
-
-      // עדכון localStorage
-      const updated = { ...localUser, name };
-      localStorage.setItem('user', JSON.stringify(updated));
-      
+      // No localStorage update, reload user info from server
+      loadUser();
       setTimeout(() => setSuccess(''), 3000);
     } catch {
       setError('שגיאה בעדכון המשתמש');
@@ -39,21 +43,26 @@ function UserPage() {
     }
   };
 
+
   const handleDelete = async () => {
     if (!window.confirm('האם אתה בטוח שברצונך למחוק את המשתמש?')) return;
+    if (!contextUser) return;
     try {
-        await api.deleteUser(localUser.id);
-        alert('המשתמש נמחק');
-        localStorage.removeItem('user');
-        window.location.href = '/login';
+      await api.deleteUser(contextUser.id);
+      alert('המשתמש נמחק');
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      window.location.href = '/login';
     } catch {
-        setError('שגיאה במחיקת המשתמש');
+      setError('שגיאה במחיקת המשתמש');
     }
   };
 
+
   useEffect(() => {
     loadUser();
-  }, []);
+    // eslint-disable-next-line
+  }, [contextUser]);
 
   return (
     <>
