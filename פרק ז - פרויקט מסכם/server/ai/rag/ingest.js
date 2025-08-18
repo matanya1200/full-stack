@@ -16,6 +16,7 @@ const ai = new GoogleGenAI({ apiKey: GEMINI_KEY });
 
 // Local Chroma instance, persisted to ../chroma folder
 const chroma = new ChromaClient({ persistDirectory: "../chroma" });
+//const chroma = new ChromaClient({ path: "http://localhost:8000" });
 
 const EMBEDDINGS_CACHE_PATH = path.join(import.meta.dirname || ".", "embeddings_cache.json");
 

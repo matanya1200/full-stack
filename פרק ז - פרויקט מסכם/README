@@ -13,6 +13,7 @@ npm install express mysql2 dotenv cors bcrypt jsonwebtoken
 
 יצרנו קובץ .env עם ההגדרות של ה db
 
+docker run -p 8000:8000 ghcr.io/chroma-core/chroma:latest
 cd C:\Users\matan\OneDrive\Desktop\לימודים\שנה ד\full stack\פרק ז - פרויקט מסכם\server
 node server
 cd C:\Users\matan\OneDrive\Desktop\לימודים\שנה ד\full stack\פרק ז - פרויקט מסכם\client
