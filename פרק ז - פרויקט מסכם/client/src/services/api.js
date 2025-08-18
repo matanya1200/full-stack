@@ -4,8 +4,6 @@ const BASE_URL = 'http://localhost:3000';
 
 const createAxios = () => {
   const token = localStorage.getItem('token');
-  console.log("auth token: ", token);
-  
   return axios.create({
     baseURL: BASE_URL,
     headers: {

@@ -3,10 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import Navbar from '../../components/Navbar';
 import './ProductPage.css'
+import { useAuth } from '../../auth/AuthContext';
 
 function ProductPage() {
   const { id } = useParams();
-  const user = JSON.parse(localStorage.getItem('user'));
+  // const user = JSON.parse(localStorage.getItem('user'));
   const navigate = useNavigate();
 
   const [product, setProduct] = useState(null);
@@ -14,6 +15,7 @@ function ProductPage() {
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState('');
   const [averageRating, setAverageRating] = useState(null);
+  const { user, isAdmin, isStoreKeeper, isWorker } = useAuth();
 
   useEffect(() => {
     fetchProduct();
@@ -85,13 +87,13 @@ function ProductPage() {
   }
 
   const canEdit =
-    user.role === 'admin' ||
-    (user.role === 'worker' && user.department_id === product.department_id);
+    isAdmin ||
+    (isWorker && user.department_id === product.department_id);    
 
   const canRestock =
-    user.role === 'admin' ||
-    (user.role === 'worker' && user.department_id === product.department_id)||
-    user.role === 'storekeeper';
+    isAdmin ||
+    (isWorker && user.department_id === product.department_id)||
+    isStoreKeeper;
 
   return (
     <>

@@ -5,6 +5,7 @@ dotenv.config();
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 const chroma = new ChromaClient({ persistDirectory: "./chroma" });
+//const chroma = new ChromaClient({ path: "http://localhost:8000" });
 
 async function embedText(text) {
   const resp = await ai.models.embedContent({

@@ -27,7 +27,7 @@ function LoginPage({ setUser }) {
 
       // שמירה ב־localStorage
       await login(token);
-      const user = { id, name, role, email, department_id };
+      const user = { token, id, name, role, email, department_id };
       localStorage.setItem('user', JSON.stringify(user));
       
       setUser(user);

@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react';
 import api from '../../services/api';
 import Navbar from '../../components/Navbar';
 import './UserLogPage.css';
+import { useAuth } from '../../auth/AuthContext';
 
 function UserLogPage() {
-  const user = JSON.parse(localStorage.getItem('user'));
+  //const user = JSON.parse(localStorage.getItem('user'));
   const [logs, setLogs] = useState([]);
   const [error, setError] = useState('');
+  const { user } = useAuth();
 
   const loadLogs = async () => {
     try {

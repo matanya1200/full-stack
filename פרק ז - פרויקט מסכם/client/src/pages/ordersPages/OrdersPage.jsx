@@ -2,16 +2,18 @@ import { useEffect, useState } from 'react';
 import api from '../../services/api';
 import Navbar from '../../components/Navbar';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../auth/AuthContext';
 
 function OrdersPage() {
-  const user = JSON.parse(localStorage.getItem('user'));
+  const { user, isAdmin } = useAuth();
   const [orders, setOrders] = useState([]);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const loadOrders = async () => {
     try {
-      let res = await api.getOrdersByUser(user.id)
+      if (!user?.id) return;
+      let res = await api.getOrdersByUser(user.id);
       setOrders(res.data);
     } catch (err) {
       setError('שגיאה בטעינת הזמנות');
@@ -20,7 +22,7 @@ function OrdersPage() {
 
   useEffect(() => {
     loadOrders();
-  }, []);
+  }, [user]);
 
   const handleRowClick = (orderId) => {
     navigate(`/orderItems/${orderId}`);
@@ -70,7 +72,7 @@ function OrdersPage() {
                             <i className="bi bi-hash me-1 ms-2"></i>
                             מספר הזמנה
                           </th>
-                          {user.role === 'admin' && (
+                          {isAdmin && (
                             <th scope="col">
                               <i className="bi bi-person me-1 ms-2"></i>
                               מזהה משתמש
@@ -103,7 +105,7 @@ function OrdersPage() {
                                 #{order.id}
                               </span>
                             </td>
-                            {user.role === 'admin' && (
+                            {isAdmin && (
                               <td>
                                 <span className="badge bg-info">
                                   {order.user_id}

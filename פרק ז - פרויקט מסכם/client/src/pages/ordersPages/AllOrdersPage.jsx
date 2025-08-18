@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import api from '../../services/api';
 import Navbar from '../../components/Navbar';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../auth/AuthContext';
 
 function allOrdersPage() {
-  const user = JSON.parse(localStorage.getItem('user'));
+  const { isAdmin } = useAuth();
   const [orders, setOrders] = useState([]);
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -66,7 +67,7 @@ function allOrdersPage() {
                             <i className="bi bi-hash me-1 ms-2"></i>
                             מספר הזמנה
                           </th>
-                          {user.role === 'admin' && (
+                          {isAdmin && (
                             <th scope="col">
                               <i className="bi bi-person me-1 ms-2"></i>
                               מזהה משתמש
@@ -96,7 +97,7 @@ function allOrdersPage() {
                                 #{order.id}
                               </span>
                             </td>
-                            {user.role === 'admin' && (
+                            {isAdmin && (
                               <td>
                                 <span className="badge bg-info">
                                   {order.user_id}
