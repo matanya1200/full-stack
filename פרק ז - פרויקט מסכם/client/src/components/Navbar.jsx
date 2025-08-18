@@ -16,7 +16,6 @@ function Navbar() {
     localStorage.removeItem('user');
     console.log("deleted data from localStorage");
     
-    socketService.disconnect();
     navigate('/login');
   };
 
