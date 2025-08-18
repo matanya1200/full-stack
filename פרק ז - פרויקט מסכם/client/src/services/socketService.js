@@ -8,7 +8,7 @@ class SocketService {
 
     initialize(token) {
         if (this.socket) return;
-
+        
         // Connect to the WebSocket server
         this.socket = io('http://localhost:3000', {
             transports: ['websocket'],
@@ -127,6 +127,7 @@ class SocketService {
     disconnect() {
         if (this.socket) {
             this.socket.disconnect();
+            this.socket = null;
         }
     }
 }

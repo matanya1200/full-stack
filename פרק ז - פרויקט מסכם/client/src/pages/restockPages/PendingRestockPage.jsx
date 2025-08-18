@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import Navbar from '../../components/Navbar';
+import { useAuth } from '../../auth/AuthContext';
 
 function PendingRestockPage() {
   const [restocks, setRestocks] = useState([]);
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem('user'));
+  // const user = JSON.parse(localStorage.getItem('user'));
+  const { user } = useAuth();
 
   const loadPending = async () => {
     try {

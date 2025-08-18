@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
+import { useAuth } from '../../auth/AuthContext';
 import './RegisterPage.css';
 
 function RegisterPage() {
@@ -14,6 +15,8 @@ function RegisterPage() {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const { login } = useAuth();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -28,8 +31,8 @@ function RegisterPage() {
       const res = await api.register(form);
       const { token, name, role, id, email } = res.data;
 
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify({ id, name, role, email }));
+      await login(token);
+      localStorage.setItem('user', JSON.stringify({ token, id, name, role, email }));
 
       navigate('/');
     } catch (err) {

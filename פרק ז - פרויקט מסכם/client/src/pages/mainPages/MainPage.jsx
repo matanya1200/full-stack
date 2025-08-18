@@ -3,6 +3,7 @@ import api from '../../services/api';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import './MainPage.css';
+import { useAuth } from '../../auth/AuthContext';
 
 function MainPage() {
   const [products, setProducts] = useState([]);
@@ -13,7 +14,8 @@ function MainPage() {
 
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const user = JSON.parse(localStorage.getItem('user'));
+
+  const { isAdmin } = useAuth();
 
   const loadProducts = async () => {
     try {
@@ -96,7 +98,7 @@ function MainPage() {
               <h2 className="text-primary">
                 <i className="bi bi-shop"></i> מוצרים
               </h2>
-              {user.role === 'admin' && (
+              {isAdmin && (
                 <button 
                   className="btn btn-success"
                   onClick={() => navigate('/addProdact')}
@@ -178,7 +180,7 @@ function MainPage() {
                         >
                           <i className="bi bi-eye"></i> לצפייה
                         </button>
-                        {user?.role === 'admin' && (
+                        {isAdmin && (
                           <button 
                             className="btn btn-outline-danger btn-sm"
                             onClick={() => handleDelete(product.id)}
