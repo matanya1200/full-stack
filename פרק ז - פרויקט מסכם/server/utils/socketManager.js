@@ -45,11 +45,9 @@ class SocketManager {
         this.io.use(async (socket, next) => {
           try {
             const token = socket.handshake.auth?.token || socket.handshake.headers?.authorization?.replace('Bearer ', '');
-            console.log("received from client token: ", token);
             
             const user = decodeToken(token); // your existing verify
             socket.user = user;            // { id, email, role, name }
-            console.log("user connecting: ", user);
             
             next();
           } catch {
@@ -59,7 +57,6 @@ class SocketManager {
 
         this.io.on('connection', (socket) => {
           const { id, role } = socket.user;
-          console.log("client connected to server with id: ", id);
           
           // map by userId from token (not provided by client)
           if (!this.userSockets.has(id)) {

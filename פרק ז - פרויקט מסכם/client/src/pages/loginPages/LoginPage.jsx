@@ -31,8 +31,6 @@ function LoginPage({ setUser }) {
       localStorage.setItem('user', JSON.stringify(user));
       
       setUser(user);
-      console.log("Auth succeeded. Redirecting to home... user: ", user);
-      
       // מעבר לדף הבית
       navigate('/');
     } catch (err) {

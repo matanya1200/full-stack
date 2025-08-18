@@ -63,8 +63,6 @@ function MainPage() {
   }, [page, selectedDept, search]);
 
   useEffect(() => {
-    console.log("entered main page");
-    
     loadDepartments();
   }, []);
 

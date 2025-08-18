@@ -7,17 +7,16 @@ class SocketService {
     }
 
     initialize(token) {
+        if (this.socket) return;
+
         // Connect to the WebSocket server
-        console.log("connecting to server with token: ", token);
         this.socket = io('http://localhost:3000', {
             transports: ['websocket'],
             auth: { token },
             withCredentials: true,
         });
-        console.log("connected to server with token: ", token);
 
         this.socket.on('connect', () => {
-            console.log("successfully connected to server");
             this.isConnected = true;
         });
 
@@ -48,8 +47,6 @@ class SocketService {
         });
 
         this.socket.on('productUpdated', (_) => {
-            console.log(window.location.pathname);
-            
             const relevantPaths = ['/product', '/'];
             if (relevantPaths.includes(window.location.pathname)) {
                 console.log("product updated - refreshing");

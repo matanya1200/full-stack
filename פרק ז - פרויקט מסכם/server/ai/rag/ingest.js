@@ -14,8 +14,8 @@ if (!GEMINI_KEY) throw new Error("Set GEMINI_API_KEY in .env");
 // Gemini client
 const ai = new GoogleGenAI({ apiKey: GEMINI_KEY });
 
-// Local Chroma instance, persisted to ./chroma folder
-const chroma = new ChromaClient({ persistDirectory: "./chroma" });
+// Local Chroma instance, persisted to ../chroma folder
+const chroma = new ChromaClient({ persistDirectory: "../chroma" });
 
 const EMBEDDINGS_CACHE_PATH = path.join(import.meta.dirname || ".", "embeddings_cache.json");
 
@@ -58,7 +58,7 @@ async function embedTexts(texts) {
 }
 
 export async function ingest() {
-  const rows = await readCsv("../../../insert_products.csv");
+  const rows = await readCsv("../insert_products.csv");
   if (!rows.length) throw new Error("CSV is empty");
 
   const ids = [];
@@ -134,3 +134,5 @@ export async function ingest() {
 
   console.log("Ingestion complete. Data stored in ./chroma folder.");
 }
+
+ingest();

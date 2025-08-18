@@ -14,8 +14,6 @@ function Navbar() {
   const logout = () => {
     authLogout();
     localStorage.removeItem('user');
-    console.log("deleted data from localStorage");
-    
     navigate('/login');
   };
 

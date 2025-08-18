@@ -26,7 +26,6 @@ exports.getCartByUser = async (req, res) => {
   const userId = parseInt(req.params.user_id);
 
   if (req.user.id != userId && req.user.role != 'admin') {
-    console.log(req.user.id,userId);
     return res.status(403).json({ message: 'Access denied' });
   }
 
