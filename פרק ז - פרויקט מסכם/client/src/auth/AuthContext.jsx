@@ -1,6 +1,7 @@
 // src/auth/AuthContext.jsx
 import { createContext, useContext, useEffect, useState } from 'react';
 import api from '../services/api';
+import socketService from '../services/socketService';
 
 const AuthCtx = createContext(null);
 
@@ -29,12 +30,14 @@ export function AuthProvider({ children }) {
   // Call this after successful login
   const login = async (token) => {
     localStorage.setItem('token', token);
+    socketService.initialize(token);
     await fetchUser();
   };
 
   // Call this on logout
   const logout = () => {
     localStorage.removeItem('token');
+    socketService.disconnect();
     setUser(null);
   };
 

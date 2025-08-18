@@ -8,6 +8,7 @@ class SocketService {
 
     initialize(token) {
         // Connect to the WebSocket server
+        console.log("connecting to server with token: ", token);
         this.socket = io('http://localhost:3000', {
             transports: ['websocket'],
             auth: { token },

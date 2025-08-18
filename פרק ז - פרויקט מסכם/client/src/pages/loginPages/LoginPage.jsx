@@ -29,7 +29,6 @@ function LoginPage({ setUser }) {
       await login(token);
       const user = { id, name, role, email, department_id };
       localStorage.setItem('user', JSON.stringify(user));
-      socketService.initialize(token);
       
       setUser(user);
       console.log("Auth succeeded. Redirecting to home... user: ", user);
