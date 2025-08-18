@@ -6,11 +6,12 @@ const authController = require('../controllers/authController');
 
 // secured connection to get canonical user info
 router.get('/me', verifyToken, async (req, res) => {
-  // req.user is set by authMiddleware after verifying JWT
+  // req.user is set by authMiddleware after verifying JWT  
   res.json({
     id: req.user.id,
     name: req.user.name,
     email: req.user.email,
+    department_id: req.user.department_id,
     role: req.user.role, // "admin" | "customer" | ...
   });
 });

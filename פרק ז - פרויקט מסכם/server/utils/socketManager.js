@@ -61,9 +61,9 @@ class SocketManager {
           // map by userId from token (not provided by client)
           if (!this.userSockets.has(id)) {
             this.userSockets.set(id, new Set());
-            this.notifyAdmins("onlineUsers", { users: this.userSockets.size });
+            this.notifyAdmins("onlineUsers", { users: this.userSockets.size });            
           }
-          this.userSockets.get(id).add(socket);
+          this.userSockets.get(id).add(socket);          
       
           if (role === 'admin') {
             socket.emit('purchaseFeedBulk', this.purchaseFeedBuffer);

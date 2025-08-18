@@ -141,6 +141,7 @@ exports.updateCartProduct = async (req, res) => {
       
       //socketManager.notifyUser(userId, 'cartUpdated', { product_id, quantity });
       socketManager.notifyUser(userId, 'cartUpdated');
+      
       res.status(200).json({ message: 'Cart item updated successfully' });
     } catch (err) {
       if (err instanceof transactionHTTPError) {

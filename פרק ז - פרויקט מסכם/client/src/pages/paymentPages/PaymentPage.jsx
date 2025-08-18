@@ -2,14 +2,16 @@
 import { useEffect, useState } from 'react';
 import api from '../../services/api';
 import Navbar from '../../components/Navbar';
+import { useAuth } from '../../auth/AuthContext';
 
 function PaymentPage() {
-  const user = JSON.parse(localStorage.getItem('user'));
+  // const user = JSON.parse(localStorage.getItem('user'));
   const [payment, setPayment] = useState(null);
   const [balance, setBalance] = useState('');
   const [expiry, setExpiry] = useState('');
   const [error, setError] = useState('');
   const [creating, setCreating] = useState(false);
+  const { user } = useAuth();
 
   const loadPayment = async () => {
     try {

@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import api from '../../services/api';
 import Navbar from '../../components/Navbar';
+import { useAuth } from '../../auth/AuthContext';
 
 function CartPage() {
-  const user = JSON.parse(localStorage.getItem('user'));
+  // const user = JSON.parse(localStorage.getItem('user'));
   const [items, setItems] = useState([]);
   const [error, setError] = useState('');
   const [total, setTotal] = useState(0);
+  const { user } = useAuth();
 
   const loadCart = async () => {
     try {

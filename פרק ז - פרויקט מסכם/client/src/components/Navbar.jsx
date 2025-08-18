@@ -6,7 +6,7 @@ import { useAuth } from '../auth/AuthContext';
 import './Navbar.css';
 
 function Navbar() {
-  //const user = JSON.parse(localStorage.getItem('user'));
+  // Removed localStorage usage for user; using useAuth context instead
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState(true);
   const { isLoading, isAuthenticated, isAdmin, isStoreKeeper, isWorker, user, logout: authLogout } = useAuth();
@@ -53,16 +53,16 @@ function Navbar() {
                     <i className="bi bi-credit-card"></i> תשלום
                   </Link>
                 </li>
-                {!isAdmin &&
+                {!isAdmin && (
                   <li className="nav-item">
                     <Link className="nav-link" to="/orders">
                       <i className="bi bi-box-seam"></i> הזמנות שלי
                     </Link>
                   </li>
-                }
+                )}
               </>
             )}
-            {!isLoading && isAdmin &&
+            {!isLoading && isAdmin && (
               <>
                 <li className="nav-item dropdown">
                   <a className="nav-link dropdown-toggle" href="#" id="stockDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -82,7 +82,7 @@ function Navbar() {
                   </ul>
                 </li>
               </>
-            }
+            )}
             {/* עובדים ומנהלים */}
             {!isLoading && (isAdmin || isStoreKeeper || isWorker) && (
               <>

@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../../services/api';
 import Navbar from '../../components/Navbar';
+import { useAuth } from '../../auth/AuthContext';
 
 function OrderItemsPage() {
-  const user = JSON.parse(localStorage.getItem('user'));
+  // const user = JSON.parse(localStorage.getItem('user'));
   const { order_id } = useParams();
   const [items, setItems] = useState([]);
   const [error, setError] = useState('');
+  const { user } = useAuth();
 
   const loadItems = async () => {
     try {
