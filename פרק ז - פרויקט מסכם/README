@@ -22,3 +22,5 @@ cd "C:\Users\DvirA\OneDrive\מסמכים\בית ספר תשפה\Full-Stack\Chapt
 node server
 cd "C:\Users\DvirA\OneDrive\מסמכים\בית ספר תשפה\Full-Stack\Chapter 7\פרק ז - פרויקט מסכם\פרק ז - פרויקט מסכם\client"
 npm run dev
+
+
