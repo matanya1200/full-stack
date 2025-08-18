@@ -91,4 +91,4 @@ The projects cover **frontend, backend, databases, and full-stack applications**
 ## 🚀 Getting Started
 Clone the repo:
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
+git clone https://github.com/matanya1200/full-stack
