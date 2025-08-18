@@ -35,3 +35,5 @@ temp/
 
 # ספריית הוקטורים מכילה קבצים גדולים מדי
 chroma/
+
+server/ai/rag/embeddings_cache.json
