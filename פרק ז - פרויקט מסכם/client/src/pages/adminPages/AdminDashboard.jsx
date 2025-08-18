@@ -20,6 +20,13 @@ export default function AdminDashboard({ socket }) {
   const [purchaseFeed, setPurchaseFeed] = useState([]);
   const [salesPoints, setSalesPoints] = useState([]);
   const [error, setError] = useState("");
+  const [timeUnit, setTimeUnit] = useState("hour");
+  const [minDate, setMinDate] = useState("");
+  
+  // Regroup sales points when timeUnit or purchaseFeed changes
+  useEffect(() => {
+    setSalesPoints(groupSalesByUnit(purchaseFeed, timeUnit));
+  }, [timeUnit, purchaseFeed]);
 
   useEffect(() => {
     if (!socket) {
@@ -30,40 +37,6 @@ export default function AdminDashboard({ socket }) {
     setError("");
     // 🔴 Listen for events via socketService
     const appSocket = socket;
-
-    const handleOnlineUsers = (data) => {
-      setOnlineUsers(data.users);
-    }
-
-    // Helper to group sales by hour
-    const groupSalesByHour = (feed) => {
-      const counts = {};
-      feed.forEach((p) => {
-        const hour = new Date(p.time);
-        hour.setMinutes(0, 0, 0);
-        const key = hour.getTime();
-        counts[key] = (counts[key] || 0) + 1;
-      });
-      // Convert to Chart.js format
-      return Object.entries(counts).map(([x, y]) => ({ x: Number(x), y }));
-    };
-
-    const handlePurchaseFeedBulk = (feed) => {
-      setPurchaseFeed(feed);
-      setSalesPoints(groupSalesByHour(feed));
-      if ((!feed || feed.length === 0) && (!onlineUsers || onlineUsers === 0)) {
-        setError("ℹ️ אין נתונים זמינים על משתמשים או מכירות");
-      }
-    };
-
-    const handlePurchaseFeed = (purchase) => {
-      setPurchaseFeed((prev) => [purchase, ...prev]);
-      setSalesPoints((_) => {
-        // Add new purchase to previous feed and regroup
-        const updatedFeed = [purchase, ...purchaseFeed];
-        return groupSalesByHour(updatedFeed);
-      });
-    };
 
     appSocket.on("onlineUsers", handleOnlineUsers);
     const onlineUsersInit = JSON.parse(sessionStorage.getItem('onlineUsers') || '{"users":0}');
@@ -80,11 +53,62 @@ export default function AdminDashboard({ socket }) {
     };
   }, [socket]);
 
+  
+
+    const handleOnlineUsers = (data) => {
+      setOnlineUsers(data.users);
+    }
+
+    // Helper to group sales by selected time unit
+    const groupSalesByUnit = (feed, unit) => {
+      const counts = {};
+      feed.forEach((p) => {
+        const date = new Date(p.time);
+        let key;
+        if (unit === "hour") {
+          date.setMinutes(0, 0, 0);
+          key = date.getTime();
+        } else if (unit === "day") {
+          date.setHours(0, 0, 0, 0);
+          key = date.getTime();
+        } else if (unit === "week") {
+          // Set to start of week (Sunday)
+          const day = date.getDay();
+          date.setDate(date.getDate() - day);
+          date.setHours(0, 0, 0, 0);
+          key = date.getTime();
+        } else if (unit === "month") {
+          date.setDate(1);
+          date.setHours(0, 0, 0, 0);
+          key = date.getTime();
+        }
+        counts[key] = (counts[key] || 0) + 1;
+      });
+      return Object.entries(counts).map(([x, y]) => ({ x: Number(x), y }));
+    };
+
+    const handlePurchaseFeedBulk = (feed) => {
+      setPurchaseFeed(feed);
+      setSalesPoints(groupSalesByUnit(feed, timeUnit));
+      if ((!feed || feed.length === 0) && (!onlineUsers || onlineUsers === 0)) {
+        setError("ℹ️ אין נתונים זמינים על משתמשים או מכירות");
+      }
+    };
+
+    const handlePurchaseFeed = (purchase) => {
+      setPurchaseFeed((prev) => [purchase, ...prev]);
+      setSalesPoints((_) => {
+        // Add new purchase to previous feed and regroup
+        const updatedFeed = [purchase, ...purchaseFeed];
+        return groupSalesByUnit(updatedFeed, timeUnit);
+      });
+    };
+
   // Chart.js data
   const chartData = {
     datasets: [
       {
-        label: "מכירות (לשעה)",
+        label: `מכירות (${timeUnit === "hour" ? "לשעה" : timeUnit === "day" ? "ליום" : timeUnit === "week" ? "לשבוע" : "לחודש"})`,
         data: salesPoints,
         parsing: false,
         borderWidth: 2,
@@ -102,8 +126,8 @@ export default function AdminDashboard({ socket }) {
     scales: {
       x: {
         type: "time",
-        time: { unit: "hour" },
-        min: '2025-08-16 00:00:00',
+        time: { unit: timeUnit },
+        min: minDate ? new Date(minDate).toISOString() : undefined,
       },
       y: {
         beginAtZero: true,
@@ -122,6 +146,29 @@ export default function AdminDashboard({ socket }) {
           <span className="badge bg-primary fs-6">
             משתמשים מחוברים: {onlineUsers}
           </span>
+        </div>
+
+        <div className="mb-3">
+          <label className="me-2 ms-2">יחידת זמן לגרף:</label>
+          <select
+            value={timeUnit}
+            onChange={e => setTimeUnit(e.target.value)}
+            className="form-select w-auto d-inline"
+          >
+            <option value="hour">שעה</option>
+            <option value="day">יום</option>
+            <option value="week">שבוע</option>
+            <option value="month">חודש</option>
+          </select>
+          <label className="ms-2 me-2">תאריך מינימלי:</label>
+          <input
+            type="date"
+            value={minDate}
+            onChange={e => setMinDate(e.target.value)}
+            className="form-control w-auto d-inline"
+            min="2000-01-01"
+            max={new Date().toISOString().slice(0,10)}
+          />
         </div>
 
         {error && (
